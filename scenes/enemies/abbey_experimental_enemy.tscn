@@ -1,0 +1,39 @@
+[gd_scene load_steps=8 format=3]
+[ext_resource type="Script" path="res://scripts/abbey/m5c1_enemy.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/abbey/m5c1_visual.gd" id="2"]
+[ext_resource type="Script" path="res://scripts/combat/sword_receiver.gd" id="3"]
+[ext_resource type="Script" path="res://scripts/enemies/skeleton_attack_source.gd" id="4"]
+[sub_resource type="RectangleShape2D" id="Body"]
+size = Vector2(14,28)
+[sub_resource type="RectangleShape2D" id="Hurt"]
+size = Vector2(18,30)
+[sub_resource type="RectangleShape2D" id="Strike"]
+size = Vector2(44,12)
+[node name="ExperimentalEnemy" type="CharacterBody2D"]
+collision_layer = 256
+collision_mask = 1
+floor_snap_length = 3.0
+script = ExtResource("1")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0,-14)
+shape = SubResource("Body")
+[node name="Visual" type="Node2D" parent="."]
+script = ExtResource("2")
+[node name="SwordReceiver" type="Area2D" parent="."]
+position = Vector2(0,-15)
+collision_layer = 8
+collision_mask = 0
+monitoring = false
+script = ExtResource("3")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SwordReceiver"]
+shape = SubResource("Hurt")
+[node name="AttackSource" type="Area2D" parent="."]
+position = Vector2(-28,-14)
+collision_layer = 32
+collision_mask = 16
+monitoring = false
+script = ExtResource("4")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackSource"]
+shape = SubResource("Strike")
+disabled = true
+
