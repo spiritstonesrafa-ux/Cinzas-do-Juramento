@@ -1,3 +1,25 @@
+# M5-B-FIX01 — Correção local para novo playtest
+
+Tamanho geral aprovado pelo responsável. Corrigidos somente os cortes internos emX960 do **setor2 — Claustro Fraturado** e do **setor6 — Galeria dos Turíbulos**, preservando os demais fundos. Dormitório(S4) e Jardim(S10) reorientados: avançar sempre à direita, retornar à esquerda. A correção aguarda novo playtest, sem homologação automática.
+
+[Correções, testes e checklist](tests/VALIDACAO_M5_B_FIX01.md). Abra scenes/abbey/abbey_chapter.tscn e use **F6**; **F7** reinicia a Abadia; **F5** mantém o Capítulo1. Sem commit, push ou M5-C. Os resultados M5-B abaixo são históricos; os resultados da revisão estão no relatório FIX01.
+
+# M5-B — Abadia Silenciosa: 12 setores estruturais
+
+**M5-A — HOMOLOGADO E COMMITADO LOCALMENTE.** Commit `cf7f0b22eb37bfb83a4da5cf7224e463a7f58bca`; aprovação manual 13/13, nenhuma observação. Sem push.
+
+**M5-B — IMPLEMENTADO, PENDENTE DE PLAYTEST E HOMOLOGAÇÃO.** 17360,42 px principais medidos pela física (5.6791× o Capítulo 1), sem contar teletransportes/retorno/opcionais. 3914 verificações principais aprovadas; gráficos e desempenho separados no relatório.
+
+Para jogar a Abadia, no painel Arquivos da Godot 4.7.2 abra **`scenes/abbey/abbey_chapter.tscn`** e pressione **F6 (executar cena atual)**. Começa no Átrio dos Votos e permite atravessar os 12 setores e voltar. **F5 continua abrindo o Capítulo 1**, pois a campanha oficial não foi substituída. Alternativa: `Godot_v4.7.2-stable_win64_console.exe --path "C:\PROJETOS\CINZAS DO JURAMENTO" res://scenes/abbey/abbey_chapter.tscn`.
+
+A/D ou setas: andar; Espaço/W/cima: saltar; J: espada; **F7 reinicia toda a Abadia experimental** (progresso só na sessão, sem save em disco). Siga à direita para avançar em todos os12 setores; volte à esquerda para retornar. Sete checkpoints funcionais preservam a identidade quando a sala descarrega. Morte retorna ao checkpoint; queda viva retorna ao início sem curar, conforme as regras existentes. O fim seguro informa **“Fim da versão estrutural da Abadia — M5-B.”**; não conclui o capítulo e permite voltar.
+
+Claustro das Sombras integrado ao setor 2, Claustro Fraturado; Galeria dos Penitentes ao setor 6, Galeria dos Turíbulos. A demonstração aprovada `scenes/abbey/abbey_pilots.tscn` continua independente e funcional. Não há ligação canônica ao Cemitério, segundo chefe ou novos arquétipos. Distribuição de ameaças M5-C, acabamento M5-D e exploração M5-E permanecem para etapas próprias.
+
+[Relatório, métricas e checklist M5-B](tests/VALIDACAO_M5_B.md) · [Proveniência dos dez novos fundos](assets/art/m5b/PROVENANCE.md).
+
+## Registro e acesso dos pilotos M5-A
+
 # M5-A — Abadia Silenciosa: pilotos experimentais
 
 **M5-A — HOMOLOGADO FUNCIONAL, VISUAL E TECNICAMENTE PELO RESPONSÁVEL.**
@@ -1212,3 +1234,12 @@ versionar o M2 em um único commit local na branch `main`, sem alterações
 adicionais de jogabilidade. Caches, logs e arquivos temporários ficam fora do
 commit. Não houve push, deploy, alteração de remoto ou publicação.
 **M3 não iniciado.** Qualquer nova implementação exige autorização expressa.
+
+
+## Homologação do responsável — M5-B
+
+**M5-B — HOMOLOGADO PELO RESPONSÁVEL NO ESCOPO ESTRUTURAL, FUNCIONAL E VISUAL TESTADO.** Extensão principal histórica: **17.360,42 px — 5,6791×** o Capítulo 1; tamanho aprovado. FIX01 e FIX02 aprovados no playtest informado; nenhuma correção visual obrigatória adicional relatada. Não se infere aprovação de 30/30 itens.
+
+Pendência técnica conhecida: investigar futuramente a origem das cinco instâncias ObjectDB registradas ao encerrar uma suíte visual; não há comprovação de vazamento persistente. Três diretórios externos de evidências FIX01 foram sobrescritos em regressão anterior; resultados históricos textuais preservados, sem reconstrução artificial.
+
+M5-C não iniciado. O Capítulo 2 ainda depende de M5-C (inimigos e armadilhas), M5-D (acabamento), M5-E (exploração), M5-F (regressão final) e M6 (segundo chefe). Nenhuma nova execução de engine é alegada nesta homologação documental.

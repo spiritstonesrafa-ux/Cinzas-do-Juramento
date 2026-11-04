@@ -84,7 +84,7 @@ Histórico da autorização de prototipagem: conceito da Abadia aprovado para du
 
 - M5-P: estudo/validação arquitetural, formalizado em docs/PLANEJAMENTO_CAPITULO_02.md.
 - M5-A: Claustro das Sombras e Galeria dos Penitentes; **HOMOLOGADO FUNCIONAL, VISUAL E TECNICAMENTE PELO RESPONSÁVEL**. Playtest manual: **13/13 PASSOU — Nenhuma observação**, incluindo TCL 4K. Testes técnicos anteriores preservados, sem nova execução nesta etapa documental.
-- M5-B: expansão estrutural dos12 setores, **não iniciada**.
+- M5-B: expansão estrutural dos12 setores implementada, 17360,42 px principais medidos; **pendente de playtest e homologação**. Sete posições funcionais de checkpoint pertencem à estrutura; distribuição completa de ameaças segue no M5-C.
 - M5-C: demais inimigos, desafios e checkpoints, não iniciado; o Monge/Contrapeso do piloto não concluem esse marco.
 - M5-D: arte e acabamento da região completa, não iniciado; assets dos pilotos pertencem ao M5-A.
 - M5-E: exploração, segredos e atalhos completos, não iniciado.
@@ -94,3 +94,21 @@ Histórico da autorização de prototipagem: conceito da Abadia aprovado para du
 Meta futura:14400 px principais; mínimo12227,52 px, aceite arredondado12228; expansão4,71× sobre3056,88 px. Pilotos não cumprem nem alegam cumprir a extensão final. Manter3000 px opcionais, seis descobertas, três atalhos e seteCP como metas. Narrativa/arte/layout definitivos dependem do responsável. Campanha inicial, Cemitério e Guardião preservados. Sem transição canônica, save global ou nova habilidade.
 
 Homologação M5-A registrada em 04/11/2026 para commit local único, sem push. A expansão M5-B está autorizada somente após conferir esse commit; no fechamento desta etapa A permanece não iniciada. Pilotos preservados como referência aprovada.
+
+## M5-B — expansão estrutural autorizada após o commit M5-A
+
+M5-A registrado localmente em `cf7f0b22eb37bfb83a4da5cf7224e463a7f58bca`, conferido antes da implementação. Doze cenas modulares conectadas, pilotos instanciados sem alteração, um Aren/HUD persistentes e sete checkpoints estáveis. Acesso F6 em scenes/abbey/abbey_chapter.tscn; F5 preservado. Métricas reais e checklist em tests/VALIDACAO_M5_B.md. Sem homologação automática, staging/commit M5-B ou push. M5-C, M5-D, M5-E e M6 não iniciados como marcos completos; reservas de integração e arte estrutural não os concluem.
+
+
+## M5-B-FIX01 — continuidade focada, aguarda novo playtest
+
+Tamanho geral aprovado pelo responsável; M5-B ainda não homologado integralmente. Dois cortes internos de fundo corrigidos somente emS2/S6, X960. Direção auditada nos12 setores; S4/S10 reorientados, sem encurtar perfis, para manter direita na ida e esquerda na volta. Relatório tests/VALIDACAO_M5_B_FIX01.md. Sem staging, commit, push ou início do M5-C.
+
+
+## Homologação do responsável — M5-B
+
+**M5-B — HOMOLOGADO PELO RESPONSÁVEL NO ESCOPO ESTRUTURAL, FUNCIONAL E VISUAL TESTADO.** Extensão principal histórica: **17.360,42 px — 5,6791×** o Capítulo 1; tamanho aprovado. FIX01 e FIX02 aprovados no playtest informado; nenhuma correção visual obrigatória adicional relatada. Não se infere aprovação de 30/30 itens.
+
+Pendência técnica conhecida: investigar futuramente a origem das cinco instâncias ObjectDB registradas ao encerrar uma suíte visual; não há comprovação de vazamento persistente. Três diretórios externos de evidências FIX01 foram sobrescritos em regressão anterior; resultados históricos textuais preservados, sem reconstrução artificial.
+
+M5-C não iniciado. O Capítulo 2 ainda depende de M5-C (inimigos e armadilhas), M5-D (acabamento), M5-E (exploração), M5-F (regressão final) e M6 (segundo chefe). Nenhuma nova execução de engine é alegada nesta homologação documental.
