@@ -1,3 +1,15 @@
+# M5-A — Abadia Silenciosa: pilotos experimentais
+
+**M5-A — HOMOLOGADO FUNCIONAL, VISUAL E TECNICAMENTE PELO RESPONSÁVEL.**
+
+**Playtest manual: 13/13 PASSOU — Nenhuma observação.** Aprovação informada pelo responsável, incluindo imagem e fluidez na TCL 4K; distinta dos resultados automatizados históricos de 1370 verificações principais e 68 gráficas, sem nova execução nesta homologação. Campanha oficial continua no Cemitério homologado. Para experimentar, abra `scenes/abbey/abbey_pilots.tscn` na Godot4.7.2 e execute a cena atual com F6; ou use o executável da engine com `--path . res://scenes/abbey/abbey_pilots.tscn`. F5 continua iniciando a campanha oficial.
+
+A/D ou setas: andar; Espaço/W/cima: saltar; J: espada; F7: reiniciar os pilotos. No Claustro, siga os patamares até a saída direita e procure a passagem superior dos Votos sem Nome. Na Galeria, enfrente o Monge e leia o aviso do Contrapeso; voltar pela esquerda retorna ao Claustro. O marco à direita encerra a demonstração e permite voltar. Checkpoints de teste não pertencem ao progresso canônico.
+
+Apenas duas salas, um inimigo e um perigo novos. Meta14400 px/12 setores é planejamento, não região concluída. Sem segundo chefe ou transição definitiva. [Validação e checklist](tests/VALIDACAO_M5_A.md) · [Planejamento formalizado](docs/PLANEJAMENTO_CAPITULO_02.md) · [Proveniência](assets/art/m5a/PROVENANCE.md).
+
+## Histórico homologado do Capítulo1 — preservado
+
 # Cinzas do Juramento — M4-C: Conclusão do Guardião
 
 **M4-C — HOMOLOGADO FUNCIONAL E VISUALMENTE PELO RESPONSÁVEL.**

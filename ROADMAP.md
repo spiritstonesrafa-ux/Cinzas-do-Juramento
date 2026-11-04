@@ -10,9 +10,10 @@
 | **M2 — Sobrevivência** | HP, receber dano, invulnerabilidade, knockback, checkpoints, reinício | Dano não repete indevidamente; restauração previsível | M1 homologado |
 | **M3 — Primeira fase** | Cenário gótico, inimigos variados, desafios, armadilhas, início/fim de fase | Percurso completo, sem softlock, ritmo de dificuldade validado | M2 homologado |
 | **M4 — Chefe** | Chefe de fase, arena, padrões legíveis, vitória | Pode ser derrotado de forma justa, sem estado impossível | M3 homologado |
-| **M5 — Vertical slice polido** | Demo 3–5 min, arte original consistente, som original, UX básica | Experiência coesa, performance e estabilidade aceitáveis no PC-alvo | M4 homologado |
-| **M6 — Expansão de conteúdo** | Desenvolvimento incremental das demais fases e chefes | Cada fase concluída e testada isoladamente e em regressão | M5 homologado |
-| **M7 — Publicação** | Build Windows, configuração, testes finais, distribuição | Empacotamento executável, licenças e documentação revisadas | M6 homologado |
+| **M5 — Abadia Silenciosa** | Planejamento e desenvolvimento incremental da região; M5-A somente dois pilotos experimentais | Aprovação artística, funcional e técnica por marco; extensão final mínima 4× | M4 homologado |
+| **M6 — Segundo chefe** | Fundação, combate avançado e conclusão do Abade, ainda não iniciado | Padrões justos e dificuldade superior por aprendizado | M5-F homologado e autorização |
+| **M7 — Expansão posterior e polimento** | Demais regiões; backlog de som original, UX e polimento do slice preservado | Escopos futuros aprovados separadamente | M6 homologado e autorização |
+| **M8 — Publicação executável** | Build Windows, configuração, testes finais e distribuição | Empacotamento, licenças e documentação revisados | Escopo de produto homologado e autorização |
 
 ## M0 — Backlog estrito
 
@@ -75,3 +76,21 @@ Sem anúncio de acesso funcional a uma fase inexistente. Relatório e checklist
 em tests/VALIDACAO_M4_C.md. Homologado funcional e visualmente pelo responsável:
 13/13 PASSOU, nenhuma observação. Primeiro chefe e conclusão da primeira fase
 homologados; próxima região e novo marco aguardam autorização.
+
+
+## Formalização dos marcos futuros — M5 (04/11/2026)
+
+Histórico da autorização de prototipagem: conceito da Abadia aprovado para duas salas independentes. M0–M4 publicados não mudam. As antigas linhas futuras M5(slice),M6(expansão),M7(publicação executável) são substituídas pela sequência acima: seu backlog de som/UX/polimento não foi dado como concluído e permanece no M7 futuro. Push do Capítulo1 é publicação do código, não build/release executável.
+
+- M5-P: estudo/validação arquitetural, formalizado em docs/PLANEJAMENTO_CAPITULO_02.md.
+- M5-A: Claustro das Sombras e Galeria dos Penitentes; **HOMOLOGADO FUNCIONAL, VISUAL E TECNICAMENTE PELO RESPONSÁVEL**. Playtest manual: **13/13 PASSOU — Nenhuma observação**, incluindo TCL 4K. Testes técnicos anteriores preservados, sem nova execução nesta etapa documental.
+- M5-B: expansão estrutural dos12 setores, **não iniciada**.
+- M5-C: demais inimigos, desafios e checkpoints, não iniciado; o Monge/Contrapeso do piloto não concluem esse marco.
+- M5-D: arte e acabamento da região completa, não iniciado; assets dos pilotos pertencem ao M5-A.
+- M5-E: exploração, segredos e atalhos completos, não iniciado.
+- M5-F: regressão e homologação da região, não iniciado.
+- M6-A/B/C: fundação, combate avançado e conclusão do segundo chefe, **não iniciados**.
+
+Meta futura:14400 px principais; mínimo12227,52 px, aceite arredondado12228; expansão4,71× sobre3056,88 px. Pilotos não cumprem nem alegam cumprir a extensão final. Manter3000 px opcionais, seis descobertas, três atalhos e seteCP como metas. Narrativa/arte/layout definitivos dependem do responsável. Campanha inicial, Cemitério e Guardião preservados. Sem transição canônica, save global ou nova habilidade.
+
+Homologação M5-A registrada em 04/11/2026 para commit local único, sem push. A expansão M5-B está autorizada somente após conferir esse commit; no fechamento desta etapa A permanece não iniciada. Pilotos preservados como referência aprovada.
