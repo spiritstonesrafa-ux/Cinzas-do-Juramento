@@ -1,6 +1,11 @@
 extends Node2D
 ## Original raster backdrops and atlas materials; no collision in decoration.
 const MATERIAL: Texture2D=preload("res://assets/art/m5a/architecture.png")
+const MASONRY_TINTS: Array[Color]=[
+ Color("89949d"), Color("8396a4"), Color("7d9098"), Color("898f96"),
+ Color("698f8b"), Color("8396a4"), Color("a29580"), Color("82929a"),
+ Color("888d91"), Color("899b85"), Color("818d96"), Color("928e88")
+]
 var background: Texture2D
 var view: Rect2
 var last_cell: Vector2i=Vector2i(-99999,-99999)
@@ -39,10 +44,9 @@ func _draw() -> void:
    r=r.intersection(Rect2(960,-1000,320,3000))
   if not r.has_area() or not r.intersects(view.grow(32)): continue
   var visible: Rect2=r.intersection(view.grow(32))
-  var tint: Color=Color("8396a4")
-  if id==4: tint=Color("698f8b")
-  elif id==6: tint=Color("a29580")
-  elif id==9: tint=Color("899b85")
+  # Keep the approved atlas but let each part of the abbey retain its own
+  # material character. This tint affects only masonry inside solid ground.
+  var tint: Color=MASONRY_TINTS[id]
   for x: int in range(int(visible.position.x/32)*32,int(visible.end.x)+32,32):
    for y: int in range(int(r.position.y)+8,int(visible.end.y)+32,32):
     var patch: Rect2=Rect2(x,y,32,32).intersection(r)
@@ -68,19 +72,22 @@ func _draw() -> void:
    var w: float=minf(96,r.size.x-x)
    draw_texture_rect_region(MATERIAL,Rect2(x,0,w,12),Rect2(18,194,728*w/96,186),Color(0.42,0.49,0.51))
   draw_set_transform(Vector2.ZERO)
+  # Dormitory sample: a recessed, dark seam reinforces the underside without
+  # creating a bright edge that could be mistaken for a walkable surface.
+  if id in [3,4,8]:
+   draw_rect(Rect2(r.position.x,r.end.y-2,r.size.x,2),Color(0.08,0.12,0.14,0.45))
  # Small material signatures foreground the route without masking the next tread.
  for r: Rect2 in AbbeyChapterLayout.main_surfaces(id):
   var p: Vector2=Vector2(r.get_center().x,r.position.y)
   if id in [1,5] and p.x<960: continue
   if not view.grow(40).has_point(p): continue
-  if id in [2,10]:
-   draw_line(p+Vector2(0,-88),p+Vector2(0,-48),Color("736c5b"),1)
-   draw_texture_rect_region(MATERIAL,Rect2(p+Vector2(-10,-55),Vector2(20,26)),Rect2(225,648,310,370),Color(0.5,0.57,0.61))
-  elif id==4:
+  # Repeated hanging weights can be mistaken for an active pendulum. The
+  # stairway and belfry retain their existing chains and bells in the backdrop.
+  if id==4:
    for i: int in range(3): draw_line(p+Vector2(-22+i*6,12),p+Vector2(6+i*6,12),Color("5f9693"),1)
   elif id==9:
    for i: int in range(5): draw_line(p+Vector2(i*3,-2),p+Vector2(i*3-2,-7-i%3),Color("7f8f78"),1)
-  elif id in [0,8,11]:
+  elif id in [0,8,11] and int(p.x/80)%3==1:
    draw_texture_rect_region(MATERIAL,Rect2(p+Vector2(-8,-22),Vector2(16,22)),Rect2(992,600,310,390),Color(0.7,0.74,0.72))
  # Door marks stay in the authored room and are distinct from landing edges.
  for backwards: bool in [false,true]:

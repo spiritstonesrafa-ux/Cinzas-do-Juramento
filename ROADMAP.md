@@ -1,3 +1,11 @@
+> **Estado atual:** M5-D homologado visual e funcionalmente pelo responsável após playtest, com a informação de que está tudo OK. M5-C3 permanece encerrado administrativamente com ressalvas, e a combinação avançada do setor 11 segue para revisão posterior sem bloquear o roadmap. O próximo marco previsto é M5-E, de exploração, segredos e atalhos, cuja implementação permanece pendente. Consulte [o relatório M5-D](tests/VALIDACAO_M5_D.md) e [o encerramento M5-C3](tests/ENCERRAMENTO_ADMINISTRATIVO_M5_C3.md).
+
+## Homologação M5-D e continuidade
+
+O responsável informou que concluiu o playtest e que está tudo OK, aprovando oficialmente o M5-D no escopo visual e funcional. O ensaio automatizado 4K registrou pico isolado de 183,878 ms como **observação de desempenho não bloqueante**; sua causa não foi determinada e o resultado médio e p95 permanecem documentados. A ressalva histórica ObjectDB e as pendências conhecidas do M5-C3, inclusive a combinação avançada do Campanário para revisão posterior sem bloquear o roadmap, continuam registradas. Nenhum novo teste da engine é alegado neste encerramento documental.
+
+O próximo marco previsto é **M5-E — exploração, segredos e atalhos completos**, dependente da base M5-D homologada e de autorização específica de implementação conforme a regra geral do roadmap. O planejamento histórico propõe seis descobertas sinalizadas, percursos opcionais e três atalhos abertos pelo lado avançado, com retorno funcional, preservação dos sete checkpoints e sem exigir novos sistemas de inventário. Os números e distâncias são propostas a validar no escopo próprio, incluindo a manutenção do mínimo de rota principal após atalhos. M5-F permanece destinado à regressão e homologação da região; M6 depende de M5-F. M5-E não foi implementado nesta etapa.
+
 # Cinzas do Juramento — Roadmap por marcos
 
 **Versão:** 0.1  

@@ -1,3 +1,5 @@
+> **Estado atual:** M5-D homologado visual e funcionalmente pelo responsável, que informou após o playtest que está tudo OK. M5-C3 permanece encerrado administrativamente com ressalvas, sem converter testes inconclusivos em PASS. O próximo marco previsto é M5-E, de exploração, segredos e atalhos. Consulte o [relatório M5-D](tests/VALIDACAO_M5_D.md) e o [encerramento M5-C3](tests/ENCERRAMENTO_ADMINISTRATIVO_M5_C3.md).
+
 # M5-B-FIX01 — Correção local para novo playtest
 
 Tamanho geral aprovado pelo responsável. Corrigidos somente os cortes internos emX960 do **setor2 — Claustro Fraturado** e do **setor6 — Galeria dos Turíbulos**, preservando os demais fundos. Dormitório(S4) e Jardim(S10) reorientados: avançar sempre à direita, retornar à esquerda. A correção aguarda novo playtest, sem homologação automática.
