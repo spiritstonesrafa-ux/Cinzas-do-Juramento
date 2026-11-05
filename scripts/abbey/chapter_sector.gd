@@ -3,6 +3,7 @@ extends Node2D
 @export_range(0,11,1) var sector_id: int = 0
 var pilot: Node2D
 var art: Node2D
+var encounters: Node2D
 func _ready() -> void:
  var p: int = AbbeyChapterLayout.pilot_id(sector_id)
  if p>=0:
@@ -54,11 +55,22 @@ func _ready() -> void:
   shortcut.position=main[0].position+Vector2(24,-64)
   shortcut.set_meta("scope","M5-E: no active shortcut or reduced main route")
   future.add_child(shortcut)
+func install_encounters(hero: KnightController) -> void:
+ encounters = Node2D.new()
+ encounters.name = "M5C3Encounters"
+ encounters.set_script(load("res://scripts/abbey/m5c3_distribution.gd"))
+ add_child(encounters)
+ encounters.install(sector_id, hero)
 func snapshot() -> Dictionary:
- return pilot.snapshot() if is_instance_valid(pilot) else {}
+ var data: Dictionary = pilot.snapshot() if is_instance_valid(pilot) else {}
+ if is_instance_valid(encounters): data["m5c3_health"] = encounters.snapshot()
+ return data
 func restore_state(data: Dictionary) -> void:
  if is_instance_valid(pilot): pilot.restore_state(data)
+ if is_instance_valid(encounters): encounters.restore(data.get("m5c3_health", []))
 func reset_encounters() -> void:
  if is_instance_valid(pilot): pilot.reset_encounters()
+ if is_instance_valid(encounters): encounters.reset_encounters()
 func disarm() -> void:
  if is_instance_valid(pilot): pilot.disarm()
+ if is_instance_valid(encounters): encounters.disarm()

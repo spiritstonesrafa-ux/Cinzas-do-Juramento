@@ -67,6 +67,8 @@ func switch_room(id: int, backwards: bool=false, fresh: bool=false) -> void:
  room.position=AbbeyChapterLayout.origin(id)
  $Rooms.add_child(room)
  current_room=id
+ room.install_encounters(hero)
+ room.encounters.process_mode=Node.PROCESS_MODE_DISABLED
  if not fresh: room.restore_state(states.get(id,{}))
  if is_instance_valid(room.pilot) and is_instance_valid(room.pilot.monk): room.pilot.monk.target=hero
  # A disconnected CP stays stable, but its destination is never trusted until
@@ -86,6 +88,7 @@ func switch_room(id: int, backwards: bool=false, fresh: bool=false) -> void:
  busy=false
  loading_room=-1
  hero.process_mode=Node.PROCESS_MODE_INHERIT
+ room.encounters.process_mode=Node.PROCESS_MODE_INHERIT
  room_changed.emit(id)
  # Warm the adjacent backdrops while Aren is on supported entry ground. The
  # current room owns its texture; only adjacent warm references are retained.
