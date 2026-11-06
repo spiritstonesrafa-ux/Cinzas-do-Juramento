@@ -21,6 +21,8 @@ func _ready() -> void:
   boss.health=0
   boss._state(boss.State.DEFEATED,0.0)
   boss.get_node("SwordReceiver/CollisionShape2D").set_deferred("disabled",true)
+  if boss.has_node("Conclusion"):
+   boss.get_node("Conclusion").settle(true)
  boss.defeated.connect(func(): boss_defeated.emit())
 func _body(pos: Vector2,size: Vector2) -> void:
  var body: StaticBody2D=StaticBody2D.new()

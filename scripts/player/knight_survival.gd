@@ -61,3 +61,10 @@ func restore() -> void:
 	_death_remaining = 0.0
 	_respawn_sent = false
 	health_changed.emit(_health, max_health)
+
+func grant_health_upgrade(bonus: int = 1) -> void:
+	if bonus <= 0:
+		return
+	max_health = maxi(1, max_health + bonus)
+	_health = clampi(_health + bonus, 1, max_health)
+	health_changed.emit(_health, max_health)

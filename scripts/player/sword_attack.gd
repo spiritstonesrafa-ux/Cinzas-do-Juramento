@@ -12,14 +12,24 @@ var phase: Phase = Phase.NEUTRAL
 var direction: int = 1
 var _remaining: float = 0.0
 var _hit_targets: Array[int] = []
+var aerial: bool = false
+var aerial_available: bool = true
 
 @onready var hitbox: Area2D = $Hitbox
 @onready var hit_shape: CollisionShape2D = $Hitbox/CollisionShape2D
 
 func tick(delta: float, grounded: bool, facing: int) -> void:
+	if grounded:
+		aerial_available = true
+		# Landing terminates the aerial strike and disables its hitbox immediately.
+		if aerial and phase != Phase.NEUTRAL:
+			cancel()
 	# Check input before advancing the cycle: presses during recovery are discarded.
 	if phase == Phase.NEUTRAL:
-		if grounded and Input.is_action_just_pressed("attack"):
+		if (grounded or aerial_available) and Input.is_action_just_pressed("attack"):
+			aerial = not grounded
+			if aerial:
+				aerial_available = false
 			direction = facing
 			hitbox.position.x = 17.0 * direction
 			_hit_targets.clear()
@@ -45,11 +55,15 @@ func tick(delta: float, grounded: bool, facing: int) -> void:
 
 func cancel() -> void:
 	phase = Phase.NEUTRAL
+	aerial = false
 	_remaining = 0.0
 	_hit_targets.clear()
 	direction = 1
 	hit_shape.disabled = true
 	queue_redraw()
+
+func reset_air_cycle() -> void:
+	aerial_available = true
 
 func _find_hits() -> void:
 	var query: PhysicsShapeQueryParameters2D = PhysicsShapeQueryParameters2D.new()

@@ -1,18 +1,18 @@
 extends Node2D
-## Local coordinates on the homologated sector spine. The empty atrium is a safe introduction.
+## Local coordinates on the homologated sector spine.
 ## Each record is [kind, x, surface index]; y comes from the existing geometry.
 const PLACEMENTS: Array = [
- [],
+ [["monk", 320, 2]],
  [["monk", 580, 5]],
- [["pendulum", 340, 4]],
- [["acolyte", 550, 5]],
- [["sluice", 780, 9], ["acolyte", 950, 11]],
- [["incense", 850, 0]],
- [["watchman", 410, 4], ["pendulum", 690, 7], ["monk", 1080, 11]],
- [["penitent", 550, 5], ["sluice", 850, 8]],
- [["acolyte", 510, 5], ["incense", 800, 8]],
- [["penitent", 450, 4], ["pendulum", 850, 8]],
- [["watchman", 420, 5], ["sluice", 850, 11]],
+ [["pendulum", 340, 4], ["monk", 600, 7]],
+ [["acolyte", 550, 5], ["penitent", 900, 8]],
+ [["sluice", 780, 9], ["acolyte", 950, 11], ["monk", 380, 4]],
+ [["incense", 850, 0], ["monk", 450, 0]],
+ [["watchman", 410, 4], ["pendulum", 690, 7], ["monk", 1080, 11], ["acolyte", 850, 9]],
+ [["penitent", 550, 5], ["sluice", 850, 8], ["monk", 260, 2]],
+ [["acolyte", 510, 5], ["incense", 800, 8], ["watchman", 1060, 11]],
+ [["penitent", 450, 4], ["pendulum", 850, 8], ["acolyte", 680, 6]],
+ [["watchman", 420, 5], ["sluice", 850, 11], ["monk", 1030, 13]],
  [["monk", 525, 4]]
 ]
 const MONK: PackedScene = preload("res://scenes/enemies/chained_monk.tscn")

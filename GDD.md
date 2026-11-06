@@ -55,8 +55,10 @@ Entrar na fase → superar plataformas e perigos → enfrentar inimigos → alca
 - Golpe simples de espada (M1), com hitbox ativa apenas durante a janela de acerto.
 - Inimigos sinalizam ataques antes de causarem dano.
 - Vida, invulnerabilidade breve após dano e checkpoints (M2).
-- **Decisão de progressão:** Aren desbloqueia permanentemente o dash/deslizamento terrestre após vitória válida sobre o Abade das Correntes, segundo chefe. Antes da vitória a habilidade permanece bloqueada; a recompensa é comunicada e persiste após reinício. O Abade usa dash ofensivo. M5-G foi homologado pelo responsável em 05/11/2026.
-- Ataque aéreo é melhoria independente planejada para depois do desenvolvimento do chefe; não faz parte do dash nem é pré-requisito para derrotar o Abade. Seu escopo depende de etapa própria. O dash foi homologado no M5-G; o ataque aéreo ainda não foi implementado.
+- **Decisão oficial de recompensas de chefes:** Todo chefe concede uma recompensa permanente própria e significativa.
+  - **Chefe 1 (Guardião do Juramento):** concede permanentemente **+1 ponto de Vida Máxima** a Aren na primeira vitória legítima (HP máximo 5 → 6), refletido no HUD discreto e persistido em arquivo seguro, sem concessão duplicada em refights. Homologado pelo responsável em 06/11/2026.
+  - **Chefe 2 (Abade das Correntes):** concede permanentemente a habilidade **Passo das Sombras (dash terrestre)**, com sequência cinematográfica gótica de encerramento (queda, rompimento das correntes, assimilação de energia sombria por Aren e apresentação da nova técnica). Efeito visual com sigilo gótico em cruz floriada, arco etéreo, faíscas radiais no piso, cascalho, rastro de raspagem, névoa escura e frenagem. Persistência segura em arquivo de progresso. Homologado pelo responsável em 06/11/2026.
+- **M5-H (Ataque Aéreo e Expansão):** Aren pode golpear no ar com J durante salto ou queda (um golpe por ciclo no ar, preservando gravidade e movimento horizontal). Inimigos comuns expandidos para 12 na Fase 1 (Cemitério) e 20 na Fase 2 (Abadia). Homologado oficialmente pelo responsável em 06/11/2026.
 
 ## 4. Design das fases
 
@@ -68,8 +70,8 @@ O responsável definiu que cada uma das cinco fases terá obrigatoriamente um ch
 
 | Fase | Cenário | Principal desafio | Ideia de chefe |
 |---|---|---|---|
-| 1 — O Cemitério dos Esquecidos | Cemitério e Catedral | Aprender salto e espada | Guardião do Juramento (implementado) |
-| 2 — Abadia Silenciosa | Claustros e sinos | Ritmo de armadilhas | Abade das Correntes |
+| 1 — O Cemitério dos Esquecidos | Cemitério e Catedral | Aprender salto e espada | Guardião do Juramento (implementado e homologado) |
+| 2 — Abadia Silenciosa | Claustros e sinos | Ritmo de armadilhas | Abade das Correntes (implementado e homologado) |
 | 3 — Floresta dos Ossos | Floresta petrificada | Plataformas e inimigos móveis | Cervo Espectral |
 | 4 — Fornalha do Juramento | Minas e fornalhas | Perigos do ambiente | Guardião das Brasas |
 | 5 — Trono Esquecido | Fortaleza central | Domínio de todas as mecânicas | Regente do Vazio |

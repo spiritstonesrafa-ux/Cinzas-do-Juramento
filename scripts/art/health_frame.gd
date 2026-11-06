@@ -11,10 +11,13 @@ func _process(delta: float) -> void:
 		queue_redraw()
 
 func _draw() -> void:
-	p([Vector2(3,3),Vector2(8,0),Vector2(15,2),Vector2(19,4),Vector2(107,4),Vector2(109,7),Vector2(107,13),Vector2(17,13),Vector2(12,16),Vector2(4,13)],Color("11141e",0.93))
-	l(Vector2(19,3),Vector2(105,3),Color("a28b65"))
-	l(Vector2(20,14),Vector2(104,14),Color("665347"))
-	for side: int in [4,105]:
+	var extra: float = maxf(0, maximum - 5) * 7.0
+	var right_edge: float = 105.0 + extra
+	var poly_edge: float = 107.0 + extra
+	p([Vector2(3,3),Vector2(8,0),Vector2(15,2),Vector2(19,4),Vector2(poly_edge,4),Vector2(poly_edge+2,7),Vector2(poly_edge,13),Vector2(17,13),Vector2(12,16),Vector2(4,13)],Color("11141e",0.93))
+	l(Vector2(19,3),Vector2(right_edge,3),Color("a28b65"))
+	l(Vector2(20,14),Vector2(right_edge-1,14),Color("665347"))
+	for side: int in [4,int(right_edge)]:
 		l(Vector2(side,5),Vector2(side+3,2),GOLD)
 		l(Vector2(side,11),Vector2(side+3,14),Color("84715b"))
 	var size: Vector2 = PORTRAIT.get_size()
@@ -30,4 +33,4 @@ func _draw() -> void:
 			r(x+1,7,1,2,Color("bf6a72"))
 			r(x+2,10,3,1,Color("612d46"))
 	if pulse > 0:
-		l(Vector2(19,14),Vector2(103,14),Color(AMBER,pulse))
+		l(Vector2(19,14),Vector2(right_edge-2,14),Color(AMBER,pulse))

@@ -99,6 +99,35 @@ progression_index = 2
 
 [node name="Enemies" type="Node2D" parent="."]
 
+[node name="M5HGateSkeleton" parent="Enemies" instance=ExtResource("5_enemy")]
+position = Vector2(340, 156)
+patrol_left = -28.0
+patrol_right = 28.0
+
+[node name="M5HGraveRaven" parent="Enemies" instance=ExtResource("6_raven")]
+position = Vector2(610, 112)
+patrol_half_width = 10.0
+
+[node name="M5HGardenSkeleton" parent="Enemies" instance=ExtResource("5_enemy")]
+position = Vector2(928, 140)
+patrol_left = -12.0
+patrol_right = 12.0
+
+[node name="M5HCryptRaven" parent="Enemies" instance=ExtResource("6_raven")]
+position = Vector2(1450, 150)
+patrol_half_width = 8.0
+
+[node name="M5HBridgeRaven" parent="Enemies" instance=ExtResource("6_raven")]
+position = Vector2(1745, 100)
+patrol_half_width = 8.0
+detection_distance = 38.0
+max_dive_distance = 48.0
+
+[node name="M5HGraveSkeleton" parent="Enemies" instance=ExtResource("5_enemy")]
+position = Vector2(505, 144)
+patrol_left = -16.0
+patrol_right = 16.0
+
 [node name="SkeletonPatrol" parent="Enemies" instance=ExtResource("5_enemy")]
 position = Vector2(744, 140)
 

@@ -1,4 +1,4 @@
-> **Estado atual (05/11/2026):** M5-D e M5-E homologados; M5-F homologado com ressalvas; **M5-G homologado pelo responsável**, incluindo Abade e dash permanente após vitória. A Abadia está homologada no conteúdo testado; consolidação Git e fechamento técnico são assuntos separados e ainda não foram concluídos. Ataque aéreo está somente em planejamento.
+> **Estado atual (06/11/2026):** M5-D, M5-E, M5-F e M5-G permanecem homologados; **M5-H foi homologado pelo responsável**. Aren dispõe de ataque aéreo e as fases 1 e 2 possuem 12 e 20 inimigos comuns. O Guardião concede +1 de vida máxima permanente; o Abade possui cinemática de vitória e concede o dash terrestre Passo das Sombras. SAVE-SAFETY-01 foi implementado e validado tecnicamente, com backups e recuperação sujeitos às limitações documentadas. M6-A é uma entrega separada desta consolidação.
 
 > **Homologação posterior M5-F:** o responsável informou “playtest ok” e homologou o M5-F com as ressalvas documentadas. O mínimo físico global de 12.227,52 px continua não comprovado e não bloqueante; o modelo horizontal não é distância física. M5-C3, ObjectDB e o pico histórico de 183,878 ms permanecem registrados. Esta informação não representa nova execução automatizada.
 
@@ -24,8 +24,8 @@ O próximo marco previsto é **M5-E — exploração, segredos e atalhos complet
 | **M4 — Chefe** | Chefe de fase, arena, padrões legíveis, vitória | Pode ser derrotado de forma justa, sem estado impossível | M3 homologado |
 | **M5 — Abadia Silenciosa** | Planejamento e desenvolvimento incremental da região; M5-A somente dois pilotos experimentais | Aprovação artística, funcional e técnica por marco; extensão final mínima 4× | M4 homologado |
 | **M5-G — Chefe da Abadia** | Arena, Abade e dash pós-vitória homologados pelo responsável | Homologação funcional e visual concedida; fechamento técnico e Git separados | M5-F homologado |
-| **M5-H — Ataque aéreo de Aren** | Planejamento documental de golpe aéreo independente | Implementação e disponibilidade dependem de autorização e decisões de design | M5-G homologado |
-| **M6 — Expansão futura** | Regiões restantes e respectivos chefes; o Abade já pertence a M5-G | Escopo futuro aprovado separadamente; sem duplicar chefe | M5-G homologado e autorização |
+| **M5-H — Combate aéreo e recompensas** | Ataque aéreo; ampliação de inimigos; +1 de vida máxima pelo Guardião; cinemática do Abade e dash Passo das Sombras; persistência segura | M5-H homologado pelo responsável; SAVE-SAFETY-01 validado tecnicamente, com limitações documentadas | M5-G homologado |
+| **M6 — Expansão futura** | Regiões restantes e respectivos chefes; M6-A tratado como entrega separada | Escopo aprovado separadamente; sem duplicar chefe | M5-H homologado e autorização |
 | **M7 — Expansão posterior e polimento** | Demais regiões; backlog de som original, UX e polimento do slice preservado | Escopos futuros aprovados separadamente | M6 homologado e autorização |
 | **M8 — Publicação executável** | Build Windows, configuração, testes finais e distribuição | Empacotamento, licenças e documentação revisados | Escopo de produto homologado e autorização |
 

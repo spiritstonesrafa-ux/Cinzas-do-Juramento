@@ -36,6 +36,9 @@ var dash_direction: int = 1
 func _ready() -> void:
 	survival.died.connect(_on_died)
 	dash_unlocked = ABBEY_PROGRESS.unlocked()
+	if ABBEY_PROGRESS.guardian_reward_unlocked():
+		survival.max_health = 6
+		survival.restore()
 
 func _on_died() -> void:
 	dash_remaining = 0.0
@@ -100,7 +103,7 @@ func _physics_process(delta: float) -> void:
 
 func _unhandled_key_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_SHIFT:
-		if dash_unlocked and not survival.is_dead and is_on_floor() and dash_cooldown_remaining <= 0.0:
+		if dash_unlocked and not survival.is_dead and is_on_floor() and dash_cooldown_remaining <= 0.0 and not sword_attack.aerial:
 			var axis: float = Input.get_axis("move_left", "move_right")
 			dash_direction = (1 if axis > 0.0 else -1) if axis != 0.0 else facing
 			facing = dash_direction
@@ -109,7 +112,10 @@ func _unhandled_key_input(event: InputEvent) -> void:
 			sword_attack.cancel()
 
 func receive_damage(amount: int = 1) -> bool:
-	return survival.receive_damage(amount)
+	var received: bool = survival.receive_damage(amount)
+	if received and sword_attack.aerial:
+		sword_attack.cancel()
+	return received
 
 func _update_survival_visual() -> void:
 	visual.rotation = -PI / 2.0 if survival.is_dead else 0.0
@@ -172,6 +178,7 @@ func _update_state() -> void:
 
 func reset_to(spawn_position: Vector2) -> void:
 	sword_attack.cancel()
+	sword_attack.reset_air_cycle()
 	dash_remaining = 0.0
 	global_position = spawn_position
 	velocity = Vector2.ZERO

@@ -1,5 +1,6 @@
 extends Node2D
 ## Portal adapter: M3 scene, physics, checkpoints and camera code remain untouched.
+const ABBEY_PROGRESS: Script = preload("res://scripts/abbey/abbey_progress.gd")
 var arena: Node2D
 var active: bool=false
 var completed: bool=false
@@ -55,6 +56,11 @@ func enter() -> void:
 func _on_defeated() -> void:
  completed=true
  arena.get_node("LeftGate/CollisionShape2D").set_deferred("disabled",true)
+ if not ABBEY_PROGRESS.guardian_reward_unlocked():
+  if ABBEY_PROGRESS.grant_guardian_reward():
+   hero.survival.grant_health_upgrade(1)
+   if arena.has_node("Guardian/Conclusion"):
+    arena.get_node("Guardian/Conclusion").reward_granted=true
 func _on_death() -> void:
  if active:arena.get_node("Guardian").clear_dangers()
 func _on_respawn() -> void:

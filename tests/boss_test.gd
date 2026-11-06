@@ -59,7 +59,7 @@ func run() -> void:
  hero=stage.get_node("Knight") as KnightController
  encounter=main.get_node("GuardianEncounter") as Node2D
  check(not encounter.active and encounter.arena==null,"Arena loads lazily, normal exploration stays untouched")
- check(stage.get_node("WorldGeometry").get_child_count()==19 and stage.get_node("Enemies").get_child_count()==6,"M3 geometry and six enemies preserved")
+ check(stage.get_node("WorldGeometry").get_child_count()==19 and stage.get_node("Enemies").get_child_count()==12,"M3 geometry preserved and M5-H twelve enemies present")
  check(root.content_scale_mode==Window.CONTENT_SCALE_MODE_CANVAS_ITEMS and root.get_visible_rect().size==Vector2(320,180),"Approved display and logical reference preserved")
  hero.reset_to(Vector2(2288,156));await frames(5)
  check(not encounter.active,"Homologated finish marker does not force encounter")
@@ -165,7 +165,7 @@ func run() -> void:
  check(encounter.active,"Completed room can be revisited without another fight")
  hero.receive_damage(999);await frames(50)
  check(not encounter.active and not hero.survival.is_dead,"M2 death exits room safely")
- check(hero.position.distance_to(checkpoint.position)<0.2 and hero.survival.current_health==5,"M2 checkpoint destination/full health preserved")
+ check(hero.position.distance_to(checkpoint.position)<0.2 and hero.survival.current_health==hero.survival.max_health,"M2 checkpoint destination/full health preserved")
  check(boss.state==OathGuardian.State.IDLE and boss.current_health==boss.max_health and not encounter.completed,"Death resets boss to dormant idle for retry")
  check(not boss.attack_source.active,"Reset clears boss damage source")
  await walk_to_entry()
@@ -174,7 +174,7 @@ func run() -> void:
  hero.position.y=300
  await frames(3)
  check(not encounter.active and hero.position.distance_to(Vector2(48,156))<0.2,"Alive fall returns to original M3 spawn")
- check(hero.survival.current_health==4 and hero.active_checkpoint==checkpoint,"Alive fall keeps HP loss and checkpoint progress")
+ check(hero.survival.current_health==hero.survival.max_health-1 and hero.active_checkpoint==checkpoint,"Alive fall keeps HP loss and checkpoint progress")
  check(root.get_camera_2d()==stage.get_node("Camera2D") and hero.z_index==0,"Fall restores camera and draw order")
  await frames(60)
  hero.receive_damage(999)

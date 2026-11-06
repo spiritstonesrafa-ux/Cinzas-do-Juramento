@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene load_steps=9 format=3]
 [ext_resource type="Script" path="res://scripts/abbey/abbot.gd" id="1"]
 [ext_resource type="Script" path="res://scripts/abbey/abbot_visual.gd" id="2"]
 [ext_resource type="Script" path="res://scripts/combat/sword_receiver.gd" id="3"]
 [ext_resource type="Script" path="res://scripts/boss/guardian_attack.gd" id="4"]
+[ext_resource type="Script" path="res://scripts/abbey/abbot_conclusion.gd" id="5"]
 [sub_resource type="RectangleShape2D" id="Body"]
 size = Vector2(24, 48)
 [sub_resource type="RectangleShape2D" id="Receiver"]
@@ -35,3 +36,6 @@ script = ExtResource("4")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AttackSource"]
 shape = SubResource("Blade")
 disabled = true
+
+[node name="Conclusion" type="Node2D" parent="."]
+script = ExtResource("5")

@@ -16,6 +16,7 @@ var settled: bool=false
 var elapsed: float=0
 var sequence_count: int=0
 var completion_count: int=0
+var reward_granted: bool=false
 @onready var boss: OathGuardian=get_parent() as OathGuardian
 func _ready() -> void:
  boss.defeated.connect(_begin)
@@ -35,7 +36,7 @@ func _on_player_died() -> void:
  # Once back in the cemetery, M4-A/B session victory must remain persistent.
  if boss.get_parent().get_parent().active:cancel()
 func cancel() -> void:
- played=false;running=false;settled=false;elapsed=0
+ played=false;running=false;settled=false;elapsed=0;reward_granted=false
  queue_redraw()
  boss.visual.queue_redraw()
  get_parent().get_parent().get_node("Backdrop").queue_redraw()

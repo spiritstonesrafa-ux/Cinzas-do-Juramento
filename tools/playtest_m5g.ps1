@@ -1,5 +1,5 @@
 param(
-    [ValidateSet("Boss", "Campanha")][string]$Cenario = "Boss",
+    [ValidateSet("Boss", "Campanha", "Guardian")][string]$Cenario = "Boss",
     [ValidatePattern('^[a-zA-Z0-9_-]{1,64}$')][string]$Perfil = "",
     [string]$Godot = "C:\Users\ovohe\Downloads\Godot_v4.7.2-stable_win64.exe\Godot_v4.7.2-stable_win64_console.exe",
     [switch]$Headless,
@@ -11,7 +11,7 @@ $project = Split-Path -Parent $PSScriptRoot
 if (-not $Perfil) { $Perfil = [guid]::NewGuid().ToString("N") }
 $profile = Join-Path $project ".godot\playtest-m5g\$Perfil"
 New-Item -ItemType Directory -Force -Path $profile | Out-Null
-$scene = if ($Cenario -eq "Boss") { "res://scenes/dev/m5g_boss_playtest.tscn" } else { "res://scenes/abbey/abbey_chapter.tscn" }
+$scene = if ($Cenario -eq "Boss") { "res://scenes/dev/m5g_boss_playtest.tscn" } elseif ($Cenario -eq "Guardian") { "res://scenes/main.tscn" } else { "res://scenes/abbey/abbey_chapter.tscn" }
 Write-Host "Perfil isolado: $Perfil"
 Write-Host "Dados: $profile"
 Write-Host "Para retomar: acrescente -Perfil $Perfil ao mesmo comando."
@@ -26,7 +26,8 @@ try {
     $env:CINZAS_M5G_ISOLATED = $profile
     & $Godot @arguments
     $result = $LASTEXITCODE
-} finally {
+}
+finally {
     $env:APPDATA = $previousAppData
     $env:CINZAS_M5G_ISOLATED = $previousIsolation
 }

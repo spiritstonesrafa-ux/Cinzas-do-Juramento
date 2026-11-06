@@ -7,7 +7,7 @@ func run() -> void:
  while chapter.busy or chapter.current_room<0: await tick()
  await chapter.switch_room(6)
  hero=chapter.hero
- check(chapter.room.encounters.enemies.size()==2 and chapter.room.encounters.hazards.size()==1,"Ameaças da Fundição instaladas")
+ check(chapter.room.encounters.enemies.size()==3 and chapter.room.encounters.hazards.size()==1,"Ameaças da Fundição instaladas — total M5-H")
  for i: int in range(3000):
   steer()
   if i%2==0: Input.action_press("attack")

@@ -164,7 +164,7 @@ func _run() -> void:
 	_knight.reset_to(Vector2(450, 80))
 	await _frames(3)
 	await _press_attack()
-	_check(_attack.phase == SwordAttack.Phase.NEUTRAL, "Cannot start attack in air")
+	_check(_attack.aerial and _attack.phase != SwordAttack.Phase.NEUTRAL, "M5-H: airborne J starts an aerial attack")
 	await _frames(50)
 	_check(_attack.phase == SwordAttack.Phase.NEUTRAL, "Airborne press does not queue on landing")
 	await _place()

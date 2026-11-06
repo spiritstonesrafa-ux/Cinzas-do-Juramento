@@ -446,12 +446,17 @@ func _enter_abbot_arena() -> void:
 func _on_abbot_defeated() -> void:
  if hero.survival.is_dead or not arena_active: return
  var defeated_arena: Node2D=room
- await get_tree().create_timer(0.8).timeout
- if not is_instance_valid(hero) or hero.survival.is_dead or not arena_active or room!=defeated_arena: return
  abbot_won=true
  if ABBEY_PROGRESS.grant():
   hero.dash_unlocked=true
   completed=true
-  hint.text="Você assimilou o deslizamento do Abade · Shift"
+ if is_instance_valid(defeated_arena) and is_instance_valid(defeated_arena.boss) and defeated_arena.boss.has_node("Conclusion"):
+  var ending: Node2D = defeated_arena.boss.get_node("Conclusion")
+  if not ending.played:
+   ending._begin()
+ await get_tree().create_timer(0.8).timeout
+ if not is_instance_valid(hero) or hero.survival.is_dead or not arena_active or room!=defeated_arena: return
+ if hero.dash_unlocked:
+  hint.text="Técnica assimilada: Shift deslizar · E retornar"
  else:
   hint.text="Vitória! Não foi possível salvar o deslizamento."
