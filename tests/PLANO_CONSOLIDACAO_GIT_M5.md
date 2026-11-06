@@ -1,0 +1,1162 @@
+# Plano de consolidação Git M5
+
+> Auditoria pré-commit: as listas e contagens abaixo documentam as candidatas anteriores. A seleção final reduz evidências redundantes; a lista autoritativa desta operação está em [MANIFESTO_M5_E_F_G.md](MANIFESTO_M5_E_F_G.md). Nenhum arquivo local excluído é apagado.
+
+Diagnóstico em 05/11/2026; sem staging, commit, push ou deploy. O HEAD é `a10f654f6cc4efcb2c68ede3b3254b2f09ed8d7e`, branch `main`. Os caminhos seguintes são o inventário efetivo da working tree no momento da geração, inclusive arquivos individuais em diretórios não rastreados. A lista não é uma autorização para incluir qualquer arquivo.
+
+## Recomendações e dependências
+
+A separação por marco somente por caminho é insegura: `scripts/abbey/chapter.gd`, `chapter_sector.gd`, `knight_controller.gd`, `knight_visual.gd` e a documentação combinam marcos. O índice permaneceu vazio; não se demonstrou que patches parciais formem commits intermediários funcionais. Recomenda-se uma única consolidação seletiva M5-E/F/G, com mensagem `feat(abbey): consolida exploracao, regressao e Abade`, após revisão/autorização explícita. Deve incluir dependências transitivas `res://`, `.uid` pertinentes, testes e documentos aprovados; evidências grandes e seus sidecars precisam de escolha explícita. Excluir protegidos, imagens de referência pessoais, saves, caches, logs e arquivos experimentais sem valor de entrega. Não há autorização para fazer o commit.
+
+Critérios prévios: conferir cada arquivo e diff staged em autorização posterior, importar candidata limpa em Godot, executar testes de movimento, combate, jornadas, persistência e boss e revisar evidências; comparar configuração protegida local com HEAD. O HEAD possui `window/stretch/aspect="keep"`, ausente do arquivo local protegido, e serialização distinta de J; não assumir equivalência visual ou de entrada. Dash usa KEY_SHIFT diretamente no controlador, não uma ação nova no InputMap. Cópias anteriores usando configuração do HEAD executaram suítes dirigidas, mas não comprovam equivalência gráfica completa nem que um futuro commit seletivo incluirá todos os recursos. A reprodutibilidade do commit futuro permanece **não comprovada** até candidata limpa com conteúdo exato selecionado. Não restaurar ou modificar `project.godot` protegido.
+
+Uma separação alternativa E, F e G só é justificável após construir e testar conteúdos intermediários que dividam arquivos compartilhados sem perder dependências. M5-F depende de E; G depende de E/F e da versão correta do capítulo, controlador e recursos. Documentos transversais devem refletir o conjunto final e podem entrar no mesmo commit; recomendações não executam nenhum staging.
+
+## Inventário por grupo
+
+Total do snapshot: 622 caminhos individuais, incluindo este relatório. Caches e perfis sob .godot são ignorados e não aparecem nesta lista.
+
+
+### A — M5-E (102 arquivos)
+
+- `?? docs/PLANEJAMENTO_M5_E.md`
+- `?? scripts/abbey/m5e_discoveries.gd`
+- `?? scripts/abbey/m5e_discoveries.gd.uid`
+- `?? scripts/abbey/m5e_garden_overlook.gd`
+- `?? scripts/abbey/m5e_garden_overlook.gd.uid`
+- `?? scripts/abbey/m5e_names_relief.gd`
+- `?? scripts/abbey/m5e_names_relief.gd.uid`
+- `?? scripts/abbey/m5e_o1_chapel.gd`
+- `?? scripts/abbey/m5e_o1_chapel.gd.uid`
+- `?? scripts/abbey/m5e_service_passage.gd`
+- `?? scripts/abbey/m5e_service_passage.gd.uid`
+- `?? scripts/abbey/m5e_shortcuts.gd`
+- `?? scripts/abbey/m5e_shortcuts.gd.uid`
+- `?? scripts/abbey/m5e_silent_bell_gallery.gd`
+- `?? scripts/abbey/m5e_silent_bell_gallery.gd.uid`
+- `?? scripts/abbey/m5e_stair_cistern_annex.gd`
+- `?? scripts/abbey/m5e_stair_cistern_annex.gd.uid`
+- `?? scripts/abbey/m5e_unsigned_record_gallery.gd`
+- `?? scripts/abbey/m5e_unsigned_record_gallery.gd.uid`
+- `?? tests/ENCERRAMENTO_M5_E.md`
+- `?? tests/evidencias/m5_e_lote09_A1_1280x720.png`
+- `?? tests/evidencias/m5_e_lote09_A1_1280x720.png.import`
+- `?? tests/evidencias/m5_e_lote09_A1_1920x1080.png`
+- `?? tests/evidencias/m5_e_lote09_A1_1920x1080.png.import`
+- `?? tests/evidencias/m5_e_lote09_A1_2560x1440.png`
+- `?? tests/evidencias/m5_e_lote09_A1_2560x1440.png.import`
+- `?? tests/evidencias/m5_e_lote09_A1_3840x2160.png`
+- `?? tests/evidencias/m5_e_lote09_A1_3840x2160.png.import`
+- `?? tests/evidencias/m5_e_lote09_A2_1280x720.png`
+- `?? tests/evidencias/m5_e_lote09_A2_1280x720.png.import`
+- `?? tests/evidencias/m5_e_lote09_A2_1920x1080.png`
+- `?? tests/evidencias/m5_e_lote09_A2_1920x1080.png.import`
+- `?? tests/evidencias/m5_e_lote09_A2_2560x1440.png`
+- `?? tests/evidencias/m5_e_lote09_A2_2560x1440.png.import`
+- `?? tests/evidencias/m5_e_lote09_A2_3840x2160.png`
+- `?? tests/evidencias/m5_e_lote09_A2_3840x2160.png.import`
+- `?? tests/evidencias/m5_e_lote09_A3_1280x720.png`
+- `?? tests/evidencias/m5_e_lote09_A3_1280x720.png.import`
+- `?? tests/evidencias/m5_e_lote09_A3_1920x1080.png`
+- `?? tests/evidencias/m5_e_lote09_A3_1920x1080.png.import`
+- `?? tests/evidencias/m5_e_lote09_A3_2560x1440.png`
+- `?? tests/evidencias/m5_e_lote09_A3_2560x1440.png.import`
+- `?? tests/evidencias/m5_e_lote09_A3_3840x2160.png`
+- `?? tests/evidencias/m5_e_lote09_A3_3840x2160.png.import`
+- `?? tests/INVENTARIO_M5_E.md`
+- `?? tests/m5_e_lote01_test.gd`
+- `?? tests/m5_e_lote01_test.gd.uid`
+- `?? tests/m5_e_lote02_test.gd`
+- `?? tests/m5_e_lote02_test.gd.uid`
+- `?? tests/m5_e_lote03_o1_test.gd`
+- `?? tests/m5_e_lote03_o1_test.gd.uid`
+- `?? tests/m5_e_lote04_geometry_audit.gd`
+- `?? tests/m5_e_lote04_geometry_audit.gd.uid`
+- `?? tests/m5_e_lote04_o1_fixture.gd`
+- `?? tests/m5_e_lote04_o1_fixture.gd.uid`
+- `?? tests/m5_e_lote04_o1_journey.gd`
+- `?? tests/m5_e_lote04_o1_journey.gd.uid`
+- `?? tests/m5_e_lote04_other_fixtures.gd`
+- `?? tests/m5_e_lote04_other_fixtures.gd.uid`
+- `?? tests/m5_e_lote05_clearance_fixture.gd`
+- `?? tests/m5_e_lote05_clearance_fixture.gd.uid`
+- `?? tests/m5_e_lote05_o1_test.gd`
+- `?? tests/m5_e_lote05_o1_test.gd.uid`
+- `?? tests/m5_e_lote06_o1_clearance.gd`
+- `?? tests/m5_e_lote06_o1_clearance.gd.uid`
+- `?? tests/m5_e_lote06_o1_journey.gd`
+- `?? tests/m5_e_lote06_o1_journey.gd.uid`
+- `?? tests/m5_e_lote06_o1_metric.gd`
+- `?? tests/m5_e_lote06_o1_metric.gd.uid`
+- `?? tests/m5_e_lote07_o4_test.gd`
+- `?? tests/m5_e_lote07_o4_test.gd.uid`
+- `?? tests/m5_e_lote07_o5_test.gd`
+- `?? tests/m5_e_lote07_o5_test.gd.uid`
+- `?? tests/m5_e_lote07_o6_test.gd`
+- `?? tests/m5_e_lote07_o6_test.gd.uid`
+- `?? tests/m5_e_lote08_o2_test.gd`
+- `?? tests/m5_e_lote08_o2_test.gd.uid`
+- `?? tests/m5_e_lote08_o3_test.gd`
+- `?? tests/m5_e_lote08_o3_test.gd.uid`
+- `?? tests/m5_e_lote08_o4_test.gd`
+- `?? tests/m5_e_lote08_o4_test.gd.uid`
+- `?? tests/m5_e_lote08_o5_test.gd`
+- `?? tests/m5_e_lote08_o5_test.gd.uid`
+- `?? tests/m5_e_lote08_o6_test.gd`
+- `?? tests/m5_e_lote08_o6_test.gd.uid`
+- `?? tests/m5_e_lote08_short_jump_test.gd`
+- `?? tests/m5_e_lote08_short_jump_test.gd.uid`
+- `?? tests/m5_e_lote09_journey.gd`
+- `?? tests/m5_e_lote09_journey.gd.uid`
+- `?? tests/m5_e_lote09_segment_journey.gd`
+- `?? tests/m5_e_lote09_segment_journey.gd.uid`
+- `?? tests/m5_e_lote09_shortcut_fixture.gd`
+- `?? tests/m5_e_lote09_shortcut_fixture.gd.uid`
+- `?? tests/VALIDACAO_M5_E_LOTE01.md`
+- `?? tests/VALIDACAO_M5_E_LOTE02.md`
+- `?? tests/VALIDACAO_M5_E_LOTE03.md`
+- `?? tests/VALIDACAO_M5_E_LOTE04.md`
+- `?? tests/VALIDACAO_M5_E_LOTE05.md`
+- `?? tests/VALIDACAO_M5_E_LOTE06.md`
+- `?? tests/VALIDACAO_M5_E_LOTE07.md`
+- `?? tests/VALIDACAO_M5_E_LOTE08.md`
+- `?? tests/VALIDACAO_M5_E_LOTE09.md`
+
+### B — M5-F (24 arquivos)
+
+- `?? docs/PLANEJAMENTO_M5_F.md`
+- `?? tests/CHECKLIST_PLAYTEST_M5_F.md`
+- `?? tests/evidencias/m5_f_fix01_contato.png`
+- `?? tests/evidencias/m5_f_fix01_contato.png.import`
+- `?? tests/INVENTARIO_CONTINUIDADE_M5_F.md`
+- `?? tests/INVENTARIO_M5_F_CANDIDATA.md`
+- `?? tests/m5_f_f7_session_test.gd`
+- `?? tests/m5_f_f7_session_test.gd.uid`
+- `?? tests/m5_f_fix01_benchmark_diagnostic.gd`
+- `?? tests/m5_f_fix01_benchmark_diagnostic.gd.uid`
+- `?? tests/m5_f_fix01_benchmark.gd`
+- `?? tests/m5_f_fix01_benchmark.gd.uid`
+- `?? tests/m5_f_fix01_horizontal_model.py`
+- `?? tests/m5_f_fix01_visual_journey.gd`
+- `?? tests/m5_f_fix01_visual_journey.gd.uid`
+- `?? tests/m5_f_fix01_visual_optional.gd`
+- `?? tests/m5_f_fix01_visual_optional.gd.uid`
+- `?? tests/m5_f_fix01_visual_shortcut.gd`
+- `?? tests/m5_f_fix01_visual_shortcut.gd.uid`
+- `?? tests/m5_f_performance_sample.gd`
+- `?? tests/m5_f_performance_sample.gd.uid`
+- `?? tests/PROPOSTA_ENCERRAMENTO_M5_F.md`
+- `?? tests/VALIDACAO_M5_F_FIX01.md`
+- `?? tests/VALIDACAO_M5_F.md`
+
+### C — M5-G (471 arquivos)
+
+- `?? assets/art/m5g/abbot_fix02.png`
+- `?? assets/art/m5g/abbot_fix02.png.import`
+- `?? docs/PLANEJAMENTO_M5_G_ABADE.md`
+- `?? scenes/abbey/abbot_arena.tscn`
+- `?? scenes/abbey/abbot.tscn`
+- `?? scenes/dev/m5g_boss_playtest.tscn`
+- `?? scripts/abbey/abbey_progress.gd`
+- `?? scripts/abbey/abbey_progress.gd.uid`
+- `?? scripts/abbey/abbot_arena.gd`
+- `?? scripts/abbey/abbot_arena.gd.uid`
+- `?? scripts/abbey/abbot_visual.gd`
+- `?? scripts/abbey/abbot_visual.gd.uid`
+- `?? scripts/abbey/abbot.gd`
+- `?? scripts/abbey/abbot.gd.uid`
+- `?? scripts/dev/m5g_boss_playtest.gd`
+- `?? scripts/dev/m5g_boss_playtest.gd.uid`
+- `?? scripts/ui/abbot_boss_bar.gd`
+- `?? scripts/ui/abbot_boss_bar.gd.uid`
+- `?? tests/evidencias/m5g-fechamento/benchmark_1920x1080.png`
+- `?? tests/evidencias/m5g-fechamento/benchmark_1920x1080.png.import`
+- `?? tests/evidencias/m5g-fechamento/benchmark_3840x2160.png`
+- `?? tests/evidencias/m5g-fechamento/benchmark_3840x2160.png.import`
+- `?? tests/evidencias/m5g-fechamento/resultado_1080p.txt`
+- `?? tests/evidencias/m5g-fechamento/resultado_4k.txt`
+- `?? tests/evidencias/m5g-fix01/comparacao_fase1_1280x720.png`
+- `?? tests/evidencias/m5g-fix01/comparacao_fase1_1280x720.png.import`
+- `?? tests/evidencias/m5g-fix01/comparacao_fase1_1920x1080.png`
+- `?? tests/evidencias/m5g-fix01/comparacao_fase1_1920x1080.png.import`
+- `?? tests/evidencias/m5g-fix01/comparacao_fase1_2560x1440.png`
+- `?? tests/evidencias/m5g-fix01/comparacao_fase1_2560x1440.png.import`
+- `?? tests/evidencias/m5g-fix01/comparacao_fase1_3840x2160.png`
+- `?? tests/evidencias/m5g-fix01/comparacao_fase1_3840x2160.png.import`
+- `?? tests/evidencias/m5g-fix01/comparacao_fase2_1280x720.png`
+- `?? tests/evidencias/m5g-fix01/comparacao_fase2_1280x720.png.import`
+- `?? tests/evidencias/m5g-fix01/comparacao_fase2_1920x1080.png`
+- `?? tests/evidencias/m5g-fix01/comparacao_fase2_1920x1080.png.import`
+- `?? tests/evidencias/m5g-fix01/comparacao_fase2_2560x1440.png`
+- `?? tests/evidencias/m5g-fix01/comparacao_fase2_2560x1440.png.import`
+- `?? tests/evidencias/m5g-fix01/comparacao_fase2_3840x2160.png`
+- `?? tests/evidencias/m5g-fix01/comparacao_fase2_3840x2160.png.import`
+- `?? tests/evidencias/m5g-fix01/dash_ativo_1280x720.png`
+- `?? tests/evidencias/m5g-fix01/dash_ativo_1280x720.png.import`
+- `?? tests/evidencias/m5g-fix01/dash_ativo_1920x1080.png`
+- `?? tests/evidencias/m5g-fix01/dash_ativo_1920x1080.png.import`
+- `?? tests/evidencias/m5g-fix01/dash_ativo_2560x1440.png`
+- `?? tests/evidencias/m5g-fix01/dash_ativo_2560x1440.png.import`
+- `?? tests/evidencias/m5g-fix01/dash_ativo_3840x2160.png`
+- `?? tests/evidencias/m5g-fix01/dash_ativo_3840x2160.png.import`
+- `?? tests/evidencias/m5g-fix01/derrota_1280x720.png`
+- `?? tests/evidencias/m5g-fix01/derrota_1280x720.png.import`
+- `?? tests/evidencias/m5g-fix01/derrota_1920x1080.png`
+- `?? tests/evidencias/m5g-fix01/derrota_1920x1080.png.import`
+- `?? tests/evidencias/m5g-fix01/derrota_2560x1440.png`
+- `?? tests/evidencias/m5g-fix01/derrota_2560x1440.png.import`
+- `?? tests/evidencias/m5g-fix01/derrota_3840x2160.png`
+- `?? tests/evidencias/m5g-fix01/derrota_3840x2160.png.import`
+- `?? tests/evidencias/m5g-fix01/flash_dano_1280x720.png`
+- `?? tests/evidencias/m5g-fix01/flash_dano_1280x720.png.import`
+- `?? tests/evidencias/m5g-fix01/flash_dano_1920x1080.png`
+- `?? tests/evidencias/m5g-fix01/flash_dano_1920x1080.png.import`
+- `?? tests/evidencias/m5g-fix01/flash_dano_2560x1440.png`
+- `?? tests/evidencias/m5g-fix01/flash_dano_2560x1440.png.import`
+- `?? tests/evidencias/m5g-fix01/flash_dano_3840x2160.png`
+- `?? tests/evidencias/m5g-fix01/flash_dano_3840x2160.png.import`
+- `?? tests/evidencias/m5g-fix02/abade_00.png`
+- `?? tests/evidencias/m5g-fix02/abade_00.png.import`
+- `?? tests/evidencias/m5g-fix02/abade_01.png`
+- `?? tests/evidencias/m5g-fix02/abade_01.png.import`
+- `?? tests/evidencias/m5g-fix02/aren_direita_00.png`
+- `?? tests/evidencias/m5g-fix02/aren_direita_00.png.import`
+- `?? tests/evidencias/m5g-fix02/aren_direita_01.png`
+- `?? tests/evidencias/m5g-fix02/aren_direita_01.png.import`
+- `?? tests/evidencias/m5g-fix02/aren_direita_02.png`
+- `?? tests/evidencias/m5g-fix02/aren_direita_02.png.import`
+- `?? tests/evidencias/m5g-fix02/aren_direita_03.png`
+- `?? tests/evidencias/m5g-fix02/aren_direita_03.png.import`
+- `?? tests/evidencias/m5g-fix02/aren_direita_04.png`
+- `?? tests/evidencias/m5g-fix02/aren_direita_04.png.import`
+- `?? tests/evidencias/m5g-fix02/aren_direita_05.png`
+- `?? tests/evidencias/m5g-fix02/aren_direita_05.png.import`
+- `?? tests/evidencias/m5g-fix02/aren_direita_06.png`
+- `?? tests/evidencias/m5g-fix02/aren_direita_06.png.import`
+- `?? tests/evidencias/m5g-fix02/aren_direita_07.png`
+- `?? tests/evidencias/m5g-fix02/aren_direita_07.png.import`
+- `?? tests/evidencias/m5g-fix02/aren_direita_08.png`
+- `?? tests/evidencias/m5g-fix02/aren_direita_08.png.import`
+- `?? tests/evidencias/m5g-fix02/aren_direita_09.png`
+- `?? tests/evidencias/m5g-fix02/aren_direita_09.png.import`
+- `?? tests/evidencias/m5g-fix02/aren_direita_10.png`
+- `?? tests/evidencias/m5g-fix02/aren_direita_10.png.import`
+- `?? tests/evidencias/m5g-fix02/aren_direita_11.png`
+- `?? tests/evidencias/m5g-fix02/aren_direita_11.png.import`
+- `?? tests/evidencias/m5g-fix02/aren_direita_12.png`
+- `?? tests/evidencias/m5g-fix02/aren_direita_12.png.import`
+- `?? tests/evidencias/m5g-fix02/aren_direita_13.png`
+- `?? tests/evidencias/m5g-fix02/aren_direita_13.png.import`
+- `?? tests/evidencias/m5g-fix02/aren_direita_14.png`
+- `?? tests/evidencias/m5g-fix02/aren_direita_14.png.import`
+- `?? tests/evidencias/m5g-fix02/aren_direita_15.png`
+- `?? tests/evidencias/m5g-fix02/aren_direita_15.png.import`
+- `?? tests/evidencias/m5g-fix02/aren_direita_16.png`
+- `?? tests/evidencias/m5g-fix02/aren_direita_16.png.import`
+- `?? tests/evidencias/m5g-fix02/aren_direita_17.png`
+- `?? tests/evidencias/m5g-fix02/aren_direita_17.png.import`
+- `?? tests/evidencias/m5g-fix02/aren_direita_18.png`
+- `?? tests/evidencias/m5g-fix02/aren_direita_18.png.import`
+- `?? tests/evidencias/m5g-fix02/aren_direita_19.png`
+- `?? tests/evidencias/m5g-fix02/aren_direita_19.png.import`
+- `?? tests/evidencias/m5g-fix02/aren_esquerda_00.png`
+- `?? tests/evidencias/m5g-fix02/aren_esquerda_00.png.import`
+- `?? tests/evidencias/m5g-fix02/aren_esquerda_01.png`
+- `?? tests/evidencias/m5g-fix02/aren_esquerda_01.png.import`
+- `?? tests/evidencias/m5g-fix02/aren_esquerda_02.png`
+- `?? tests/evidencias/m5g-fix02/aren_esquerda_02.png.import`
+- `?? tests/evidencias/m5g-fix02/aren_esquerda_03.png`
+- `?? tests/evidencias/m5g-fix02/aren_esquerda_03.png.import`
+- `?? tests/evidencias/m5g-fix02/aren_esquerda_04.png`
+- `?? tests/evidencias/m5g-fix02/aren_esquerda_04.png.import`
+- `?? tests/evidencias/m5g-fix02/aren_esquerda_05.png`
+- `?? tests/evidencias/m5g-fix02/aren_esquerda_05.png.import`
+- `?? tests/evidencias/m5g-fix02/aren_esquerda_06.png`
+- `?? tests/evidencias/m5g-fix02/aren_esquerda_06.png.import`
+- `?? tests/evidencias/m5g-fix02/aren_esquerda_07.png`
+- `?? tests/evidencias/m5g-fix02/aren_esquerda_07.png.import`
+- `?? tests/evidencias/m5g-fix02/aren_esquerda_08.png`
+- `?? tests/evidencias/m5g-fix02/aren_esquerda_08.png.import`
+- `?? tests/evidencias/m5g-fix02/aren_esquerda_09.png`
+- `?? tests/evidencias/m5g-fix02/aren_esquerda_09.png.import`
+- `?? tests/evidencias/m5g-fix02/aren_esquerda_10.png`
+- `?? tests/evidencias/m5g-fix02/aren_esquerda_10.png.import`
+- `?? tests/evidencias/m5g-fix02/aren_esquerda_11.png`
+- `?? tests/evidencias/m5g-fix02/aren_esquerda_11.png.import`
+- `?? tests/evidencias/m5g-fix02/aren_esquerda_12.png`
+- `?? tests/evidencias/m5g-fix02/aren_esquerda_12.png.import`
+- `?? tests/evidencias/m5g-fix02/aren_esquerda_13.png`
+- `?? tests/evidencias/m5g-fix02/aren_esquerda_13.png.import`
+- `?? tests/evidencias/m5g-fix02/aren_esquerda_14.png`
+- `?? tests/evidencias/m5g-fix02/aren_esquerda_14.png.import`
+- `?? tests/evidencias/m5g-fix02/aren_esquerda_15.png`
+- `?? tests/evidencias/m5g-fix02/aren_esquerda_15.png.import`
+- `?? tests/evidencias/m5g-fix02/aren_esquerda_16.png`
+- `?? tests/evidencias/m5g-fix02/aren_esquerda_16.png.import`
+- `?? tests/evidencias/m5g-fix02/aren_esquerda_17.png`
+- `?? tests/evidencias/m5g-fix02/aren_esquerda_17.png.import`
+- `?? tests/evidencias/m5g-fix02/aren_esquerda_18.png`
+- `?? tests/evidencias/m5g-fix02/aren_esquerda_18.png.import`
+- `?? tests/evidencias/m5g-fix02/aren_esquerda_19.png`
+- `?? tests/evidencias/m5g-fix02/aren_esquerda_19.png.import`
+- `?? tests/evidencias/m5g-fix02/arena_1280x720.png`
+- `?? tests/evidencias/m5g-fix02/arena_1280x720.png.import`
+- `?? tests/evidencias/m5g-fix02/arena_1920x1080.png`
+- `?? tests/evidencias/m5g-fix02/arena_1920x1080.png.import`
+- `?? tests/evidencias/m5g-fix02/arena_2560x1440.png`
+- `?? tests/evidencias/m5g-fix02/arena_2560x1440.png.import`
+- `?? tests/evidencias/m5g-fix02/arena_3840x2160.png`
+- `?? tests/evidencias/m5g-fix02/arena_3840x2160.png.import`
+- `?? tests/evidencias/m5g-fix02/aviso_1280x720.png`
+- `?? tests/evidencias/m5g-fix02/aviso_1280x720.png.import`
+- `?? tests/evidencias/m5g-fix02/aviso_1920x1080.png`
+- `?? tests/evidencias/m5g-fix02/aviso_1920x1080.png.import`
+- `?? tests/evidencias/m5g-fix02/aviso_2560x1440.png`
+- `?? tests/evidencias/m5g-fix02/aviso_2560x1440.png.import`
+- `?? tests/evidencias/m5g-fix02/aviso_3840x2160.png`
+- `?? tests/evidencias/m5g-fix02/aviso_3840x2160.png.import`
+- `?? tests/evidencias/m5g-fix02/dash_abade_1280x720.png`
+- `?? tests/evidencias/m5g-fix02/dash_abade_1280x720.png.import`
+- `?? tests/evidencias/m5g-fix02/dash_abade_1920x1080.png`
+- `?? tests/evidencias/m5g-fix02/dash_abade_1920x1080.png.import`
+- `?? tests/evidencias/m5g-fix02/dash_abade_2560x1440.png`
+- `?? tests/evidencias/m5g-fix02/dash_abade_2560x1440.png.import`
+- `?? tests/evidencias/m5g-fix02/dash_abade_3840x2160.png`
+- `?? tests/evidencias/m5g-fix02/dash_abade_3840x2160.png.import`
+- `?? tests/evidencias/m5g-fix02/recompensa_1280x720.png`
+- `?? tests/evidencias/m5g-fix02/recompensa_1280x720.png.import`
+- `?? tests/evidencias/m5g-fix02/recompensa_1920x1080.png`
+- `?? tests/evidencias/m5g-fix02/recompensa_1920x1080.png.import`
+- `?? tests/evidencias/m5g-fix02/recompensa_2560x1440.png`
+- `?? tests/evidencias/m5g-fix02/recompensa_2560x1440.png.import`
+- `?? tests/evidencias/m5g-fix02/recompensa_3840x2160.png`
+- `?? tests/evidencias/m5g-fix02/recompensa_3840x2160.png.import`
+- `?? tests/evidencias/m5g-fix02/transicao_1280x720.png`
+- `?? tests/evidencias/m5g-fix02/transicao_1280x720.png.import`
+- `?? tests/evidencias/m5g-fix02/transicao_1920x1080.png`
+- `?? tests/evidencias/m5g-fix02/transicao_1920x1080.png.import`
+- `?? tests/evidencias/m5g-fix02/transicao_2560x1440.png`
+- `?? tests/evidencias/m5g-fix02/transicao_2560x1440.png.import`
+- `?? tests/evidencias/m5g-fix02/transicao_3840x2160.png`
+- `?? tests/evidencias/m5g-fix02/transicao_3840x2160.png.import`
+- `?? tests/evidencias/m5g-fix05/aviso_corrente_1280x720.png`
+- `?? tests/evidencias/m5g-fix05/aviso_corrente_1280x720.png.import`
+- `?? tests/evidencias/m5g-fix05/aviso_corrente_1920x1080.png`
+- `?? tests/evidencias/m5g-fix05/aviso_corrente_1920x1080.png.import`
+- `?? tests/evidencias/m5g-fix05/aviso_corrente_2560x1440.png`
+- `?? tests/evidencias/m5g-fix05/aviso_corrente_2560x1440.png.import`
+- `?? tests/evidencias/m5g-fix05/aviso_corrente_3840x2160.png`
+- `?? tests/evidencias/m5g-fix05/aviso_corrente_3840x2160.png.import`
+- `?? tests/evidencias/m5g-fix05/aviso_dash_1280x720.png`
+- `?? tests/evidencias/m5g-fix05/aviso_dash_1280x720.png.import`
+- `?? tests/evidencias/m5g-fix05/aviso_dash_1920x1080.png`
+- `?? tests/evidencias/m5g-fix05/aviso_dash_1920x1080.png.import`
+- `?? tests/evidencias/m5g-fix05/aviso_dash_2560x1440.png`
+- `?? tests/evidencias/m5g-fix05/aviso_dash_2560x1440.png.import`
+- `?? tests/evidencias/m5g-fix05/aviso_dash_3840x2160.png`
+- `?? tests/evidencias/m5g-fix05/aviso_dash_3840x2160.png.import`
+- `?? tests/evidencias/m5g-fix05/aviso_p0_lado-1.png`
+- `?? tests/evidencias/m5g-fix05/aviso_p0_lado-1.png.import`
+- `?? tests/evidencias/m5g-fix05/aviso_p0_lado1.png`
+- `?? tests/evidencias/m5g-fix05/aviso_p0_lado1.png.import`
+- `?? tests/evidencias/m5g-fix05/aviso_p1_lado-1.png`
+- `?? tests/evidencias/m5g-fix05/aviso_p1_lado-1.png.import`
+- `?? tests/evidencias/m5g-fix05/aviso_p1_lado1.png`
+- `?? tests/evidencias/m5g-fix05/aviso_p1_lado1.png.import`
+- `?? tests/evidencias/m5g-fix05/aviso_p2_lado-1.png`
+- `?? tests/evidencias/m5g-fix05/aviso_p2_lado-1.png.import`
+- `?? tests/evidencias/m5g-fix05/aviso_p2_lado1.png`
+- `?? tests/evidencias/m5g-fix05/aviso_p2_lado1.png.import`
+- `?? tests/evidencias/m5g-fix05/aviso_varredura_1280x720.png`
+- `?? tests/evidencias/m5g-fix05/aviso_varredura_1280x720.png.import`
+- `?? tests/evidencias/m5g-fix05/aviso_varredura_1920x1080.png`
+- `?? tests/evidencias/m5g-fix05/aviso_varredura_1920x1080.png.import`
+- `?? tests/evidencias/m5g-fix05/aviso_varredura_2560x1440.png`
+- `?? tests/evidencias/m5g-fix05/aviso_varredura_2560x1440.png.import`
+- `?? tests/evidencias/m5g-fix05/aviso_varredura_3840x2160.png`
+- `?? tests/evidencias/m5g-fix05/aviso_varredura_3840x2160.png.import`
+- `?? tests/evidencias/m5g-fix05/caminhando_1280x720.png`
+- `?? tests/evidencias/m5g-fix05/caminhando_1280x720.png.import`
+- `?? tests/evidencias/m5g-fix05/caminhando_1920x1080.png`
+- `?? tests/evidencias/m5g-fix05/caminhando_1920x1080.png.import`
+- `?? tests/evidencias/m5g-fix05/caminhando_2560x1440.png`
+- `?? tests/evidencias/m5g-fix05/caminhando_2560x1440.png.import`
+- `?? tests/evidencias/m5g-fix05/caminhando_3840x2160.png`
+- `?? tests/evidencias/m5g-fix05/caminhando_3840x2160.png.import`
+- `?? tests/evidencias/m5g-fix05/combate-real/arena_1280x720.png`
+- `?? tests/evidencias/m5g-fix05/combate-real/arena_1280x720.png.import`
+- `?? tests/evidencias/m5g-fix05/combate-real/arena_1920x1080.png`
+- `?? tests/evidencias/m5g-fix05/combate-real/arena_1920x1080.png.import`
+- `?? tests/evidencias/m5g-fix05/combate-real/arena_2560x1440.png`
+- `?? tests/evidencias/m5g-fix05/combate-real/arena_2560x1440.png.import`
+- `?? tests/evidencias/m5g-fix05/combate-real/arena_3840x2160.png`
+- `?? tests/evidencias/m5g-fix05/combate-real/arena_3840x2160.png.import`
+- `?? tests/evidencias/m5g-fix05/combate-real/aviso_1280x720.png`
+- `?? tests/evidencias/m5g-fix05/combate-real/aviso_1280x720.png.import`
+- `?? tests/evidencias/m5g-fix05/combate-real/aviso_1920x1080.png`
+- `?? tests/evidencias/m5g-fix05/combate-real/aviso_1920x1080.png.import`
+- `?? tests/evidencias/m5g-fix05/combate-real/aviso_2560x1440.png`
+- `?? tests/evidencias/m5g-fix05/combate-real/aviso_2560x1440.png.import`
+- `?? tests/evidencias/m5g-fix05/combate-real/aviso_3840x2160.png`
+- `?? tests/evidencias/m5g-fix05/combate-real/aviso_3840x2160.png.import`
+- `?? tests/evidencias/m5g-fix05/combate-real/dash_abade_1280x720.png`
+- `?? tests/evidencias/m5g-fix05/combate-real/dash_abade_1280x720.png.import`
+- `?? tests/evidencias/m5g-fix05/combate-real/dash_abade_1920x1080.png`
+- `?? tests/evidencias/m5g-fix05/combate-real/dash_abade_1920x1080.png.import`
+- `?? tests/evidencias/m5g-fix05/combate-real/dash_abade_2560x1440.png`
+- `?? tests/evidencias/m5g-fix05/combate-real/dash_abade_2560x1440.png.import`
+- `?? tests/evidencias/m5g-fix05/combate-real/dash_abade_3840x2160.png`
+- `?? tests/evidencias/m5g-fix05/combate-real/dash_abade_3840x2160.png.import`
+- `?? tests/evidencias/m5g-fix05/combate-real/recompensa_1280x720.png`
+- `?? tests/evidencias/m5g-fix05/combate-real/recompensa_1280x720.png.import`
+- `?? tests/evidencias/m5g-fix05/combate-real/recompensa_1920x1080.png`
+- `?? tests/evidencias/m5g-fix05/combate-real/recompensa_1920x1080.png.import`
+- `?? tests/evidencias/m5g-fix05/combate-real/recompensa_2560x1440.png`
+- `?? tests/evidencias/m5g-fix05/combate-real/recompensa_2560x1440.png.import`
+- `?? tests/evidencias/m5g-fix05/combate-real/recompensa_3840x2160.png`
+- `?? tests/evidencias/m5g-fix05/combate-real/recompensa_3840x2160.png.import`
+- `?? tests/evidencias/m5g-fix05/combate-real/transicao_1280x720.png`
+- `?? tests/evidencias/m5g-fix05/combate-real/transicao_1280x720.png.import`
+- `?? tests/evidencias/m5g-fix05/combate-real/transicao_1920x1080.png`
+- `?? tests/evidencias/m5g-fix05/combate-real/transicao_1920x1080.png.import`
+- `?? tests/evidencias/m5g-fix05/combate-real/transicao_2560x1440.png`
+- `?? tests/evidencias/m5g-fix05/combate-real/transicao_2560x1440.png.import`
+- `?? tests/evidencias/m5g-fix05/combate-real/transicao_3840x2160.png`
+- `?? tests/evidencias/m5g-fix05/combate-real/transicao_3840x2160.png.import`
+- `?? tests/evidencias/m5g-fix05/corrente_1280x720.png`
+- `?? tests/evidencias/m5g-fix05/corrente_1280x720.png.import`
+- `?? tests/evidencias/m5g-fix05/corrente_1920x1080.png`
+- `?? tests/evidencias/m5g-fix05/corrente_1920x1080.png.import`
+- `?? tests/evidencias/m5g-fix05/corrente_2560x1440.png`
+- `?? tests/evidencias/m5g-fix05/corrente_2560x1440.png.import`
+- `?? tests/evidencias/m5g-fix05/corrente_3840x2160.png`
+- `?? tests/evidencias/m5g-fix05/corrente_3840x2160.png.import`
+- `?? tests/evidencias/m5g-fix05/dano_1280x720.png`
+- `?? tests/evidencias/m5g-fix05/dano_1280x720.png.import`
+- `?? tests/evidencias/m5g-fix05/dano_1920x1080.png`
+- `?? tests/evidencias/m5g-fix05/dano_1920x1080.png.import`
+- `?? tests/evidencias/m5g-fix05/dano_2560x1440.png`
+- `?? tests/evidencias/m5g-fix05/dano_2560x1440.png.import`
+- `?? tests/evidencias/m5g-fix05/dano_3840x2160.png`
+- `?? tests/evidencias/m5g-fix05/dano_3840x2160.png.import`
+- `?? tests/evidencias/m5g-fix05/dash_1280x720.png`
+- `?? tests/evidencias/m5g-fix05/dash_1280x720.png.import`
+- `?? tests/evidencias/m5g-fix05/dash_1920x1080.png`
+- `?? tests/evidencias/m5g-fix05/dash_1920x1080.png.import`
+- `?? tests/evidencias/m5g-fix05/dash_2560x1440.png`
+- `?? tests/evidencias/m5g-fix05/dash_2560x1440.png.import`
+- `?? tests/evidencias/m5g-fix05/dash_3840x2160.png`
+- `?? tests/evidencias/m5g-fix05/dash_3840x2160.png.import`
+- `?? tests/evidencias/m5g-fix05/derrota_1280x720.png`
+- `?? tests/evidencias/m5g-fix05/derrota_1280x720.png.import`
+- `?? tests/evidencias/m5g-fix05/derrota_1920x1080.png`
+- `?? tests/evidencias/m5g-fix05/derrota_1920x1080.png.import`
+- `?? tests/evidencias/m5g-fix05/derrota_2560x1440.png`
+- `?? tests/evidencias/m5g-fix05/derrota_2560x1440.png.import`
+- `?? tests/evidencias/m5g-fix05/derrota_3840x2160.png`
+- `?? tests/evidencias/m5g-fix05/derrota_3840x2160.png.import`
+- `?? tests/evidencias/m5g-fix05/guardiao_referencia_1280x720.png`
+- `?? tests/evidencias/m5g-fix05/guardiao_referencia_1280x720.png.import`
+- `?? tests/evidencias/m5g-fix05/parado_1280x720.png`
+- `?? tests/evidencias/m5g-fix05/parado_1280x720.png.import`
+- `?? tests/evidencias/m5g-fix05/parado_1920x1080.png`
+- `?? tests/evidencias/m5g-fix05/parado_1920x1080.png.import`
+- `?? tests/evidencias/m5g-fix05/parado_2560x1440.png`
+- `?? tests/evidencias/m5g-fix05/parado_2560x1440.png.import`
+- `?? tests/evidencias/m5g-fix05/parado_3840x2160.png`
+- `?? tests/evidencias/m5g-fix05/parado_3840x2160.png.import`
+- `?? tests/evidencias/m5g-fix05/recuperacao_1280x720.png`
+- `?? tests/evidencias/m5g-fix05/recuperacao_1280x720.png.import`
+- `?? tests/evidencias/m5g-fix05/recuperacao_1920x1080.png`
+- `?? tests/evidencias/m5g-fix05/recuperacao_1920x1080.png.import`
+- `?? tests/evidencias/m5g-fix05/recuperacao_2560x1440.png`
+- `?? tests/evidencias/m5g-fix05/recuperacao_2560x1440.png.import`
+- `?? tests/evidencias/m5g-fix05/recuperacao_3840x2160.png`
+- `?? tests/evidencias/m5g-fix05/recuperacao_3840x2160.png.import`
+- `?? tests/evidencias/m5g-fix05/transicao_1280x720.png`
+- `?? tests/evidencias/m5g-fix05/transicao_1280x720.png.import`
+- `?? tests/evidencias/m5g-fix05/transicao_1920x1080.png`
+- `?? tests/evidencias/m5g-fix05/transicao_1920x1080.png.import`
+- `?? tests/evidencias/m5g-fix05/transicao_2560x1440.png`
+- `?? tests/evidencias/m5g-fix05/transicao_2560x1440.png.import`
+- `?? tests/evidencias/m5g-fix05/transicao_3840x2160.png`
+- `?? tests/evidencias/m5g-fix05/transicao_3840x2160.png.import`
+- `?? tests/evidencias/m5g-fix05/varredura_1280x720.png`
+- `?? tests/evidencias/m5g-fix05/varredura_1280x720.png.import`
+- `?? tests/evidencias/m5g-fix05/varredura_1920x1080.png`
+- `?? tests/evidencias/m5g-fix05/varredura_1920x1080.png.import`
+- `?? tests/evidencias/m5g-fix05/varredura_2560x1440.png`
+- `?? tests/evidencias/m5g-fix05/varredura_2560x1440.png.import`
+- `?? tests/evidencias/m5g-fix05/varredura_3840x2160.png`
+- `?? tests/evidencias/m5g-fix05/varredura_3840x2160.png.import`
+- `?? tests/evidencias/m5g/arena_1280x720.png`
+- `?? tests/evidencias/m5g/arena_1280x720.png.import`
+- `?? tests/evidencias/m5g/arena_1920x1080.png`
+- `?? tests/evidencias/m5g/arena_1920x1080.png.import`
+- `?? tests/evidencias/m5g/arena_2560x1440.png`
+- `?? tests/evidencias/m5g/arena_2560x1440.png.import`
+- `?? tests/evidencias/m5g/arena_3840x2160.png`
+- `?? tests/evidencias/m5g/arena_3840x2160.png.import`
+- `?? tests/evidencias/m5g/aviso_1280x720.png`
+- `?? tests/evidencias/m5g/aviso_1280x720.png.import`
+- `?? tests/evidencias/m5g/aviso_1920x1080.png`
+- `?? tests/evidencias/m5g/aviso_1920x1080.png.import`
+- `?? tests/evidencias/m5g/aviso_2560x1440.png`
+- `?? tests/evidencias/m5g/aviso_2560x1440.png.import`
+- `?? tests/evidencias/m5g/aviso_3840x2160.png`
+- `?? tests/evidencias/m5g/aviso_3840x2160.png.import`
+- `?? tests/evidencias/m5g/dash_abade_1280x720.png`
+- `?? tests/evidencias/m5g/dash_abade_1280x720.png.import`
+- `?? tests/evidencias/m5g/dash_abade_1920x1080.png`
+- `?? tests/evidencias/m5g/dash_abade_1920x1080.png.import`
+- `?? tests/evidencias/m5g/dash_abade_2560x1440.png`
+- `?? tests/evidencias/m5g/dash_abade_2560x1440.png.import`
+- `?? tests/evidencias/m5g/dash_abade_3840x2160.png`
+- `?? tests/evidencias/m5g/dash_abade_3840x2160.png.import`
+- `?? tests/evidencias/m5g/recompensa_1280x720.png`
+- `?? tests/evidencias/m5g/recompensa_1280x720.png.import`
+- `?? tests/evidencias/m5g/recompensa_1920x1080.png`
+- `?? tests/evidencias/m5g/recompensa_1920x1080.png.import`
+- `?? tests/evidencias/m5g/recompensa_2560x1440.png`
+- `?? tests/evidencias/m5g/recompensa_2560x1440.png.import`
+- `?? tests/evidencias/m5g/recompensa_3840x2160.png`
+- `?? tests/evidencias/m5g/recompensa_3840x2160.png.import`
+- `?? tests/evidencias/m5g/transicao_1280x720.png`
+- `?? tests/evidencias/m5g/transicao_1280x720.png.import`
+- `?? tests/evidencias/m5g/transicao_1920x1080.png`
+- `?? tests/evidencias/m5g/transicao_1920x1080.png.import`
+- `?? tests/evidencias/m5g/transicao_2560x1440.png`
+- `?? tests/evidencias/m5g/transicao_2560x1440.png.import`
+- `?? tests/evidencias/m5g/transicao_3840x2160.png`
+- `?? tests/evidencias/m5g/transicao_3840x2160.png.import`
+- `?? tests/m5_g_4k_benchmark.gd`
+- `?? tests/m5_g_4k_benchmark.gd.uid`
+- `?? tests/m5_g_abbot_test.gd`
+- `?? tests/m5_g_abbot_test.gd.uid`
+- `?? tests/m5_g_boss_collision_test.gd`
+- `?? tests/m5_g_boss_collision_test.gd.uid`
+- `?? tests/m5_g_cancel_test.gd`
+- `?? tests/m5_g_cancel_test.gd.uid`
+- `?? tests/m5_g_conventional_test.gd`
+- `?? tests/m5_g_conventional_test.gd.uid`
+- `?? tests/m5_g_dash_o1_test.gd`
+- `?? tests/m5_g_dash_o1_test.gd.uid`
+- `?? tests/m5_g_dash_o2_test.gd`
+- `?? tests/m5_g_dash_o2_test.gd.uid`
+- `?? tests/m5_g_dash_o3_test.gd`
+- `?? tests/m5_g_dash_o3_test.gd.uid`
+- `?? tests/m5_g_dash_o4_test.gd`
+- `?? tests/m5_g_dash_o4_test.gd.uid`
+- `?? tests/m5_g_dash_o5_test.gd`
+- `?? tests/m5_g_dash_o5_test.gd.uid`
+- `?? tests/m5_g_dash_o6_test.gd`
+- `?? tests/m5_g_dash_o6_test.gd.uid`
+- `?? tests/m5_g_dash_shortcuts_test.gd`
+- `?? tests/m5_g_dash_shortcuts_test.gd.uid`
+- `?? tests/m5_g_dodge_test.gd`
+- `?? tests/m5_g_dodge_test.gd.uid`
+- `?? tests/m5_g_fix01_airborne.gd`
+- `?? tests/m5_g_fix01_airborne.gd.uid`
+- `?? tests/m5_g_fix01_alternation.gd`
+- `?? tests/m5_g_fix01_alternation.gd.uid`
+- `?? tests/m5_g_fix01_boss_walls.gd`
+- `?? tests/m5_g_fix01_boss_walls.gd.uid`
+- `?? tests/m5_g_fix01_control_recovery.gd`
+- `?? tests/m5_g_fix01_control_recovery.gd.uid`
+- `?? tests/m5_g_fix01_dash_integration.gd`
+- `?? tests/m5_g_fix01_dash_integration.gd.uid`
+- `?? tests/m5_g_fix01_direction_test.gd`
+- `?? tests/m5_g_fix01_direction_test.gd.uid`
+- `?? tests/m5_g_fix01_far_approach.gd`
+- `?? tests/m5_g_fix01_far_approach.gd.uid`
+- `?? tests/m5_g_fix01_far_retreat.gd`
+- `?? tests/m5_g_fix01_far_retreat.gd.uid`
+- `?? tests/m5_g_fix01_justice_retest.gd`
+- `?? tests/m5_g_fix01_justice_retest.gd.uid`
+- `?? tests/m5_g_fix01_justice_test.gd`
+- `?? tests/m5_g_fix01_justice_test.gd.uid`
+- `?? tests/m5_g_fix01_locked_gates.gd`
+- `?? tests/m5_g_fix01_locked_gates.gd.uid`
+- `?? tests/m5_g_fix01_visual_compare.gd`
+- `?? tests/m5_g_fix01_visual_compare.gd.uid`
+- `?? tests/m5_g_fix02_boss_sequence.gd`
+- `?? tests/m5_g_fix02_boss_sequence.gd.uid`
+- `?? tests/m5_g_fix02_dash_visual.gd`
+- `?? tests/m5_g_fix02_dash_visual.gd.uid`
+- `?? tests/m5_g_fix03_completed_test.gd`
+- `?? tests/m5_g_fix03_completed_test.gd.uid`
+- `?? tests/m5_g_fix04_boss_test.gd`
+- `?? tests/m5_g_fix04_boss_test.gd.uid`
+- `?? tests/m5_g_fix04_retry_test.gd`
+- `?? tests/m5_g_fix04_retry_test.gd.uid`
+- `?? tests/m5_g_fix05_directions_visual.gd`
+- `?? tests/m5_g_fix05_directions_visual.gd.uid`
+- `?? tests/m5_g_fix05_guardian_compare.gd`
+- `?? tests/m5_g_fix05_guardian_compare.gd.uid`
+- `?? tests/m5_g_fix05_live_hud_test.gd`
+- `?? tests/m5_g_fix05_live_hud_test.gd.uid`
+- `?? tests/m5_g_fix05_visual_test.gd`
+- `?? tests/m5_g_fix05_visual_test.gd.uid`
+- `?? tests/m5_g_full_journey_test.gd`
+- `?? tests/m5_g_full_journey_test.gd.uid`
+- `?? tests/m5_g_invalid_save_test.gd`
+- `?? tests/m5_g_invalid_save_test.gd.uid`
+- `?? tests/m5_g_journey_test.gd`
+- `?? tests/m5_g_journey_test.gd.uid`
+- `?? tests/m5_g_locked_shortcut_test.gd`
+- `?? tests/m5_g_locked_shortcut_test.gd.uid`
+- `?? tests/m5_g_performance_test.gd`
+- `?? tests/m5_g_performance_test.gd.uid`
+- `?? tests/m5_g_persistence_probe.gd`
+- `?? tests/m5_g_persistence_probe.gd.uid`
+- `?? tests/m5_g_respawn_test.gd`
+- `?? tests/m5_g_respawn_test.gd.uid`
+- `?? tests/m5_g_session_test.gd`
+- `?? tests/m5_g_session_test.gd.uid`
+- `?? tests/m5_g_visual_test.gd`
+- `?? tests/m5_g_visual_test.gd.uid`
+- `?? tests/VALIDACAO_M5_G_ABADE.md`
+- `?? tests/VALIDACAO_M5_G_FIX01.md`
+- `?? tests/VALIDACAO_M5_G_FIX02.md`
+- `?? tests/VALIDACAO_M5_G_FIX03.md`
+- `?? tests/VALIDACAO_M5_G_FIX04.md`
+- `?? tests/VALIDACAO_M5_G_FIX05.md`
+- `?? tools/playtest_m5g.ps1`
+
+### D — transversal ou compartilhado (10 arquivos)
+
+- ` M GDD.md`
+- ` M README.md`
+- ` M ROADMAP.md`
+- ` M scripts/abbey/chapter_sector.gd`
+- ` M scripts/abbey/chapter.gd`
+- ` M scripts/player/knight_controller.gd`
+- ` M scripts/player/knight_visual.gd`
+- `?? docs/PLANEJAMENTO_ATAQUE_AEREO_AREN.md`
+- `?? tests/ENCERRAMENTO_M5_G.md`
+- `?? tests/PLANO_CONSOLIDACAO_GIT_M5.md`
+
+### E — protegido, referência ou revisão de exclusão (15 arquivos)
+
+- ` M project.godot`
+- `?? tests/evidencias/m3d/fix03-after-sector1.png.import`
+- `?? tests/evidencias/m3d/fix03-after-sector2.png.import`
+- `?? tests/evidencias/m3d/fix03-after-sector3.png.import`
+- `?? tests/evidencias/m3d/fix03-after-sector4.png.import`
+- `?? tests/evidencias/m3d/fix03-after-sector5.png.import`
+- `?? tests/evidencias/m3d/fix03-after-sector6.png.import`
+- `?? tests/evidencias/m3d/fix03-attack--1-8.png.import`
+- `?? tests/evidencias/m3d/fix03-attack-1-8.png.import`
+- `?? tests/evidencias/m3d/fix03-detail-cp1-active.png.import`
+- `?? tests/evidencias/m3d/fix03-detail-cp2-active.png.import`
+- `?? The Art of the Pixel.jpg`
+- `?? The Art of the Pixel.jpg.import`
+- `?? The Siege and the Sandfox _ Le metroidvania en 2D de Cardboard Sword et PLAION sortira le 20 mai sur PC.jpg`
+- `?? The Siege and the Sandfox _ Le metroidvania en 2D de Cardboard Sword et PLAION sortira le 20 mai sur PC.jpg.import`
+
+## Conferência individual dos 15 protegidos
+
+- `project.godot` — `63fddfb499d59cd3ae9b5b70d7d4a8816ccfd8586486c6cfcc3023733bcdcec9` — coincide
+- `The Art of the Pixel.jpg` — `89f2f66db85a545f389f81bfc8d1d21bc9901e0e140424175dc4326a2a17e17f` — coincide
+- `The Art of the Pixel.jpg.import` — `9df64f571bc6f08a8c11a65905b1a19fce763136f44d3957a16f83a0ff925e2f` — coincide
+- `The Siege and the Sandfox _ Le metroidvania en 2D de Cardboard Sword et PLAION sortira le 20 mai sur PC.jpg` — `5c05ca320fcc0a04eb5c3881c9dc7c284e646b8662459ad13b57ee0218746bf6` — coincide
+- `The Siege and the Sandfox _ Le metroidvania en 2D de Cardboard Sword et PLAION sortira le 20 mai sur PC.jpg.import` — `fe8bbd256a7ec2c1aa9c7a466825cb0c1e151292e37834f963f8a00afb960415` — coincide
+- `tests/evidencias/m3d/fix03-after-sector1.png.import` — `1716c903f25a32256268ef6fd432a6259b3a7ee51bc0f1bfb41d7a73f6239a18` — coincide
+- `tests/evidencias/m3d/fix03-after-sector2.png.import` — `05fb6d88b054772330896edc1a169ac93b6f405bf6066ab34103fe2ef1f48732` — coincide
+- `tests/evidencias/m3d/fix03-after-sector3.png.import` — `2b16c43221ef25ed73abc8e59fdfe9b49f3fa22fc53e4ae955c381658b277269` — coincide
+- `tests/evidencias/m3d/fix03-after-sector4.png.import` — `7d28e62bc5740bbb4f58eb98dc25c6b3a0cab77e6f8b57e5272be60b89f176c5` — coincide
+- `tests/evidencias/m3d/fix03-after-sector5.png.import` — `4a2efcb617b89ee53115b69fca7a2dc8ebff4bbfa35f67b99358592eda833792` — coincide
+- `tests/evidencias/m3d/fix03-after-sector6.png.import` — `df6cd5307940f5a9b1d5ba1d01cfef424b0fdf33c15c63437f85a776766f7bed` — coincide
+- `tests/evidencias/m3d/fix03-attack--1-8.png.import` — `62e84e838cdbcbc0b8175e0d9c07aaff79ba36edc61999b42e73d7a640871fe6` — coincide
+- `tests/evidencias/m3d/fix03-attack-1-8.png.import` — `2fe6d6743ad1022b5f01c627db426f5c824123d8d3797dc65b0d2d35fd25e78e` — coincide
+- `tests/evidencias/m3d/fix03-detail-cp1-active.png.import` — `8fb8edcbdeaf3dfcfd336e3e7802db657baf2ad6ea037a6dce94bfc0072b858c` — coincide
+- `tests/evidencias/m3d/fix03-detail-cp2-active.png.import` — `8cadb90af8a0d107af944b6e8d6c05f4d64aec4b98895fb6e3023baa57c1ae02` — coincide
+
+## Seleção explícita da candidata — 06/11/2026
+
+A lista abaixo contém todas as 416 alterações propostas sobre o HEAD, não os arquivos já rastreados e inalterados do HEAD. A candidata usa o project.godot do HEAD, sem incluir a versão protegida local. As evidências são propostas para revisão do responsável; sidecars de evidências, caches, saves e referências pessoais foram excluídos. Os arquivos de encerramento e este plano foram atualizados após os testes, sendo copiados novamente para a candidata como alterações documentais; não alteram os executáveis testados. Nenhum staging foi executado.
+
+
+### arte_recurso (2)
+
+- `assets/art/m5g/abbot_fix02.png`
+- `assets/art/m5g/abbot_fix02.png.import`
+
+### documentacao (9)
+
+- `GDD.md`
+- `README.md`
+- `ROADMAP.md`
+- `docs/PLANEJAMENTO_ATAQUE_AEREO_AREN.md`
+- `docs/PLANEJAMENTO_M5_E.md`
+- `docs/PLANEJAMENTO_M5_F.md`
+- `docs/PLANEJAMENTO_M5_G_ABADE.md`
+- `tests/PLANO_CONSOLIDACAO_GIT_M5.md`
+- `tests/VALIDACAO_CANDIDATA_GIT_M5.md`
+
+### evidencias (194)
+
+- `tests/evidencias/m5_e_lote09_A1_1280x720.png`
+- `tests/evidencias/m5_e_lote09_A1_1920x1080.png`
+- `tests/evidencias/m5_e_lote09_A1_2560x1440.png`
+- `tests/evidencias/m5_e_lote09_A1_3840x2160.png`
+- `tests/evidencias/m5_e_lote09_A2_1280x720.png`
+- `tests/evidencias/m5_e_lote09_A2_1920x1080.png`
+- `tests/evidencias/m5_e_lote09_A2_2560x1440.png`
+- `tests/evidencias/m5_e_lote09_A2_3840x2160.png`
+- `tests/evidencias/m5_e_lote09_A3_1280x720.png`
+- `tests/evidencias/m5_e_lote09_A3_1920x1080.png`
+- `tests/evidencias/m5_e_lote09_A3_2560x1440.png`
+- `tests/evidencias/m5_e_lote09_A3_3840x2160.png`
+- `tests/evidencias/m5_f_fix01_contato.png`
+- `tests/evidencias/m5g-fechamento/benchmark_1920x1080.png`
+- `tests/evidencias/m5g-fechamento/benchmark_3840x2160.png`
+- `tests/evidencias/m5g-fechamento/resultado_1080p.txt`
+- `tests/evidencias/m5g-fechamento/resultado_4k.txt`
+- `tests/evidencias/m5g-fix01/comparacao_fase1_1280x720.png`
+- `tests/evidencias/m5g-fix01/comparacao_fase1_1920x1080.png`
+- `tests/evidencias/m5g-fix01/comparacao_fase1_2560x1440.png`
+- `tests/evidencias/m5g-fix01/comparacao_fase1_3840x2160.png`
+- `tests/evidencias/m5g-fix01/comparacao_fase2_1280x720.png`
+- `tests/evidencias/m5g-fix01/comparacao_fase2_1920x1080.png`
+- `tests/evidencias/m5g-fix01/comparacao_fase2_2560x1440.png`
+- `tests/evidencias/m5g-fix01/comparacao_fase2_3840x2160.png`
+- `tests/evidencias/m5g-fix01/dash_ativo_1280x720.png`
+- `tests/evidencias/m5g-fix01/dash_ativo_1920x1080.png`
+- `tests/evidencias/m5g-fix01/dash_ativo_2560x1440.png`
+- `tests/evidencias/m5g-fix01/dash_ativo_3840x2160.png`
+- `tests/evidencias/m5g-fix01/derrota_1280x720.png`
+- `tests/evidencias/m5g-fix01/derrota_1920x1080.png`
+- `tests/evidencias/m5g-fix01/derrota_2560x1440.png`
+- `tests/evidencias/m5g-fix01/derrota_3840x2160.png`
+- `tests/evidencias/m5g-fix01/flash_dano_1280x720.png`
+- `tests/evidencias/m5g-fix01/flash_dano_1920x1080.png`
+- `tests/evidencias/m5g-fix01/flash_dano_2560x1440.png`
+- `tests/evidencias/m5g-fix01/flash_dano_3840x2160.png`
+- `tests/evidencias/m5g-fix02/abade_00.png`
+- `tests/evidencias/m5g-fix02/abade_01.png`
+- `tests/evidencias/m5g-fix02/aren_direita_00.png`
+- `tests/evidencias/m5g-fix02/aren_direita_01.png`
+- `tests/evidencias/m5g-fix02/aren_direita_02.png`
+- `tests/evidencias/m5g-fix02/aren_direita_03.png`
+- `tests/evidencias/m5g-fix02/aren_direita_04.png`
+- `tests/evidencias/m5g-fix02/aren_direita_05.png`
+- `tests/evidencias/m5g-fix02/aren_direita_06.png`
+- `tests/evidencias/m5g-fix02/aren_direita_07.png`
+- `tests/evidencias/m5g-fix02/aren_direita_08.png`
+- `tests/evidencias/m5g-fix02/aren_direita_09.png`
+- `tests/evidencias/m5g-fix02/aren_direita_10.png`
+- `tests/evidencias/m5g-fix02/aren_direita_11.png`
+- `tests/evidencias/m5g-fix02/aren_direita_12.png`
+- `tests/evidencias/m5g-fix02/aren_direita_13.png`
+- `tests/evidencias/m5g-fix02/aren_direita_14.png`
+- `tests/evidencias/m5g-fix02/aren_direita_15.png`
+- `tests/evidencias/m5g-fix02/aren_direita_16.png`
+- `tests/evidencias/m5g-fix02/aren_direita_17.png`
+- `tests/evidencias/m5g-fix02/aren_direita_18.png`
+- `tests/evidencias/m5g-fix02/aren_direita_19.png`
+- `tests/evidencias/m5g-fix02/aren_esquerda_00.png`
+- `tests/evidencias/m5g-fix02/aren_esquerda_01.png`
+- `tests/evidencias/m5g-fix02/aren_esquerda_02.png`
+- `tests/evidencias/m5g-fix02/aren_esquerda_03.png`
+- `tests/evidencias/m5g-fix02/aren_esquerda_04.png`
+- `tests/evidencias/m5g-fix02/aren_esquerda_05.png`
+- `tests/evidencias/m5g-fix02/aren_esquerda_06.png`
+- `tests/evidencias/m5g-fix02/aren_esquerda_07.png`
+- `tests/evidencias/m5g-fix02/aren_esquerda_08.png`
+- `tests/evidencias/m5g-fix02/aren_esquerda_09.png`
+- `tests/evidencias/m5g-fix02/aren_esquerda_10.png`
+- `tests/evidencias/m5g-fix02/aren_esquerda_11.png`
+- `tests/evidencias/m5g-fix02/aren_esquerda_12.png`
+- `tests/evidencias/m5g-fix02/aren_esquerda_13.png`
+- `tests/evidencias/m5g-fix02/aren_esquerda_14.png`
+- `tests/evidencias/m5g-fix02/aren_esquerda_15.png`
+- `tests/evidencias/m5g-fix02/aren_esquerda_16.png`
+- `tests/evidencias/m5g-fix02/aren_esquerda_17.png`
+- `tests/evidencias/m5g-fix02/aren_esquerda_18.png`
+- `tests/evidencias/m5g-fix02/aren_esquerda_19.png`
+- `tests/evidencias/m5g-fix02/arena_1280x720.png`
+- `tests/evidencias/m5g-fix02/arena_1920x1080.png`
+- `tests/evidencias/m5g-fix02/arena_2560x1440.png`
+- `tests/evidencias/m5g-fix02/arena_3840x2160.png`
+- `tests/evidencias/m5g-fix02/aviso_1280x720.png`
+- `tests/evidencias/m5g-fix02/aviso_1920x1080.png`
+- `tests/evidencias/m5g-fix02/aviso_2560x1440.png`
+- `tests/evidencias/m5g-fix02/aviso_3840x2160.png`
+- `tests/evidencias/m5g-fix02/dash_abade_1280x720.png`
+- `tests/evidencias/m5g-fix02/dash_abade_1920x1080.png`
+- `tests/evidencias/m5g-fix02/dash_abade_2560x1440.png`
+- `tests/evidencias/m5g-fix02/dash_abade_3840x2160.png`
+- `tests/evidencias/m5g-fix02/recompensa_1280x720.png`
+- `tests/evidencias/m5g-fix02/recompensa_1920x1080.png`
+- `tests/evidencias/m5g-fix02/recompensa_2560x1440.png`
+- `tests/evidencias/m5g-fix02/recompensa_3840x2160.png`
+- `tests/evidencias/m5g-fix02/transicao_1280x720.png`
+- `tests/evidencias/m5g-fix02/transicao_1920x1080.png`
+- `tests/evidencias/m5g-fix02/transicao_2560x1440.png`
+- `tests/evidencias/m5g-fix02/transicao_3840x2160.png`
+- `tests/evidencias/m5g-fix05/aviso_corrente_1280x720.png`
+- `tests/evidencias/m5g-fix05/aviso_corrente_1920x1080.png`
+- `tests/evidencias/m5g-fix05/aviso_corrente_2560x1440.png`
+- `tests/evidencias/m5g-fix05/aviso_corrente_3840x2160.png`
+- `tests/evidencias/m5g-fix05/aviso_dash_1280x720.png`
+- `tests/evidencias/m5g-fix05/aviso_dash_1920x1080.png`
+- `tests/evidencias/m5g-fix05/aviso_dash_2560x1440.png`
+- `tests/evidencias/m5g-fix05/aviso_dash_3840x2160.png`
+- `tests/evidencias/m5g-fix05/aviso_p0_lado-1.png`
+- `tests/evidencias/m5g-fix05/aviso_p0_lado1.png`
+- `tests/evidencias/m5g-fix05/aviso_p1_lado-1.png`
+- `tests/evidencias/m5g-fix05/aviso_p1_lado1.png`
+- `tests/evidencias/m5g-fix05/aviso_p2_lado-1.png`
+- `tests/evidencias/m5g-fix05/aviso_p2_lado1.png`
+- `tests/evidencias/m5g-fix05/aviso_varredura_1280x720.png`
+- `tests/evidencias/m5g-fix05/aviso_varredura_1920x1080.png`
+- `tests/evidencias/m5g-fix05/aviso_varredura_2560x1440.png`
+- `tests/evidencias/m5g-fix05/aviso_varredura_3840x2160.png`
+- `tests/evidencias/m5g-fix05/caminhando_1280x720.png`
+- `tests/evidencias/m5g-fix05/caminhando_1920x1080.png`
+- `tests/evidencias/m5g-fix05/caminhando_2560x1440.png`
+- `tests/evidencias/m5g-fix05/caminhando_3840x2160.png`
+- `tests/evidencias/m5g-fix05/combate-real/arena_1280x720.png`
+- `tests/evidencias/m5g-fix05/combate-real/arena_1920x1080.png`
+- `tests/evidencias/m5g-fix05/combate-real/arena_2560x1440.png`
+- `tests/evidencias/m5g-fix05/combate-real/arena_3840x2160.png`
+- `tests/evidencias/m5g-fix05/combate-real/aviso_1280x720.png`
+- `tests/evidencias/m5g-fix05/combate-real/aviso_1920x1080.png`
+- `tests/evidencias/m5g-fix05/combate-real/aviso_2560x1440.png`
+- `tests/evidencias/m5g-fix05/combate-real/aviso_3840x2160.png`
+- `tests/evidencias/m5g-fix05/combate-real/dash_abade_1280x720.png`
+- `tests/evidencias/m5g-fix05/combate-real/dash_abade_1920x1080.png`
+- `tests/evidencias/m5g-fix05/combate-real/dash_abade_2560x1440.png`
+- `tests/evidencias/m5g-fix05/combate-real/dash_abade_3840x2160.png`
+- `tests/evidencias/m5g-fix05/combate-real/recompensa_1280x720.png`
+- `tests/evidencias/m5g-fix05/combate-real/recompensa_1920x1080.png`
+- `tests/evidencias/m5g-fix05/combate-real/recompensa_2560x1440.png`
+- `tests/evidencias/m5g-fix05/combate-real/recompensa_3840x2160.png`
+- `tests/evidencias/m5g-fix05/combate-real/transicao_1280x720.png`
+- `tests/evidencias/m5g-fix05/combate-real/transicao_1920x1080.png`
+- `tests/evidencias/m5g-fix05/combate-real/transicao_2560x1440.png`
+- `tests/evidencias/m5g-fix05/combate-real/transicao_3840x2160.png`
+- `tests/evidencias/m5g-fix05/corrente_1280x720.png`
+- `tests/evidencias/m5g-fix05/corrente_1920x1080.png`
+- `tests/evidencias/m5g-fix05/corrente_2560x1440.png`
+- `tests/evidencias/m5g-fix05/corrente_3840x2160.png`
+- `tests/evidencias/m5g-fix05/dano_1280x720.png`
+- `tests/evidencias/m5g-fix05/dano_1920x1080.png`
+- `tests/evidencias/m5g-fix05/dano_2560x1440.png`
+- `tests/evidencias/m5g-fix05/dano_3840x2160.png`
+- `tests/evidencias/m5g-fix05/dash_1280x720.png`
+- `tests/evidencias/m5g-fix05/dash_1920x1080.png`
+- `tests/evidencias/m5g-fix05/dash_2560x1440.png`
+- `tests/evidencias/m5g-fix05/dash_3840x2160.png`
+- `tests/evidencias/m5g-fix05/derrota_1280x720.png`
+- `tests/evidencias/m5g-fix05/derrota_1920x1080.png`
+- `tests/evidencias/m5g-fix05/derrota_2560x1440.png`
+- `tests/evidencias/m5g-fix05/derrota_3840x2160.png`
+- `tests/evidencias/m5g-fix05/guardiao_referencia_1280x720.png`
+- `tests/evidencias/m5g-fix05/parado_1280x720.png`
+- `tests/evidencias/m5g-fix05/parado_1920x1080.png`
+- `tests/evidencias/m5g-fix05/parado_2560x1440.png`
+- `tests/evidencias/m5g-fix05/parado_3840x2160.png`
+- `tests/evidencias/m5g-fix05/recuperacao_1280x720.png`
+- `tests/evidencias/m5g-fix05/recuperacao_1920x1080.png`
+- `tests/evidencias/m5g-fix05/recuperacao_2560x1440.png`
+- `tests/evidencias/m5g-fix05/recuperacao_3840x2160.png`
+- `tests/evidencias/m5g-fix05/transicao_1280x720.png`
+- `tests/evidencias/m5g-fix05/transicao_1920x1080.png`
+- `tests/evidencias/m5g-fix05/transicao_2560x1440.png`
+- `tests/evidencias/m5g-fix05/transicao_3840x2160.png`
+- `tests/evidencias/m5g-fix05/varredura_1280x720.png`
+- `tests/evidencias/m5g-fix05/varredura_1920x1080.png`
+- `tests/evidencias/m5g-fix05/varredura_2560x1440.png`
+- `tests/evidencias/m5g-fix05/varredura_3840x2160.png`
+- `tests/evidencias/m5g/arena_1280x720.png`
+- `tests/evidencias/m5g/arena_1920x1080.png`
+- `tests/evidencias/m5g/arena_2560x1440.png`
+- `tests/evidencias/m5g/arena_3840x2160.png`
+- `tests/evidencias/m5g/aviso_1280x720.png`
+- `tests/evidencias/m5g/aviso_1920x1080.png`
+- `tests/evidencias/m5g/aviso_2560x1440.png`
+- `tests/evidencias/m5g/aviso_3840x2160.png`
+- `tests/evidencias/m5g/dash_abade_1280x720.png`
+- `tests/evidencias/m5g/dash_abade_1920x1080.png`
+- `tests/evidencias/m5g/dash_abade_2560x1440.png`
+- `tests/evidencias/m5g/dash_abade_3840x2160.png`
+- `tests/evidencias/m5g/recompensa_1280x720.png`
+- `tests/evidencias/m5g/recompensa_1920x1080.png`
+- `tests/evidencias/m5g/recompensa_2560x1440.png`
+- `tests/evidencias/m5g/recompensa_3840x2160.png`
+- `tests/evidencias/m5g/transicao_1280x720.png`
+- `tests/evidencias/m5g/transicao_1920x1080.png`
+- `tests/evidencias/m5g/transicao_2560x1440.png`
+- `tests/evidencias/m5g/transicao_3840x2160.png`
+
+### gameplay (34)
+
+- `scenes/abbey/abbot.tscn`
+- `scenes/abbey/abbot_arena.tscn`
+- `scenes/dev/m5g_boss_playtest.tscn`
+- `scripts/abbey/abbey_progress.gd`
+- `scripts/abbey/abbey_progress.gd.uid`
+- `scripts/abbey/abbot.gd`
+- `scripts/abbey/abbot.gd.uid`
+- `scripts/abbey/abbot_arena.gd`
+- `scripts/abbey/abbot_arena.gd.uid`
+- `scripts/abbey/abbot_visual.gd`
+- `scripts/abbey/abbot_visual.gd.uid`
+- `scripts/abbey/m5e_discoveries.gd`
+- `scripts/abbey/m5e_discoveries.gd.uid`
+- `scripts/abbey/m5e_garden_overlook.gd`
+- `scripts/abbey/m5e_garden_overlook.gd.uid`
+- `scripts/abbey/m5e_names_relief.gd`
+- `scripts/abbey/m5e_names_relief.gd.uid`
+- `scripts/abbey/m5e_o1_chapel.gd`
+- `scripts/abbey/m5e_o1_chapel.gd.uid`
+- `scripts/abbey/m5e_service_passage.gd`
+- `scripts/abbey/m5e_service_passage.gd.uid`
+- `scripts/abbey/m5e_shortcuts.gd`
+- `scripts/abbey/m5e_shortcuts.gd.uid`
+- `scripts/abbey/m5e_silent_bell_gallery.gd`
+- `scripts/abbey/m5e_silent_bell_gallery.gd.uid`
+- `scripts/abbey/m5e_stair_cistern_annex.gd`
+- `scripts/abbey/m5e_stair_cistern_annex.gd.uid`
+- `scripts/abbey/m5e_unsigned_record_gallery.gd`
+- `scripts/abbey/m5e_unsigned_record_gallery.gd.uid`
+- `scripts/dev/m5g_boss_playtest.gd`
+- `scripts/dev/m5g_boss_playtest.gd.uid`
+- `scripts/ui/abbot_boss_bar.gd`
+- `scripts/ui/abbot_boss_bar.gd.uid`
+- `tools/playtest_m5g.ps1`
+
+### gameplay_compartilhado (4)
+
+- `scripts/abbey/chapter.gd`
+- `scripts/abbey/chapter_sector.gd`
+- `scripts/player/knight_controller.gd`
+- `scripts/player/knight_visual.gd`
+
+### testes_documentacao (173)
+
+- `tests/CHECKLIST_PLAYTEST_M5_F.md`
+- `tests/ENCERRAMENTO_M5_E.md`
+- `tests/ENCERRAMENTO_M5_G.md`
+- `tests/INVENTARIO_CONTINUIDADE_M5_F.md`
+- `tests/INVENTARIO_M5_E.md`
+- `tests/INVENTARIO_M5_F_CANDIDATA.md`
+- `tests/PROPOSTA_ENCERRAMENTO_M5_F.md`
+- `tests/VALIDACAO_M5_E_LOTE01.md`
+- `tests/VALIDACAO_M5_E_LOTE02.md`
+- `tests/VALIDACAO_M5_E_LOTE03.md`
+- `tests/VALIDACAO_M5_E_LOTE04.md`
+- `tests/VALIDACAO_M5_E_LOTE05.md`
+- `tests/VALIDACAO_M5_E_LOTE06.md`
+- `tests/VALIDACAO_M5_E_LOTE07.md`
+- `tests/VALIDACAO_M5_E_LOTE08.md`
+- `tests/VALIDACAO_M5_E_LOTE09.md`
+- `tests/VALIDACAO_M5_F.md`
+- `tests/VALIDACAO_M5_F_FIX01.md`
+- `tests/VALIDACAO_M5_G_ABADE.md`
+- `tests/VALIDACAO_M5_G_FIX01.md`
+- `tests/VALIDACAO_M5_G_FIX02.md`
+- `tests/VALIDACAO_M5_G_FIX03.md`
+- `tests/VALIDACAO_M5_G_FIX04.md`
+- `tests/VALIDACAO_M5_G_FIX05.md`
+- `tests/m5_e_lote01_test.gd`
+- `tests/m5_e_lote01_test.gd.uid`
+- `tests/m5_e_lote02_test.gd`
+- `tests/m5_e_lote02_test.gd.uid`
+- `tests/m5_e_lote03_o1_test.gd`
+- `tests/m5_e_lote03_o1_test.gd.uid`
+- `tests/m5_e_lote04_geometry_audit.gd`
+- `tests/m5_e_lote04_geometry_audit.gd.uid`
+- `tests/m5_e_lote04_o1_fixture.gd`
+- `tests/m5_e_lote04_o1_fixture.gd.uid`
+- `tests/m5_e_lote04_o1_journey.gd`
+- `tests/m5_e_lote04_o1_journey.gd.uid`
+- `tests/m5_e_lote04_other_fixtures.gd`
+- `tests/m5_e_lote04_other_fixtures.gd.uid`
+- `tests/m5_e_lote05_clearance_fixture.gd`
+- `tests/m5_e_lote05_clearance_fixture.gd.uid`
+- `tests/m5_e_lote05_o1_test.gd`
+- `tests/m5_e_lote05_o1_test.gd.uid`
+- `tests/m5_e_lote06_o1_clearance.gd`
+- `tests/m5_e_lote06_o1_clearance.gd.uid`
+- `tests/m5_e_lote06_o1_journey.gd`
+- `tests/m5_e_lote06_o1_journey.gd.uid`
+- `tests/m5_e_lote06_o1_metric.gd`
+- `tests/m5_e_lote06_o1_metric.gd.uid`
+- `tests/m5_e_lote07_o4_test.gd`
+- `tests/m5_e_lote07_o4_test.gd.uid`
+- `tests/m5_e_lote07_o5_test.gd`
+- `tests/m5_e_lote07_o5_test.gd.uid`
+- `tests/m5_e_lote07_o6_test.gd`
+- `tests/m5_e_lote07_o6_test.gd.uid`
+- `tests/m5_e_lote08_o2_test.gd`
+- `tests/m5_e_lote08_o2_test.gd.uid`
+- `tests/m5_e_lote08_o3_test.gd`
+- `tests/m5_e_lote08_o3_test.gd.uid`
+- `tests/m5_e_lote08_o4_test.gd`
+- `tests/m5_e_lote08_o4_test.gd.uid`
+- `tests/m5_e_lote08_o5_test.gd`
+- `tests/m5_e_lote08_o5_test.gd.uid`
+- `tests/m5_e_lote08_o6_test.gd`
+- `tests/m5_e_lote08_o6_test.gd.uid`
+- `tests/m5_e_lote08_short_jump_test.gd`
+- `tests/m5_e_lote08_short_jump_test.gd.uid`
+- `tests/m5_e_lote09_journey.gd`
+- `tests/m5_e_lote09_journey.gd.uid`
+- `tests/m5_e_lote09_segment_journey.gd`
+- `tests/m5_e_lote09_segment_journey.gd.uid`
+- `tests/m5_e_lote09_shortcut_fixture.gd`
+- `tests/m5_e_lote09_shortcut_fixture.gd.uid`
+- `tests/m5_f_f7_session_test.gd`
+- `tests/m5_f_f7_session_test.gd.uid`
+- `tests/m5_f_fix01_benchmark.gd`
+- `tests/m5_f_fix01_benchmark.gd.uid`
+- `tests/m5_f_fix01_benchmark_diagnostic.gd`
+- `tests/m5_f_fix01_benchmark_diagnostic.gd.uid`
+- `tests/m5_f_fix01_horizontal_model.py`
+- `tests/m5_f_fix01_visual_journey.gd`
+- `tests/m5_f_fix01_visual_journey.gd.uid`
+- `tests/m5_f_fix01_visual_optional.gd`
+- `tests/m5_f_fix01_visual_optional.gd.uid`
+- `tests/m5_f_fix01_visual_shortcut.gd`
+- `tests/m5_f_fix01_visual_shortcut.gd.uid`
+- `tests/m5_f_performance_sample.gd`
+- `tests/m5_f_performance_sample.gd.uid`
+- `tests/m5_g_4k_benchmark.gd`
+- `tests/m5_g_4k_benchmark.gd.uid`
+- `tests/m5_g_abbot_test.gd`
+- `tests/m5_g_abbot_test.gd.uid`
+- `tests/m5_g_boss_collision_test.gd`
+- `tests/m5_g_boss_collision_test.gd.uid`
+- `tests/m5_g_cancel_test.gd`
+- `tests/m5_g_cancel_test.gd.uid`
+- `tests/m5_g_conventional_test.gd`
+- `tests/m5_g_conventional_test.gd.uid`
+- `tests/m5_g_dash_o1_test.gd`
+- `tests/m5_g_dash_o1_test.gd.uid`
+- `tests/m5_g_dash_o2_test.gd`
+- `tests/m5_g_dash_o2_test.gd.uid`
+- `tests/m5_g_dash_o3_test.gd`
+- `tests/m5_g_dash_o3_test.gd.uid`
+- `tests/m5_g_dash_o4_test.gd`
+- `tests/m5_g_dash_o4_test.gd.uid`
+- `tests/m5_g_dash_o5_test.gd`
+- `tests/m5_g_dash_o5_test.gd.uid`
+- `tests/m5_g_dash_o6_test.gd`
+- `tests/m5_g_dash_o6_test.gd.uid`
+- `tests/m5_g_dash_shortcuts_test.gd`
+- `tests/m5_g_dash_shortcuts_test.gd.uid`
+- `tests/m5_g_dodge_test.gd`
+- `tests/m5_g_dodge_test.gd.uid`
+- `tests/m5_g_fix01_airborne.gd`
+- `tests/m5_g_fix01_airborne.gd.uid`
+- `tests/m5_g_fix01_alternation.gd`
+- `tests/m5_g_fix01_alternation.gd.uid`
+- `tests/m5_g_fix01_boss_walls.gd`
+- `tests/m5_g_fix01_boss_walls.gd.uid`
+- `tests/m5_g_fix01_control_recovery.gd`
+- `tests/m5_g_fix01_control_recovery.gd.uid`
+- `tests/m5_g_fix01_dash_integration.gd`
+- `tests/m5_g_fix01_dash_integration.gd.uid`
+- `tests/m5_g_fix01_direction_test.gd`
+- `tests/m5_g_fix01_direction_test.gd.uid`
+- `tests/m5_g_fix01_far_approach.gd`
+- `tests/m5_g_fix01_far_approach.gd.uid`
+- `tests/m5_g_fix01_far_retreat.gd`
+- `tests/m5_g_fix01_far_retreat.gd.uid`
+- `tests/m5_g_fix01_justice_retest.gd`
+- `tests/m5_g_fix01_justice_retest.gd.uid`
+- `tests/m5_g_fix01_justice_test.gd`
+- `tests/m5_g_fix01_justice_test.gd.uid`
+- `tests/m5_g_fix01_locked_gates.gd`
+- `tests/m5_g_fix01_locked_gates.gd.uid`
+- `tests/m5_g_fix01_visual_compare.gd`
+- `tests/m5_g_fix01_visual_compare.gd.uid`
+- `tests/m5_g_fix02_boss_sequence.gd`
+- `tests/m5_g_fix02_boss_sequence.gd.uid`
+- `tests/m5_g_fix02_dash_visual.gd`
+- `tests/m5_g_fix02_dash_visual.gd.uid`
+- `tests/m5_g_fix03_completed_test.gd`
+- `tests/m5_g_fix03_completed_test.gd.uid`
+- `tests/m5_g_fix04_boss_test.gd`
+- `tests/m5_g_fix04_boss_test.gd.uid`
+- `tests/m5_g_fix04_retry_test.gd`
+- `tests/m5_g_fix04_retry_test.gd.uid`
+- `tests/m5_g_fix05_directions_visual.gd`
+- `tests/m5_g_fix05_directions_visual.gd.uid`
+- `tests/m5_g_fix05_guardian_compare.gd`
+- `tests/m5_g_fix05_guardian_compare.gd.uid`
+- `tests/m5_g_fix05_live_hud_test.gd`
+- `tests/m5_g_fix05_live_hud_test.gd.uid`
+- `tests/m5_g_fix05_visual_test.gd`
+- `tests/m5_g_fix05_visual_test.gd.uid`
+- `tests/m5_g_full_journey_test.gd`
+- `tests/m5_g_full_journey_test.gd.uid`
+- `tests/m5_g_invalid_save_test.gd`
+- `tests/m5_g_invalid_save_test.gd.uid`
+- `tests/m5_g_journey_test.gd`
+- `tests/m5_g_journey_test.gd.uid`
+- `tests/m5_g_locked_shortcut_test.gd`
+- `tests/m5_g_locked_shortcut_test.gd.uid`
+- `tests/m5_g_performance_test.gd`
+- `tests/m5_g_performance_test.gd.uid`
+- `tests/m5_g_persistence_probe.gd`
+- `tests/m5_g_persistence_probe.gd.uid`
+- `tests/m5_g_respawn_test.gd`
+- `tests/m5_g_respawn_test.gd.uid`
+- `tests/m5_g_session_test.gd`
+- `tests/m5_g_session_test.gd.uid`
+- `tests/m5_g_visual_test.gd`
+- `tests/m5_g_visual_test.gd.uid`
+
+### Adições ao conjunto após a medição gráfica — 4 arquivos
+
+- `tests/m5_g_4k_fullscreen_probe.gd`
+- `tests/evidencias/m5g-fechamento/resultado_4k_fullscreen.txt`
+- `tests/evidencias/m5g-fechamento/resultado_4k_repeticao.txt`
+- `tests/evidencias/m5g-fechamento/benchmark_4k_fullscreen.png`
+
+### Evidências da própria candidata — 4 arquivos
+
+- `tests/evidencias/candidata-m5/arena_1280x720.png`
+- `tests/evidencias/candidata-m5/dash_abade_1280x720.png`
+- `tests/evidencias/candidata-m5/transicao_3840x2160.png`
+- `tests/evidencias/candidata-m5/resultado_visual.txt`
+
+## Resultado posterior da candidata — 06/11/2026
+
+O conjunto proposto passou a **425 alterações** (416 iniciais e nove adições listadas nesta seção), aplicado sobre o HEAD com o `project.godot` do HEAD. A importação, jornada física S1–S12, vitória, persistência, revisita, testes do Abade, espada, sobrevivência, Guardião, atalhos e rotas opcionais passaram. A validação gráfica foi amostral e a configuração de aspecto protegida local ainda difere do HEAD: não afirmar equivalência visual para todas as proporções. Após as execuções de jogo foram acrescentados documentos finais, evidências, roteiro gráfico e seu UID; foram sincronizados à cópia e conferidos por hash. Ver [resultado detalhado](VALIDACAO_CANDIDATA_GIT_M5.md). A futura seleção staged ainda deve ser revisada e testada como conjunto exato; nada foi staged.
+
+### UID gerado após importação — 1 arquivo
+
+- `tests/m5_g_4k_fullscreen_probe.gd.uid`
+
+
+## Adições pré-commit — comparação de proporções (16 arquivos)
+
+Capturas mostram a área interna renderizada; as barras externas são inferidas da transformação registrada, não fotografadas. O teste e seu UID acompanham as evidências.
+
+- `tests/m5_aspect_compare.gd`
+- `tests/m5_aspect_compare.gd.uid`
+- `tests/evidencias/m5-aspect/head_1024x768_arena.png`
+- `tests/evidencias/m5-aspect/head_1280x800_arena.png`
+- `tests/evidencias/m5-aspect/head_1280x800_dash_abade.png`
+- `tests/evidencias/m5-aspect/head_1280x800_dash_aren.png`
+- `tests/evidencias/m5-aspect/head_1920x1080_arena.png`
+- `tests/evidencias/m5-aspect/head_2560x1080_arena.png`
+- `tests/evidencias/m5-aspect/local_1024x768_arena.png`
+- `tests/evidencias/m5-aspect/local_1280x800_arena.png`
+- `tests/evidencias/m5-aspect/local_1280x800_dash_abade.png`
+- `tests/evidencias/m5-aspect/local_1280x800_dash_aren.png`
+- `tests/evidencias/m5-aspect/local_1920x1080_arena.png`
+- `tests/evidencias/m5-aspect/local_2560x1080_arena.png`
+- `tests/evidencias/m5-aspect/resultado_head.txt`
+- `tests/evidencias/m5-aspect/resultado_local.txt`
+
+## Decisão técnica pré-commit — proporções
+
+A seleção proposta soma **441 arquivos**: 425 anteriores mais os 16 listados na seção de proporções. A Godot 4.7.2 aplicou o mesmo `keep`, transformação e escala inteira nas quatro janelas nas cópias com configuração do HEAD e local. A diferença de aspecto não é bloqueante nas proporções ensaiadas. As capturas são da área interna; a imagem completa das bordas físicas não pôde ser obtida, e o posicionamento das margens foi conferido pela transformação da engine. Ver [validação](VALIDACAO_CANDIDATA_GIT_M5.md). Benchmark 4K permanece com ressalva de pico não reproduzido.
+
+Recomendação final: **um único commit seletivo futuro** `feat(abbey): consolida exploracao, regressao e Abade`, sujeito à autorização e à revisão do diff staged. Incluir somente a lista explícita das seções de seleção e adições, preservando UIDs selecionados. Os 15 protegidos, perfis de teste, caches, logs temporários, referências pessoais e sidecars de evidência não selecionados ficam fora. Antes do commit: conferir novamente hashes e a seleção exata, revisar o diff staged completo, importar candidata correspondente e confirmar as regressões registradas. Nenhuma operação Git de gravação foi realizada.

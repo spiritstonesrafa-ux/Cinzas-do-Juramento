@@ -11,10 +11,29 @@ const FRAME_RECTS: Array[Rect2] = [
 var _time: float = 0.0
 var _was_dead: bool = false
 var _revive: float = 0.0
+var _dash_ghosts: Array[Dictionary] = []
+var _dash_sample: float = 0.0
+var _dash_previous: bool = false
+var _dash_impact: float = 0.0
 
 func _process(delta: float) -> void:
  _time += delta
  var hero: KnightController = get_parent() as KnightController
+ var dashing: bool = hero.dash_remaining > 0.0 and not hero.survival.is_dead
+ _dash_sample -= delta
+ if _dash_previous != dashing: _dash_impact = 0.16
+ _dash_previous = dashing
+ _dash_impact = maxf(0.0,_dash_impact-delta)
+ for i: int in range(_dash_ghosts.size()-1,-1,-1):
+  _dash_ghosts[i].age += delta
+  if _dash_ghosts[i].age>=0.18: _dash_ghosts.remove_at(i)
+ if hero.survival.is_dead:
+  _dash_ghosts.clear()
+  _dash_impact=0.0
+ elif dashing and _dash_sample<=0.0:
+  _dash_ghosts.push_back({"position":global_position,"age":0.0})
+  if _dash_ghosts.size()>5: _dash_ghosts.pop_front()
+  _dash_sample=0.035
  if _was_dead and not hero.survival.is_dead: _revive = 0.55
  _was_dead = hero.survival.is_dead
  _revive = maxf(0,_revive-delta)
@@ -22,6 +41,14 @@ func _process(delta: float) -> void:
 
 func _draw() -> void:
  var hero: KnightController = get_parent() as KnightController
+ var ghost_region: Rect2=FRAME_RECTS[4]
+ var ghost_size: Vector2=(ghost_region.size*Vector2(1.2,1)*36.0/386.0).round()
+ for ghost: Dictionary in _dash_ghosts:
+  var offset: Vector2=to_local(ghost.position)
+  draw_texture_rect_region(POSES,Rect2(offset+Vector2(-roundf(ghost_size.x*0.76),-30),ghost_size),ghost_region,Color(0.48,0.36,0.63,0.25*(1.0-ghost.age/0.18)))
+ if _dash_impact>0.0:
+  for i: int in range(4):
+   draw_rect(Rect2(-8-i*4,-2-(i%2)*3,2,2),Color(0.64,0.58,0.59,_dash_impact/0.16))
  if hero.sword_attack.phase != SwordAttack.Phase.NEUTRAL and not hero.survival.is_dead:
   _draw_attack(hero)
   return
@@ -30,6 +57,7 @@ func _draw() -> void:
   KnightController.MovementState.RUN: frame = [1,2,3,2][int(_time*11)%4]
   KnightController.MovementState.JUMP: frame = 4
   KnightController.MovementState.FALL: frame = 5
+ if hero.dash_remaining > 0.0: frame = 4
  if hero.survival.invulnerability_remaining>0.63: frame = 6
  if hero.survival.is_dead: frame = 0
  var region: Rect2 = FRAME_RECTS[frame]

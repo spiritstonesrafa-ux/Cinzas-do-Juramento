@@ -19,6 +19,14 @@ var _coyote_remaining: float = 0.0
 var _buffer_remaining: float = 0.0
 var active_checkpoint: RespawnCheckpoint
 var _default_respawn: Vector2
+const ABBEY_PROGRESS: Script = preload("res://scripts/abbey/abbey_progress.gd")
+@export var dash_speed: float = 260.0
+@export var dash_duration: float = 0.16
+@export var dash_cooldown: float = 0.75
+var dash_unlocked: bool = false
+var dash_remaining: float = 0.0
+var dash_cooldown_remaining: float = 0.0
+var dash_direction: int = 1
 
 @onready var visual: Node2D = $Visual
 @onready var sword_attack: SwordAttack = $SwordAttack
@@ -27,8 +35,10 @@ var _default_respawn: Vector2
 
 func _ready() -> void:
 	survival.died.connect(_on_died)
+	dash_unlocked = ABBEY_PROGRESS.unlocked()
 
 func _on_died() -> void:
+	dash_remaining = 0.0
 	state = MovementState.DEAD
 	velocity = Vector2.ZERO
 	_coyote_remaining = 0.0
@@ -42,6 +52,20 @@ func _physics_process(delta: float) -> void:
 		_update_survival_visual()
 		return
 	survival.tick(delta)
+	dash_cooldown_remaining = maxf(0.0, dash_cooldown_remaining - delta)
+	if dash_remaining > 0.0:
+		dash_remaining = maxf(0.0, dash_remaining - delta)
+		velocity.x = dash_direction * dash_speed
+		velocity.y = minf(velocity.y + gravity * delta, max_fall_speed)
+		move_and_slide()
+		if is_on_wall(): dash_remaining = 0.0
+		sword_attack.tick(delta, is_on_floor(), facing)
+		_update_state()
+		visual.queue_redraw()
+		var dash_contact: int = hurtbox.contact_damage()
+		if dash_contact > 0: receive_damage(dash_contact)
+		_update_survival_visual()
+		return
 	if is_on_floor():
 		_coyote_remaining = coyote_time
 	else:
@@ -73,6 +97,16 @@ func _physics_process(delta: float) -> void:
 	if contact_damage > 0:
 		receive_damage(contact_damage)
 	_update_survival_visual()
+
+func _unhandled_key_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_SHIFT:
+		if dash_unlocked and not survival.is_dead and is_on_floor() and dash_cooldown_remaining <= 0.0:
+			var axis: float = Input.get_axis("move_left", "move_right")
+			dash_direction = (1 if axis > 0.0 else -1) if axis != 0.0 else facing
+			facing = dash_direction
+			dash_remaining = dash_duration
+			dash_cooldown_remaining = dash_cooldown
+			sword_attack.cancel()
 
 func receive_damage(amount: int = 1) -> bool:
 	return survival.receive_damage(amount)
@@ -138,6 +172,7 @@ func _update_state() -> void:
 
 func reset_to(spawn_position: Vector2) -> void:
 	sword_attack.cancel()
+	dash_remaining = 0.0
 	global_position = spawn_position
 	velocity = Vector2.ZERO
 	_coyote_remaining = 0.0

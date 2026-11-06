@@ -32,6 +32,51 @@ func _ready() -> void:
  art.set_script(load("res://scripts/abbey/chapter_art.gd"))
  art.z_index=-1
  add_child(art)
+ if sector_id==1:
+  var relief: Node2D=Node2D.new()
+  relief.name="NamesRelief"
+  relief.set_script(load("res://scripts/abbey/m5e_names_relief.gd"))
+  add_child(relief)
+  var chapel: Node2D=Node2D.new()
+  chapel.name="O1Chapel"
+  chapel.set_script(load("res://scripts/abbey/m5e_o1_chapel.gd"))
+  chapel.z_index=-1
+  add_child(chapel)
+ if preload("res://scripts/abbey/m5e_discoveries.gd").DATA.has(sector_id):
+  var discovery_art: Node2D=Node2D.new()
+  discovery_art.name="DiscoveryArt"
+  discovery_art.set_script(load("res://scripts/abbey/m5e_discoveries.gd"))
+  add_child(discovery_art)
+ if sector_id==9:
+  var overlook: Node2D=Node2D.new()
+  overlook.name="GardenOverlook"
+  overlook.set_script(load("res://scripts/abbey/m5e_garden_overlook.gd"))
+  overlook.z_index=-1
+  add_child(overlook)
+ if sector_id==6:
+  var foundry: Node2D=Node2D.new()
+  foundry.name="SilentBellGallery"
+  foundry.set_script(load("res://scripts/abbey/m5e_silent_bell_gallery.gd"))
+  foundry.z_index=-1
+  add_child(foundry)
+ if sector_id==8:
+  var archive: Node2D=Node2D.new()
+  archive.name="UnsignedRecordGallery"
+  archive.set_script(load("res://scripts/abbey/m5e_unsigned_record_gallery.gd"))
+  archive.z_index=-1
+  add_child(archive)
+ if sector_id in [2,4]:
+  var side_room: Node2D=Node2D.new()
+  side_room.name="BrokenCounterweightGallery" if sector_id==2 else "VotiveOssuary"
+  side_room.set_script(load("res://scripts/abbey/m5e_stair_cistern_annex.gd"))
+  side_room.z_index=-1
+  add_child(side_room)
+ if preload("res://scripts/abbey/m5e_shortcuts.gd").index_in(sector_id)>=0:
+  var service_door: Node2D=Node2D.new()
+  service_door.name="ServiceDoor"
+  service_door.set_script(load("res://scripts/abbey/m5e_shortcuts.gd"))
+  service_door.z_index=-1
+  add_child(service_door)
  # Data markers only: no fake threats or promised rewards.
  var future: Node2D=Node2D.new()
  future.name="FutureIntegration"

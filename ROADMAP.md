@@ -1,10 +1,14 @@
-> **Estado atual:** M5-D homologado visual e funcionalmente pelo responsável após playtest, com a informação de que está tudo OK. M5-C3 permanece encerrado administrativamente com ressalvas, e a combinação avançada do setor 11 segue para revisão posterior sem bloquear o roadmap. O próximo marco previsto é M5-E, de exploração, segredos e atalhos, cuja implementação permanece pendente. Consulte [o relatório M5-D](tests/VALIDACAO_M5_D.md) e [o encerramento M5-C3](tests/ENCERRAMENTO_ADMINISTRATIVO_M5_C3.md).
+> **Estado atual (05/11/2026):** M5-D e M5-E homologados; M5-F homologado com ressalvas; **M5-G homologado pelo responsável**, incluindo Abade e dash permanente após vitória. A Abadia está homologada no conteúdo testado; consolidação Git e fechamento técnico são assuntos separados e ainda não foram concluídos. Ataque aéreo está somente em planejamento.
 
-## Homologação M5-D e continuidade
+> **Homologação posterior M5-F:** o responsável informou “playtest ok” e homologou o M5-F com as ressalvas documentadas. O mínimo físico global de 12.227,52 px continua não comprovado e não bloqueante; o modelo horizontal não é distância física. M5-C3, ObjectDB e o pico histórico de 183,878 ms permanecem registrados. Esta informação não representa nova execução automatizada.
+
+## Histórico — homologação M5-D e continuidade
+
+Esta seção registra a situação à época; o estado atual consta no topo.
 
 O responsável informou que concluiu o playtest e que está tudo OK, aprovando oficialmente o M5-D no escopo visual e funcional. O ensaio automatizado 4K registrou pico isolado de 183,878 ms como **observação de desempenho não bloqueante**; sua causa não foi determinada e o resultado médio e p95 permanecem documentados. A ressalva histórica ObjectDB e as pendências conhecidas do M5-C3, inclusive a combinação avançada do Campanário para revisão posterior sem bloquear o roadmap, continuam registradas. Nenhum novo teste da engine é alegado neste encerramento documental.
 
-O próximo marco previsto é **M5-E — exploração, segredos e atalhos completos**, dependente da base M5-D homologada e de autorização específica de implementação conforme a regra geral do roadmap. O planejamento histórico propõe seis descobertas sinalizadas, percursos opcionais e três atalhos abertos pelo lado avançado, com retorno funcional, preservação dos sete checkpoints e sem exigir novos sistemas de inventário. Os números e distâncias são propostas a validar no escopo próprio, incluindo a manutenção do mínimo de rota principal após atalhos. M5-F permanece destinado à regressão e homologação da região; M6 depende de M5-F. M5-E não foi implementado nesta etapa.
+O próximo marco previsto é **M5-E — exploração, segredos e atalhos completos**, dependente da base M5-D homologada e de autorização específica de implementação conforme a regra geral do roadmap. O [planejamento M5-E](docs/PLANEJAMENTO_M5_E.md) propõe seis descobertas sinalizadas, percursos opcionais e três atalhos abertos pelo lado avançado, com retorno funcional, preservação dos sete checkpoints e sem exigir novos sistemas de inventário. Os números e distâncias são propostas a validar no escopo próprio, incluindo a manutenção do mínimo de rota principal após atalhos. M5-F permanece destinado à regressão e homologação da região; M6 depende de M5-F. M5-E não foi implementado nesta etapa.
 
 # Cinzas do Juramento — Roadmap por marcos
 
@@ -19,7 +23,9 @@ O próximo marco previsto é **M5-E — exploração, segredos e atalhos complet
 | **M3 — Primeira fase** | Cenário gótico, inimigos variados, desafios, armadilhas, início/fim de fase | Percurso completo, sem softlock, ritmo de dificuldade validado | M2 homologado |
 | **M4 — Chefe** | Chefe de fase, arena, padrões legíveis, vitória | Pode ser derrotado de forma justa, sem estado impossível | M3 homologado |
 | **M5 — Abadia Silenciosa** | Planejamento e desenvolvimento incremental da região; M5-A somente dois pilotos experimentais | Aprovação artística, funcional e técnica por marco; extensão final mínima 4× | M4 homologado |
-| **M6 — Segundo chefe** | Fundação, combate avançado e conclusão do Abade, ainda não iniciado | Padrões justos e dificuldade superior por aprendizado | M5-F homologado e autorização |
+| **M5-G — Chefe da Abadia** | Arena, Abade e dash pós-vitória homologados pelo responsável | Homologação funcional e visual concedida; fechamento técnico e Git separados | M5-F homologado |
+| **M5-H — Ataque aéreo de Aren** | Planejamento documental de golpe aéreo independente | Implementação e disponibilidade dependem de autorização e decisões de design | M5-G homologado |
+| **M6 — Expansão futura** | Regiões restantes e respectivos chefes; o Abade já pertence a M5-G | Escopo futuro aprovado separadamente; sem duplicar chefe | M5-G homologado e autorização |
 | **M7 — Expansão posterior e polimento** | Demais regiões; backlog de som original, UX e polimento do slice preservado | Escopos futuros aprovados separadamente | M6 homologado e autorização |
 | **M8 — Publicação executável** | Build Windows, configuração, testes finais e distribuição | Empacotamento, licenças e documentação revisados | Escopo de produto homologado e autorização |
 
@@ -35,6 +41,10 @@ O próximo marco previsto é **M5-E — exploração, segredos e atalhos complet
 - **M0-08** Implementar retorno ao ponto de início quando o jogador cai.
 - **M0-09** Escrever `README.md` com requisitos, execução, controles e decisões técnicas.
 - **M0-10** Rodar validações disponíveis e entregar relatório honesto com testes manuais pendentes.
+
+## Decisão oficial — chefes por fase
+
+O responsável definiu um chefe obrigatório para cada uma das cinco fases, além de um chefe final adicional e um chefe secreto adicional: **sete confrontos de chefe previstos**. A fase 1 possui o Guardião do Juramento e a Abadia possui o Abade das Correntes, homologado em M5-G. A antiga atribuição do Abade a M6 é histórica e não cria um segundo Abade. Os chefes posteriores devem exigir progressivamente mais posicionamento e leitura, sem ataques inevitáveis ou dificuldade artificial. Detalhes futuros de M6 e dos chefes final e secreto dependem de definição.
 
 ## Não entra no M0
 
@@ -95,8 +105,8 @@ Histórico da autorização de prototipagem: conceito da Abadia aprovado para du
 - M5-B: expansão estrutural dos12 setores implementada, 17360,42 px principais medidos; **pendente de playtest e homologação**. Sete posições funcionais de checkpoint pertencem à estrutura; distribuição completa de ameaças segue no M5-C.
 - M5-C: demais inimigos, desafios e checkpoints, não iniciado; o Monge/Contrapeso do piloto não concluem esse marco.
 - M5-D: arte e acabamento da região completa, não iniciado; assets dos pilotos pertencem ao M5-A.
-- M5-E: exploração, segredos e atalhos completos, não iniciado.
-- M5-F: regressão e homologação da região, não iniciado.
+- M5-E: exploração, segredos e atalhos completos, não iniciado à época deste registro histórico.
+- M5-F: regressão e homologação da região, não iniciado à época deste registro histórico.
 - M6-A/B/C: fundação, combate avançado e conclusão do segundo chefe, **não iniciados**.
 
 Meta futura:14400 px principais; mínimo12227,52 px, aceite arredondado12228; expansão4,71× sobre3056,88 px. Pilotos não cumprem nem alegam cumprir a extensão final. Manter3000 px opcionais, seis descobertas, três atalhos e seteCP como metas. Narrativa/arte/layout definitivos dependem do responsável. Campanha inicial, Cemitério e Guardião preservados. Sem transição canônica, save global ou nova habilidade.

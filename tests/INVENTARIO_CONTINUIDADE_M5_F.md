@@ -1,0 +1,162 @@
+# Inventário local — continuidade M5-F e proposta M5-G
+
+Branch `main`, HEAD `a10f654f6cc4efcb2c68ede3b3254b2f09ed8d7e`; índice vazio. Retrato completo obtido por `git status --porcelain=v1 -z --untracked-files=all`, incluindo este arquivo. `M` significa rastreado modificado; `??` não rastreado. Não constitui seleção de commit. `ROADMAP.md` já tinha alterações locais e também recebeu atualização nesta etapa. Os 15 protegidos coincidem com o baseline local, embora `project.godot` seja diferente do HEAD; não incluí-los automaticamente.
+
+O [inventário M5-E](INVENTARIO_M5_E.md) e o [inventário da candidata M5-F](INVENTARIO_M5_F_CANDIDATA.md) preservam a classificação por origem e dependências. Os testes FIX01 modificam somente instrumentação; capturas e logs de cache permanecem separados. Antes de futura consolidação, revisar trechos compartilhados e a divergência da captura A1 na cópia, sem presumir autorização.
+
+## Modificados ou criados nesta etapa (5)
+
+- `M` `GDD.md`
+- `M` `ROADMAP.md`
+- `??` `docs/PLANEJAMENTO_M5_G_ABADE.md`
+- `??` `tests/INVENTARIO_CONTINUIDADE_M5_F.md`
+- `??` `tests/PROPOSTA_ENCERRAMENTO_M5_F.md`
+
+## Protegidos preexistentes — não incluir (15)
+
+- `??` `The Art of the Pixel.jpg`
+- `??` `The Art of the Pixel.jpg.import`
+- `??` `The Siege and the Sandfox _ Le metroidvania en 2D de Cardboard Sword et PLAION sortira le 20 mai sur PC.jpg`
+- `??` `The Siege and the Sandfox _ Le metroidvania en 2D de Cardboard Sword et PLAION sortira le 20 mai sur PC.jpg.import`
+- `M` `project.godot`
+- `??` `tests/evidencias/m3d/fix03-after-sector1.png.import`
+- `??` `tests/evidencias/m3d/fix03-after-sector2.png.import`
+- `??` `tests/evidencias/m3d/fix03-after-sector3.png.import`
+- `??` `tests/evidencias/m3d/fix03-after-sector4.png.import`
+- `??` `tests/evidencias/m3d/fix03-after-sector5.png.import`
+- `??` `tests/evidencias/m3d/fix03-after-sector6.png.import`
+- `??` `tests/evidencias/m3d/fix03-attack--1-8.png.import`
+- `??` `tests/evidencias/m3d/fix03-attack-1-8.png.import`
+- `??` `tests/evidencias/m3d/fix03-detail-cp1-active.png.import`
+- `??` `tests/evidencias/m3d/fix03-detail-cp2-active.png.import`
+
+## Alterações locais preexistentes — preservar e revisar (126)
+
+- `M` `README.md`
+- `??` `docs/PLANEJAMENTO_M5_E.md`
+- `??` `docs/PLANEJAMENTO_M5_F.md`
+- `M` `scripts/abbey/chapter.gd`
+- `M` `scripts/abbey/chapter_sector.gd`
+- `??` `scripts/abbey/m5e_discoveries.gd`
+- `??` `scripts/abbey/m5e_discoveries.gd.uid`
+- `??` `scripts/abbey/m5e_garden_overlook.gd`
+- `??` `scripts/abbey/m5e_garden_overlook.gd.uid`
+- `??` `scripts/abbey/m5e_names_relief.gd`
+- `??` `scripts/abbey/m5e_names_relief.gd.uid`
+- `??` `scripts/abbey/m5e_o1_chapel.gd`
+- `??` `scripts/abbey/m5e_o1_chapel.gd.uid`
+- `??` `scripts/abbey/m5e_service_passage.gd`
+- `??` `scripts/abbey/m5e_service_passage.gd.uid`
+- `??` `scripts/abbey/m5e_shortcuts.gd`
+- `??` `scripts/abbey/m5e_shortcuts.gd.uid`
+- `??` `scripts/abbey/m5e_silent_bell_gallery.gd`
+- `??` `scripts/abbey/m5e_silent_bell_gallery.gd.uid`
+- `??` `scripts/abbey/m5e_stair_cistern_annex.gd`
+- `??` `scripts/abbey/m5e_stair_cistern_annex.gd.uid`
+- `??` `scripts/abbey/m5e_unsigned_record_gallery.gd`
+- `??` `scripts/abbey/m5e_unsigned_record_gallery.gd.uid`
+- `??` `tests/ENCERRAMENTO_M5_E.md`
+- `??` `tests/INVENTARIO_M5_E.md`
+- `??` `tests/INVENTARIO_M5_F_CANDIDATA.md`
+- `??` `tests/VALIDACAO_M5_E_LOTE01.md`
+- `??` `tests/VALIDACAO_M5_E_LOTE02.md`
+- `??` `tests/VALIDACAO_M5_E_LOTE03.md`
+- `??` `tests/VALIDACAO_M5_E_LOTE04.md`
+- `??` `tests/VALIDACAO_M5_E_LOTE05.md`
+- `??` `tests/VALIDACAO_M5_E_LOTE06.md`
+- `??` `tests/VALIDACAO_M5_E_LOTE07.md`
+- `??` `tests/VALIDACAO_M5_E_LOTE08.md`
+- `??` `tests/VALIDACAO_M5_E_LOTE09.md`
+- `??` `tests/VALIDACAO_M5_F.md`
+- `??` `tests/VALIDACAO_M5_F_FIX01.md`
+- `??` `tests/evidencias/m5_e_lote09_A1_1280x720.png`
+- `??` `tests/evidencias/m5_e_lote09_A1_1280x720.png.import`
+- `??` `tests/evidencias/m5_e_lote09_A1_1920x1080.png`
+- `??` `tests/evidencias/m5_e_lote09_A1_1920x1080.png.import`
+- `??` `tests/evidencias/m5_e_lote09_A1_2560x1440.png`
+- `??` `tests/evidencias/m5_e_lote09_A1_2560x1440.png.import`
+- `??` `tests/evidencias/m5_e_lote09_A1_3840x2160.png`
+- `??` `tests/evidencias/m5_e_lote09_A1_3840x2160.png.import`
+- `??` `tests/evidencias/m5_e_lote09_A2_1280x720.png`
+- `??` `tests/evidencias/m5_e_lote09_A2_1280x720.png.import`
+- `??` `tests/evidencias/m5_e_lote09_A2_1920x1080.png`
+- `??` `tests/evidencias/m5_e_lote09_A2_1920x1080.png.import`
+- `??` `tests/evidencias/m5_e_lote09_A2_2560x1440.png`
+- `??` `tests/evidencias/m5_e_lote09_A2_2560x1440.png.import`
+- `??` `tests/evidencias/m5_e_lote09_A2_3840x2160.png`
+- `??` `tests/evidencias/m5_e_lote09_A2_3840x2160.png.import`
+- `??` `tests/evidencias/m5_e_lote09_A3_1280x720.png`
+- `??` `tests/evidencias/m5_e_lote09_A3_1280x720.png.import`
+- `??` `tests/evidencias/m5_e_lote09_A3_1920x1080.png`
+- `??` `tests/evidencias/m5_e_lote09_A3_1920x1080.png.import`
+- `??` `tests/evidencias/m5_e_lote09_A3_2560x1440.png`
+- `??` `tests/evidencias/m5_e_lote09_A3_2560x1440.png.import`
+- `??` `tests/evidencias/m5_e_lote09_A3_3840x2160.png`
+- `??` `tests/evidencias/m5_e_lote09_A3_3840x2160.png.import`
+- `??` `tests/evidencias/m5_f_fix01_contato.png`
+- `??` `tests/evidencias/m5_f_fix01_contato.png.import`
+- `??` `tests/m5_e_lote01_test.gd`
+- `??` `tests/m5_e_lote01_test.gd.uid`
+- `??` `tests/m5_e_lote02_test.gd`
+- `??` `tests/m5_e_lote02_test.gd.uid`
+- `??` `tests/m5_e_lote03_o1_test.gd`
+- `??` `tests/m5_e_lote03_o1_test.gd.uid`
+- `??` `tests/m5_e_lote04_geometry_audit.gd`
+- `??` `tests/m5_e_lote04_geometry_audit.gd.uid`
+- `??` `tests/m5_e_lote04_o1_fixture.gd`
+- `??` `tests/m5_e_lote04_o1_fixture.gd.uid`
+- `??` `tests/m5_e_lote04_o1_journey.gd`
+- `??` `tests/m5_e_lote04_o1_journey.gd.uid`
+- `??` `tests/m5_e_lote04_other_fixtures.gd`
+- `??` `tests/m5_e_lote04_other_fixtures.gd.uid`
+- `??` `tests/m5_e_lote05_clearance_fixture.gd`
+- `??` `tests/m5_e_lote05_clearance_fixture.gd.uid`
+- `??` `tests/m5_e_lote05_o1_test.gd`
+- `??` `tests/m5_e_lote05_o1_test.gd.uid`
+- `??` `tests/m5_e_lote06_o1_clearance.gd`
+- `??` `tests/m5_e_lote06_o1_clearance.gd.uid`
+- `??` `tests/m5_e_lote06_o1_journey.gd`
+- `??` `tests/m5_e_lote06_o1_journey.gd.uid`
+- `??` `tests/m5_e_lote06_o1_metric.gd`
+- `??` `tests/m5_e_lote06_o1_metric.gd.uid`
+- `??` `tests/m5_e_lote07_o4_test.gd`
+- `??` `tests/m5_e_lote07_o4_test.gd.uid`
+- `??` `tests/m5_e_lote07_o5_test.gd`
+- `??` `tests/m5_e_lote07_o5_test.gd.uid`
+- `??` `tests/m5_e_lote07_o6_test.gd`
+- `??` `tests/m5_e_lote07_o6_test.gd.uid`
+- `??` `tests/m5_e_lote08_o2_test.gd`
+- `??` `tests/m5_e_lote08_o2_test.gd.uid`
+- `??` `tests/m5_e_lote08_o3_test.gd`
+- `??` `tests/m5_e_lote08_o3_test.gd.uid`
+- `??` `tests/m5_e_lote08_o4_test.gd`
+- `??` `tests/m5_e_lote08_o4_test.gd.uid`
+- `??` `tests/m5_e_lote08_o5_test.gd`
+- `??` `tests/m5_e_lote08_o5_test.gd.uid`
+- `??` `tests/m5_e_lote08_o6_test.gd`
+- `??` `tests/m5_e_lote08_o6_test.gd.uid`
+- `??` `tests/m5_e_lote08_short_jump_test.gd`
+- `??` `tests/m5_e_lote08_short_jump_test.gd.uid`
+- `??` `tests/m5_e_lote09_journey.gd`
+- `??` `tests/m5_e_lote09_journey.gd.uid`
+- `??` `tests/m5_e_lote09_segment_journey.gd`
+- `??` `tests/m5_e_lote09_segment_journey.gd.uid`
+- `??` `tests/m5_e_lote09_shortcut_fixture.gd`
+- `??` `tests/m5_e_lote09_shortcut_fixture.gd.uid`
+- `??` `tests/m5_f_f7_session_test.gd`
+- `??` `tests/m5_f_f7_session_test.gd.uid`
+- `??` `tests/m5_f_fix01_benchmark.gd`
+- `??` `tests/m5_f_fix01_benchmark.gd.uid`
+- `??` `tests/m5_f_fix01_benchmark_diagnostic.gd`
+- `??` `tests/m5_f_fix01_benchmark_diagnostic.gd.uid`
+- `??` `tests/m5_f_fix01_horizontal_model.py`
+- `??` `tests/m5_f_fix01_visual_journey.gd`
+- `??` `tests/m5_f_fix01_visual_journey.gd.uid`
+- `??` `tests/m5_f_fix01_visual_optional.gd`
+- `??` `tests/m5_f_fix01_visual_optional.gd.uid`
+- `??` `tests/m5_f_fix01_visual_shortcut.gd`
+- `??` `tests/m5_f_fix01_visual_shortcut.gd.uid`
+- `??` `tests/m5_f_performance_sample.gd`
+- `??` `tests/m5_f_performance_sample.gd.uid`
+
+Total: 146 entradas. Sem staging, commit, push ou deploy.

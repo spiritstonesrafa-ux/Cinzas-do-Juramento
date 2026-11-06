@@ -1,0 +1,20 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+OpenGL API 3.3.0 NVIDIA 621.01 - Compatibility - Using Device: NVIDIA - NVIDIA GeForce RTX 2060 SUPER
+
+ERROR: Failed to read the root certificate store.
+   at: get_system_ca_certificates (platform/windows/os_windows.cpp:2582)
+PASS progressão nova sem dash
+PASS vitória real e dash adquirido
+BENCH_ENV requested=(3840, 2160) window=(3840, 2160) viewport=(46080.0, 25920.0) adapter=NVIDIA GeForce RTX 2060 SUPER renderer=gl_compatibility vsync=1 fps_limit=0
+BENCH_RES screen=(3840, 2160) window=(3840, 2160) pos=(0, 0) root_size=(3840, 2160) visible=[P: (0.0, 0.0), S: (320.0, 180.0)] scale_size=(320, 180) scale_mode=1 scale_aspect=1 scale_factor=1.0 texture=(46080.0, 25920.0) image=(3840, 2160)
+BENCH attack_frames={ "1_0": 14, "1_1": 14, "2_2": 3, "2_0": 14 }
+BENCH player_dashes=[1, -1, 1, -1]
+BENCH A_repouso n=70 seconds=1.166945 fps_avg=59.9856891284508 fps_min_sample=56.5323082141444 mean_ms=16.6706428571429 p95_ms=17.067 p99_ms=17.137 max_ms=17.689 over_33ms=0
+BENCH B_fase1 n=237 seconds=3.950077 fps_avg=59.9988304025466 fps_min_sample=51.5729757607014 mean_ms=16.6669915611814 p95_ms=17.119 p99_ms=17.32 max_ms=19.39 over_33ms=0
+BENCH C_fase2 n=360 seconds=6.000286 fps_avg=59.9971401363202 fps_min_sample=56.9476082004556 mean_ms=16.6674611111111 p95_ms=17.006 p99_ms=17.17 max_ms=17.56 over_33ms=0
+BENCH D_dash_aren n=248 seconds=4.13201 fps_avg=60.0192158295842 fps_min_sample=58.2580833090591 mean_ms=16.6613306451613 p95_ms=16.98 p99_ms=17.103 max_ms=17.165 over_33ms=0
+BENCH E_vitoria n=50 seconds=0.834228 fps_avg=59.9356530828503 fps_min_sample=55.8253782169374 mean_ms=16.68456 p95_ms=17.098 p99_ms=17.149 max_ms=17.913 over_33ms=0
+BENCH captured_image=(3840, 2160)
+BENCH screenshot=0
+WARNING: 3 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)

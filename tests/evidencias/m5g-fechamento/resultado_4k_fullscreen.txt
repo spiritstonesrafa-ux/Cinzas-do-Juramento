@@ -1,0 +1,20 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+OpenGL API 3.3.0 NVIDIA 621.01 - Compatibility - Using Device: NVIDIA - NVIDIA GeForce RTX 2060 SUPER
+
+ERROR: Failed to read the root certificate store.
+   at: get_system_ca_certificates (platform/windows/os_windows.cpp:2582)
+PASS progressão nova sem dash
+PASS vitória real e dash adquirido
+BENCH_ENV requested=(3840, 2160) window=(3840, 2160) viewport=(46080.0, 25920.0) adapter=NVIDIA GeForce RTX 2060 SUPER renderer=gl_compatibility vsync=1 fps_limit=0
+BENCH_RES screen=(3840, 2160) window=(3840, 2160) pos=(0, 0) root_size=(3840, 2160) visible=[P: (0.0, 0.0), S: (320.0, 180.0)] scale_size=(320, 180) scale_mode=1 scale_aspect=1 scale_factor=1.0 texture=(46080.0, 25920.0) image=(3840, 2160)
+BENCH attack_frames={ "1_0": 14, "1_1": 14, "2_2": 3, "2_0": 14 }
+BENCH player_dashes=[1, -1, 1, -1, 1, -1, 1, -1, 1, -1, 1, -1, 1, -1, 1, -1, 1, -1, 1, -1, 1, -1, 1, -1, 1, -1, 1, -1, 1, -1, 1, -1, 1, -1, 1, -1, 1, -1, 1, -1, 1, -1, 1, -1, 1, -1, 1, -1, 1, -1]
+BENCH A_repouso n=70 seconds=1.167161 fps_avg=59.9745879103226 fps_min_sample=57.0939194975735 mean_ms=16.6737285714286 p95_ms=17.039 p99_ms=17.231 max_ms=17.515 over_33ms=0
+BENCH B_fase1 n=237 seconds=3.949645 fps_avg=60.0053928897408 fps_min_sample=52.1294896522963 mean_ms=16.6651687763713 p95_ms=17.054 p99_ms=17.365 max_ms=19.183 over_33ms=0
+BENCH C_fase2 n=390 seconds=6.61675 fps_avg=58.9413231571391 fps_min_sample=8.7340821353084 mean_ms=16.9660256410256 p95_ms=17.057 p99_ms=17.632 max_ms=114.494 over_33ms=2
+BENCH D_dash_aren n=3100 seconds=51.662761 fps_avg=60.0045359557922 fps_min_sample=48.0630587330578 mean_ms=16.6654067741935 p95_ms=17.019 p99_ms=17.161 max_ms=20.806 over_33ms=0
+BENCH E_vitoria n=49 seconds=0.821541 fps_avg=59.6440104632636 fps_min_sample=46.8055230517201 mean_ms=16.7661428571429 p95_ms=16.92 p99_ms=17.02 max_ms=21.365 over_33ms=0
+BENCH captured_image=(3840, 2160)
+BENCH screenshot=0
+WARNING: 3 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)

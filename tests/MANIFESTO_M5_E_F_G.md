@@ -1,0 +1,472 @@
+# Manifesto final seletivo — M5-E/F/G
+
+Seleção auditada para um único commit local; a lista anterior de 441 é histórica. Status M significa rastreado modificado; ?? significa novo. O próprio manifesto é autorreferente, portanto seu hash está apenas no manifesto externo. Import sidecar do atlas é regenerado e sua referência é por caminho; testes serão executados em candidata limpa. Arquivos excluídos permanecem na pasta local.
+
+Total: 276 caminhos; exclusões da lista anterior: 166.
+
+## Selecionados por grupo
+
+### arte_recurso — 1
+
+- `?? assets/art/m5g/abbot_fix02.png` — 2032138 bytes
+
+### documentacao — 10
+
+- `M GDD.md` — 9483 bytes
+- `M README.md` — 70507 bytes
+- `M ROADMAP.md` — 13562 bytes
+- `?? docs/PLANEJAMENTO_ATAQUE_AEREO_AREN.md` — 4859 bytes
+- `?? docs/PLANEJAMENTO_M5_E.md` — 27030 bytes
+- `?? docs/PLANEJAMENTO_M5_F.md` — 8743 bytes
+- `?? docs/PLANEJAMENTO_M5_G_ABADE.md` — 11047 bytes
+- `?? tests/MANIFESTO_M5_E_F_G.md` — tamanho e hash no manifesto externo — autorreferente
+- `?? tests/PLANO_CONSOLIDACAO_GIT_M5.md` — 63082 bytes
+- `?? tests/VALIDACAO_CANDIDATA_GIT_M5.md` — 14122 bytes
+
+### evidencias — 50
+
+- `?? tests/evidencias/candidata-m5/arena_1280x720.png` — 1389958 bytes
+- `?? tests/evidencias/candidata-m5/dash_abade_1280x720.png` — 1385160 bytes
+- `?? tests/evidencias/candidata-m5/transicao_3840x2160.png` — 3482387 bytes
+- `?? tests/evidencias/m5-aspect/head_1024x768_arena.png` — 844582 bytes
+- `?? tests/evidencias/m5-aspect/head_1280x800_arena.png` — 1393440 bytes
+- `?? tests/evidencias/m5-aspect/head_1280x800_dash_abade.png` — 1392995 bytes
+- `?? tests/evidencias/m5-aspect/head_1280x800_dash_aren.png` — 1393562 bytes
+- `?? tests/evidencias/m5-aspect/head_1920x1080_arena.png` — 2425888 bytes
+- `?? tests/evidencias/m5-aspect/head_2560x1080_arena.png` — 2425888 bytes
+- `?? tests/evidencias/m5-aspect/local_1280x800_arena.png` — 1393440 bytes
+- `?? tests/evidencias/m5_e_lote09_A1_1280x720.png` — 246760 bytes
+- `?? tests/evidencias/m5_e_lote09_A1_1920x1080.png` — 412328 bytes
+- `?? tests/evidencias/m5_e_lote09_A1_2560x1440.png` — 606300 bytes
+- `?? tests/evidencias/m5_e_lote09_A1_3840x2160.png` — 985038 bytes
+- `?? tests/evidencias/m5_e_lote09_A2_1280x720.png` — 244342 bytes
+- `?? tests/evidencias/m5_e_lote09_A2_1920x1080.png` — 407472 bytes
+- `?? tests/evidencias/m5_e_lote09_A2_2560x1440.png` — 599120 bytes
+- `?? tests/evidencias/m5_e_lote09_A2_3840x2160.png` — 971027 bytes
+- `?? tests/evidencias/m5_e_lote09_A3_1280x720.png` — 204045 bytes
+- `?? tests/evidencias/m5_e_lote09_A3_1920x1080.png` — 321879 bytes
+- `?? tests/evidencias/m5_e_lote09_A3_2560x1440.png` — 456386 bytes
+- `?? tests/evidencias/m5_e_lote09_A3_3840x2160.png` — 677469 bytes
+- `?? tests/evidencias/m5_f_fix01_contato.png` — 3455730 bytes
+- `?? tests/evidencias/m5g-fechamento/benchmark_3840x2160.png` — 3360534 bytes
+- `?? tests/evidencias/m5g-fechamento/benchmark_4k_fullscreen.png` — 3360534 bytes
+- `?? tests/evidencias/m5g-fechamento/resultado_1080p.txt` — 1701 bytes
+- `?? tests/evidencias/m5g-fechamento/resultado_4k.txt` — 1700 bytes
+- `?? tests/evidencias/m5g-fechamento/resultado_4k_fullscreen.txt` — 2106 bytes
+- `?? tests/evidencias/m5g-fechamento/resultado_4k_repeticao.txt` — 1932 bytes
+- `?? tests/evidencias/m5g-fix01/comparacao_fase1_1280x720.png` — 1456173 bytes
+- `?? tests/evidencias/m5g-fix02/aren_direita_00.png` — 1637112 bytes
+- `?? tests/evidencias/m5g-fix02/aren_direita_01.png` — 1642516 bytes
+- `?? tests/evidencias/m5g-fix02/aren_direita_02.png` — 1649699 bytes
+- `?? tests/evidencias/m5g-fix02/aren_esquerda_00.png` — 1624225 bytes
+- `?? tests/evidencias/m5g-fix02/aren_esquerda_01.png` — 1623375 bytes
+- `?? tests/evidencias/m5g-fix02/aren_esquerda_02.png` — 1625518 bytes
+- `?? tests/evidencias/m5g-fix02/arena_1280x720.png` — 1463659 bytes
+- `?? tests/evidencias/m5g-fix02/dash_abade_1280x720.png` — 1453939 bytes
+- `?? tests/evidencias/m5g-fix02/transicao_1280x720.png` — 1486978 bytes
+- `?? tests/evidencias/m5g-fix05/aviso_p1_lado1.png` — 1399582 bytes
+- `?? tests/evidencias/m5g-fix05/combate-real/aviso_1280x720.png` — 1401650 bytes
+- `?? tests/evidencias/m5g-fix05/corrente_1280x720.png` — 1395802 bytes
+- `?? tests/evidencias/m5g-fix05/dash_1280x720.png` — 1390756 bytes
+- `?? tests/evidencias/m5g-fix05/derrota_1280x720.png` — 1388090 bytes
+- `?? tests/evidencias/m5g-fix05/guardiao_referencia_1280x720.png` — 1568437 bytes
+- `?? tests/evidencias/m5g-fix05/parado_1280x720.png` — 1393044 bytes
+- `?? tests/evidencias/m5g-fix05/recuperacao_1280x720.png` — 1390965 bytes
+- `?? tests/evidencias/m5g/arena_1280x720.png` — 1429635 bytes
+- `?? tests/evidencias/m5g/dash_abade_1280x720.png` — 1433502 bytes
+- `?? tests/evidencias/m5g/transicao_1280x720.png` — 1432008 bytes
+
+### gameplay — 34
+
+- `?? scenes/abbey/abbot.tscn` — 1466 bytes
+- `?? scenes/abbey/abbot_arena.tscn` — 177 bytes
+- `?? scenes/dev/m5g_boss_playtest.tscn` — 285 bytes
+- `?? scripts/abbey/abbey_progress.gd` — 1278 bytes
+- `?? scripts/abbey/abbey_progress.gd.uid` — 20 bytes
+- `?? scripts/abbey/abbot.gd` — 3465 bytes
+- `?? scripts/abbey/abbot.gd.uid` — 20 bytes
+- `?? scripts/abbey/abbot_arena.gd` — 1590 bytes
+- `?? scripts/abbey/abbot_arena.gd.uid` — 19 bytes
+- `?? scripts/abbey/abbot_visual.gd` — 3396 bytes
+- `?? scripts/abbey/abbot_visual.gd.uid` — 20 bytes
+- `?? scripts/abbey/m5e_discoveries.gd` — 1478 bytes
+- `?? scripts/abbey/m5e_discoveries.gd.uid` — 20 bytes
+- `?? scripts/abbey/m5e_garden_overlook.gd` — 1662 bytes
+- `?? scripts/abbey/m5e_garden_overlook.gd.uid` — 20 bytes
+- `?? scripts/abbey/m5e_names_relief.gd` — 709 bytes
+- `?? scripts/abbey/m5e_names_relief.gd.uid` — 20 bytes
+- `?? scripts/abbey/m5e_o1_chapel.gd` — 2056 bytes
+- `?? scripts/abbey/m5e_o1_chapel.gd.uid` — 19 bytes
+- `?? scripts/abbey/m5e_service_passage.gd` — 1426 bytes
+- `?? scripts/abbey/m5e_service_passage.gd.uid` — 20 bytes
+- `?? scripts/abbey/m5e_shortcuts.gd` — 1087 bytes
+- `?? scripts/abbey/m5e_shortcuts.gd.uid` — 20 bytes
+- `?? scripts/abbey/m5e_silent_bell_gallery.gd` — 1462 bytes
+- `?? scripts/abbey/m5e_silent_bell_gallery.gd.uid` — 20 bytes
+- `?? scripts/abbey/m5e_stair_cistern_annex.gd` — 1925 bytes
+- `?? scripts/abbey/m5e_stair_cistern_annex.gd.uid` — 20 bytes
+- `?? scripts/abbey/m5e_unsigned_record_gallery.gd` — 1431 bytes
+- `?? scripts/abbey/m5e_unsigned_record_gallery.gd.uid` — 20 bytes
+- `?? scripts/dev/m5g_boss_playtest.gd` — 705 bytes
+- `?? scripts/dev/m5g_boss_playtest.gd.uid` — 20 bytes
+- `?? scripts/ui/abbot_boss_bar.gd` — 952 bytes
+- `?? scripts/ui/abbot_boss_bar.gd.uid` — 20 bytes
+- `?? tools/playtest_m5g.ps1` — 1424 bytes
+
+### gameplay_compartilhado — 4
+
+- `M scripts/abbey/chapter.gd` — 20581 bytes
+- `M scripts/abbey/chapter_sector.gd` — 5081 bytes
+- `M scripts/player/knight_controller.gd` — 6966 bytes
+- `M scripts/player/knight_visual.gd` — 3877 bytes
+
+### testes_documentacao — 177
+
+- `?? tests/CHECKLIST_PLAYTEST_M5_F.md` — 3576 bytes
+- `?? tests/ENCERRAMENTO_M5_E.md` — 4912 bytes
+- `?? tests/ENCERRAMENTO_M5_G.md` — 7848 bytes
+- `?? tests/INVENTARIO_CONTINUIDADE_M5_F.md` — 8243 bytes
+- `?? tests/INVENTARIO_M5_E.md` — 8368 bytes
+- `?? tests/INVENTARIO_M5_F_CANDIDATA.md` — 13312 bytes
+- `?? tests/PROPOSTA_ENCERRAMENTO_M5_F.md` — 6025 bytes
+- `?? tests/VALIDACAO_M5_E_LOTE01.md` — 7466 bytes
+- `?? tests/VALIDACAO_M5_E_LOTE02.md` — 4624 bytes
+- `?? tests/VALIDACAO_M5_E_LOTE03.md` — 8951 bytes
+- `?? tests/VALIDACAO_M5_E_LOTE04.md` — 7248 bytes
+- `?? tests/VALIDACAO_M5_E_LOTE05.md` — 7590 bytes
+- `?? tests/VALIDACAO_M5_E_LOTE06.md` — 6822 bytes
+- `?? tests/VALIDACAO_M5_E_LOTE07.md` — 7387 bytes
+- `?? tests/VALIDACAO_M5_E_LOTE08.md` — 7589 bytes
+- `?? tests/VALIDACAO_M5_E_LOTE09.md` — 7283 bytes
+- `?? tests/VALIDACAO_M5_F.md` — 11442 bytes
+- `?? tests/VALIDACAO_M5_F_FIX01.md` — 11235 bytes
+- `?? tests/VALIDACAO_M5_G_ABADE.md` — 11332 bytes
+- `?? tests/VALIDACAO_M5_G_FIX01.md` — 10437 bytes
+- `?? tests/VALIDACAO_M5_G_FIX02.md` — 6965 bytes
+- `?? tests/VALIDACAO_M5_G_FIX03.md` — 4813 bytes
+- `?? tests/VALIDACAO_M5_G_FIX04.md` — 3645 bytes
+- `?? tests/VALIDACAO_M5_G_FIX05.md` — 6262 bytes
+- `?? tests/m5_aspect_compare.gd` — 2779 bytes
+- `?? tests/m5_aspect_compare.gd.uid` — 20 bytes
+- `?? tests/m5_e_lote01_test.gd` — 5459 bytes
+- `?? tests/m5_e_lote01_test.gd.uid` — 19 bytes
+- `?? tests/m5_e_lote02_test.gd` — 3146 bytes
+- `?? tests/m5_e_lote02_test.gd.uid` — 19 bytes
+- `?? tests/m5_e_lote03_o1_test.gd` — 6065 bytes
+- `?? tests/m5_e_lote03_o1_test.gd.uid` — 20 bytes
+- `?? tests/m5_e_lote04_geometry_audit.gd` — 1105 bytes
+- `?? tests/m5_e_lote04_geometry_audit.gd.uid` — 20 bytes
+- `?? tests/m5_e_lote04_o1_fixture.gd` — 2654 bytes
+- `?? tests/m5_e_lote04_o1_fixture.gd.uid` — 20 bytes
+- `?? tests/m5_e_lote04_o1_journey.gd` — 8383 bytes
+- `?? tests/m5_e_lote04_o1_journey.gd.uid` — 19 bytes
+- `?? tests/m5_e_lote04_other_fixtures.gd` — 2159 bytes
+- `?? tests/m5_e_lote04_other_fixtures.gd.uid` — 19 bytes
+- `?? tests/m5_e_lote05_clearance_fixture.gd` — 1768 bytes
+- `?? tests/m5_e_lote05_clearance_fixture.gd.uid` — 20 bytes
+- `?? tests/m5_e_lote05_o1_test.gd` — 7771 bytes
+- `?? tests/m5_e_lote05_o1_test.gd.uid` — 20 bytes
+- `?? tests/m5_e_lote06_o1_clearance.gd` — 1261 bytes
+- `?? tests/m5_e_lote06_o1_clearance.gd.uid` — 20 bytes
+- `?? tests/m5_e_lote06_o1_journey.gd` — 8191 bytes
+- `?? tests/m5_e_lote06_o1_journey.gd.uid` — 20 bytes
+- `?? tests/m5_e_lote06_o1_metric.gd` — 744 bytes
+- `?? tests/m5_e_lote06_o1_metric.gd.uid` — 20 bytes
+- `?? tests/m5_e_lote07_o4_test.gd` — 4405 bytes
+- `?? tests/m5_e_lote07_o4_test.gd.uid` — 20 bytes
+- `?? tests/m5_e_lote07_o5_test.gd` — 4526 bytes
+- `?? tests/m5_e_lote07_o5_test.gd.uid` — 20 bytes
+- `?? tests/m5_e_lote07_o6_test.gd` — 4881 bytes
+- `?? tests/m5_e_lote07_o6_test.gd.uid` — 19 bytes
+- `?? tests/m5_e_lote08_o2_test.gd` — 4485 bytes
+- `?? tests/m5_e_lote08_o2_test.gd.uid` — 19 bytes
+- `?? tests/m5_e_lote08_o3_test.gd` — 4476 bytes
+- `?? tests/m5_e_lote08_o3_test.gd.uid` — 19 bytes
+- `?? tests/m5_e_lote08_o4_test.gd` — 4478 bytes
+- `?? tests/m5_e_lote08_o4_test.gd.uid` — 19 bytes
+- `?? tests/m5_e_lote08_o5_test.gd` — 4495 bytes
+- `?? tests/m5_e_lote08_o5_test.gd.uid` — 18 bytes
+- `?? tests/m5_e_lote08_o6_test.gd` — 4953 bytes
+- `?? tests/m5_e_lote08_o6_test.gd.uid` — 20 bytes
+- `?? tests/m5_e_lote08_short_jump_test.gd` — 1699 bytes
+- `?? tests/m5_e_lote08_short_jump_test.gd.uid` — 19 bytes
+- `?? tests/m5_e_lote09_journey.gd` — 3223 bytes
+- `?? tests/m5_e_lote09_journey.gd.uid` — 19 bytes
+- `?? tests/m5_e_lote09_segment_journey.gd` — 8843 bytes
+- `?? tests/m5_e_lote09_segment_journey.gd.uid` — 20 bytes
+- `?? tests/m5_e_lote09_shortcut_fixture.gd` — 4351 bytes
+- `?? tests/m5_e_lote09_shortcut_fixture.gd.uid` — 20 bytes
+- `?? tests/m5_f_f7_session_test.gd` — 1196 bytes
+- `?? tests/m5_f_f7_session_test.gd.uid` — 19 bytes
+- `?? tests/m5_f_fix01_benchmark.gd` — 963 bytes
+- `?? tests/m5_f_fix01_benchmark.gd.uid` — 19 bytes
+- `?? tests/m5_f_fix01_benchmark_diagnostic.gd` — 2119 bytes
+- `?? tests/m5_f_fix01_benchmark_diagnostic.gd.uid` — 20 bytes
+- `?? tests/m5_f_fix01_horizontal_model.py` — 2319 bytes
+- `?? tests/m5_f_fix01_visual_journey.gd` — 1997 bytes
+- `?? tests/m5_f_fix01_visual_journey.gd.uid` — 20 bytes
+- `?? tests/m5_f_fix01_visual_optional.gd` — 1399 bytes
+- `?? tests/m5_f_fix01_visual_optional.gd.uid` — 20 bytes
+- `?? tests/m5_f_fix01_visual_shortcut.gd` — 1387 bytes
+- `?? tests/m5_f_fix01_visual_shortcut.gd.uid` — 20 bytes
+- `?? tests/m5_f_performance_sample.gd` — 1607 bytes
+- `?? tests/m5_f_performance_sample.gd.uid` — 19 bytes
+- `?? tests/m5_g_4k_benchmark.gd` — 5063 bytes
+- `?? tests/m5_g_4k_benchmark.gd.uid` — 20 bytes
+- `?? tests/m5_g_4k_fullscreen_probe.gd` — 5644 bytes
+- `?? tests/m5_g_4k_fullscreen_probe.gd.uid` — 19 bytes
+- `?? tests/m5_g_abbot_test.gd` — 3495 bytes
+- `?? tests/m5_g_abbot_test.gd.uid` — 20 bytes
+- `?? tests/m5_g_boss_collision_test.gd` — 2221 bytes
+- `?? tests/m5_g_boss_collision_test.gd.uid` — 20 bytes
+- `?? tests/m5_g_cancel_test.gd` — 1137 bytes
+- `?? tests/m5_g_cancel_test.gd.uid` — 20 bytes
+- `?? tests/m5_g_conventional_test.gd` — 1664 bytes
+- `?? tests/m5_g_conventional_test.gd.uid` — 20 bytes
+- `?? tests/m5_g_dash_o1_test.gd` — 732 bytes
+- `?? tests/m5_g_dash_o1_test.gd.uid` — 20 bytes
+- `?? tests/m5_g_dash_o2_test.gd` — 729 bytes
+- `?? tests/m5_g_dash_o2_test.gd.uid` — 20 bytes
+- `?? tests/m5_g_dash_o3_test.gd` — 729 bytes
+- `?? tests/m5_g_dash_o3_test.gd.uid` — 19 bytes
+- `?? tests/m5_g_dash_o4_test.gd` — 729 bytes
+- `?? tests/m5_g_dash_o4_test.gd.uid` — 20 bytes
+- `?? tests/m5_g_dash_o5_test.gd` — 729 bytes
+- `?? tests/m5_g_dash_o5_test.gd.uid` — 20 bytes
+- `?? tests/m5_g_dash_o6_test.gd` — 729 bytes
+- `?? tests/m5_g_dash_o6_test.gd.uid` — 20 bytes
+- `?? tests/m5_g_dash_shortcuts_test.gd` — 847 bytes
+- `?? tests/m5_g_dash_shortcuts_test.gd.uid` — 20 bytes
+- `?? tests/m5_g_dodge_test.gd` — 2395 bytes
+- `?? tests/m5_g_dodge_test.gd.uid` — 19 bytes
+- `?? tests/m5_g_fix01_airborne.gd` — 2057 bytes
+- `?? tests/m5_g_fix01_airborne.gd.uid` — 20 bytes
+- `?? tests/m5_g_fix01_alternation.gd` — 2255 bytes
+- `?? tests/m5_g_fix01_alternation.gd.uid` — 20 bytes
+- `?? tests/m5_g_fix01_boss_walls.gd` — 1745 bytes
+- `?? tests/m5_g_fix01_boss_walls.gd.uid` — 20 bytes
+- `?? tests/m5_g_fix01_control_recovery.gd` — 1339 bytes
+- `?? tests/m5_g_fix01_control_recovery.gd.uid` — 20 bytes
+- `?? tests/m5_g_fix01_dash_integration.gd` — 3176 bytes
+- `?? tests/m5_g_fix01_dash_integration.gd.uid` — 19 bytes
+- `?? tests/m5_g_fix01_direction_test.gd` — 5299 bytes
+- `?? tests/m5_g_fix01_direction_test.gd.uid` — 19 bytes
+- `?? tests/m5_g_fix01_far_approach.gd` — 4012 bytes
+- `?? tests/m5_g_fix01_far_approach.gd.uid` — 20 bytes
+- `?? tests/m5_g_fix01_far_retreat.gd` — 3708 bytes
+- `?? tests/m5_g_fix01_far_retreat.gd.uid` — 20 bytes
+- `?? tests/m5_g_fix01_justice_retest.gd` — 5153 bytes
+- `?? tests/m5_g_fix01_justice_retest.gd.uid` — 20 bytes
+- `?? tests/m5_g_fix01_justice_test.gd` — 4993 bytes
+- `?? tests/m5_g_fix01_justice_test.gd.uid` — 20 bytes
+- `?? tests/m5_g_fix01_locked_gates.gd` — 1874 bytes
+- `?? tests/m5_g_fix01_locked_gates.gd.uid` — 20 bytes
+- `?? tests/m5_g_fix01_visual_compare.gd` — 2418 bytes
+- `?? tests/m5_g_fix01_visual_compare.gd.uid` — 19 bytes
+- `?? tests/m5_g_fix02_boss_sequence.gd` — 1056 bytes
+- `?? tests/m5_g_fix02_boss_sequence.gd.uid` — 20 bytes
+- `?? tests/m5_g_fix02_dash_visual.gd` — 2087 bytes
+- `?? tests/m5_g_fix02_dash_visual.gd.uid` — 20 bytes
+- `?? tests/m5_g_fix03_completed_test.gd` — 2441 bytes
+- `?? tests/m5_g_fix03_completed_test.gd.uid` — 20 bytes
+- `?? tests/m5_g_fix04_boss_test.gd` — 1719 bytes
+- `?? tests/m5_g_fix04_boss_test.gd.uid` — 20 bytes
+- `?? tests/m5_g_fix04_retry_test.gd` — 1096 bytes
+- `?? tests/m5_g_fix04_retry_test.gd.uid` — 20 bytes
+- `?? tests/m5_g_fix05_directions_visual.gd` — 1123 bytes
+- `?? tests/m5_g_fix05_directions_visual.gd.uid` — 19 bytes
+- `?? tests/m5_g_fix05_guardian_compare.gd` — 803 bytes
+- `?? tests/m5_g_fix05_guardian_compare.gd.uid` — 20 bytes
+- `?? tests/m5_g_fix05_live_hud_test.gd` — 1071 bytes
+- `?? tests/m5_g_fix05_live_hud_test.gd.uid` — 20 bytes
+- `?? tests/m5_g_fix05_visual_test.gd` — 3266 bytes
+- `?? tests/m5_g_fix05_visual_test.gd.uid` — 20 bytes
+- `?? tests/m5_g_full_journey_test.gd` — 3261 bytes
+- `?? tests/m5_g_full_journey_test.gd.uid` — 20 bytes
+- `?? tests/m5_g_invalid_save_test.gd` — 617 bytes
+- `?? tests/m5_g_invalid_save_test.gd.uid` — 20 bytes
+- `?? tests/m5_g_journey_test.gd` — 1665 bytes
+- `?? tests/m5_g_journey_test.gd.uid` — 19 bytes
+- `?? tests/m5_g_locked_shortcut_test.gd` — 1441 bytes
+- `?? tests/m5_g_locked_shortcut_test.gd.uid` — 19 bytes
+- `?? tests/m5_g_performance_test.gd` — 831 bytes
+- `?? tests/m5_g_performance_test.gd.uid` — 20 bytes
+- `?? tests/m5_g_persistence_probe.gd` — 2689 bytes
+- `?? tests/m5_g_persistence_probe.gd.uid` — 20 bytes
+- `?? tests/m5_g_respawn_test.gd` — 1791 bytes
+- `?? tests/m5_g_respawn_test.gd.uid` — 20 bytes
+- `?? tests/m5_g_session_test.gd` — 1784 bytes
+- `?? tests/m5_g_session_test.gd.uid` — 20 bytes
+- `?? tests/m5_g_visual_test.gd` — 1473 bytes
+- `?? tests/m5_g_visual_test.gd.uid` — 19 bytes
+
+## Excluídos da lista anterior
+
+Capturas redundantes, imagens intermediárias, logs sem vínculo documental e sidecar de importação regenerável; não foram apagados.
+
+- `assets/art/m5g/abbot_fix02.png.import`
+- `tests/evidencias/candidata-m5/resultado_visual.txt`
+- `tests/evidencias/m5-aspect/local_1024x768_arena.png`
+- `tests/evidencias/m5-aspect/local_1280x800_dash_abade.png`
+- `tests/evidencias/m5-aspect/local_1280x800_dash_aren.png`
+- `tests/evidencias/m5-aspect/local_1920x1080_arena.png`
+- `tests/evidencias/m5-aspect/local_2560x1080_arena.png`
+- `tests/evidencias/m5-aspect/resultado_head.txt`
+- `tests/evidencias/m5-aspect/resultado_local.txt`
+- `tests/evidencias/m5g-fechamento/benchmark_1920x1080.png`
+- `tests/evidencias/m5g-fix01/comparacao_fase1_1920x1080.png`
+- `tests/evidencias/m5g-fix01/comparacao_fase1_2560x1440.png`
+- `tests/evidencias/m5g-fix01/comparacao_fase1_3840x2160.png`
+- `tests/evidencias/m5g-fix01/comparacao_fase2_1280x720.png`
+- `tests/evidencias/m5g-fix01/comparacao_fase2_1920x1080.png`
+- `tests/evidencias/m5g-fix01/comparacao_fase2_2560x1440.png`
+- `tests/evidencias/m5g-fix01/comparacao_fase2_3840x2160.png`
+- `tests/evidencias/m5g-fix01/dash_ativo_1280x720.png`
+- `tests/evidencias/m5g-fix01/dash_ativo_1920x1080.png`
+- `tests/evidencias/m5g-fix01/dash_ativo_2560x1440.png`
+- `tests/evidencias/m5g-fix01/dash_ativo_3840x2160.png`
+- `tests/evidencias/m5g-fix01/derrota_1280x720.png`
+- `tests/evidencias/m5g-fix01/derrota_1920x1080.png`
+- `tests/evidencias/m5g-fix01/derrota_2560x1440.png`
+- `tests/evidencias/m5g-fix01/derrota_3840x2160.png`
+- `tests/evidencias/m5g-fix01/flash_dano_1280x720.png`
+- `tests/evidencias/m5g-fix01/flash_dano_1920x1080.png`
+- `tests/evidencias/m5g-fix01/flash_dano_2560x1440.png`
+- `tests/evidencias/m5g-fix01/flash_dano_3840x2160.png`
+- `tests/evidencias/m5g-fix02/abade_00.png`
+- `tests/evidencias/m5g-fix02/abade_01.png`
+- `tests/evidencias/m5g-fix02/aren_direita_03.png`
+- `tests/evidencias/m5g-fix02/aren_direita_04.png`
+- `tests/evidencias/m5g-fix02/aren_direita_05.png`
+- `tests/evidencias/m5g-fix02/aren_direita_06.png`
+- `tests/evidencias/m5g-fix02/aren_direita_07.png`
+- `tests/evidencias/m5g-fix02/aren_direita_08.png`
+- `tests/evidencias/m5g-fix02/aren_direita_09.png`
+- `tests/evidencias/m5g-fix02/aren_direita_10.png`
+- `tests/evidencias/m5g-fix02/aren_direita_11.png`
+- `tests/evidencias/m5g-fix02/aren_direita_12.png`
+- `tests/evidencias/m5g-fix02/aren_direita_13.png`
+- `tests/evidencias/m5g-fix02/aren_direita_14.png`
+- `tests/evidencias/m5g-fix02/aren_direita_15.png`
+- `tests/evidencias/m5g-fix02/aren_direita_16.png`
+- `tests/evidencias/m5g-fix02/aren_direita_17.png`
+- `tests/evidencias/m5g-fix02/aren_direita_18.png`
+- `tests/evidencias/m5g-fix02/aren_direita_19.png`
+- `tests/evidencias/m5g-fix02/aren_esquerda_03.png`
+- `tests/evidencias/m5g-fix02/aren_esquerda_04.png`
+- `tests/evidencias/m5g-fix02/aren_esquerda_05.png`
+- `tests/evidencias/m5g-fix02/aren_esquerda_06.png`
+- `tests/evidencias/m5g-fix02/aren_esquerda_07.png`
+- `tests/evidencias/m5g-fix02/aren_esquerda_08.png`
+- `tests/evidencias/m5g-fix02/aren_esquerda_09.png`
+- `tests/evidencias/m5g-fix02/aren_esquerda_10.png`
+- `tests/evidencias/m5g-fix02/aren_esquerda_11.png`
+- `tests/evidencias/m5g-fix02/aren_esquerda_12.png`
+- `tests/evidencias/m5g-fix02/aren_esquerda_13.png`
+- `tests/evidencias/m5g-fix02/aren_esquerda_14.png`
+- `tests/evidencias/m5g-fix02/aren_esquerda_15.png`
+- `tests/evidencias/m5g-fix02/aren_esquerda_16.png`
+- `tests/evidencias/m5g-fix02/aren_esquerda_17.png`
+- `tests/evidencias/m5g-fix02/aren_esquerda_18.png`
+- `tests/evidencias/m5g-fix02/aren_esquerda_19.png`
+- `tests/evidencias/m5g-fix02/arena_1920x1080.png`
+- `tests/evidencias/m5g-fix02/arena_2560x1440.png`
+- `tests/evidencias/m5g-fix02/arena_3840x2160.png`
+- `tests/evidencias/m5g-fix02/aviso_1280x720.png`
+- `tests/evidencias/m5g-fix02/aviso_1920x1080.png`
+- `tests/evidencias/m5g-fix02/aviso_2560x1440.png`
+- `tests/evidencias/m5g-fix02/aviso_3840x2160.png`
+- `tests/evidencias/m5g-fix02/dash_abade_1920x1080.png`
+- `tests/evidencias/m5g-fix02/dash_abade_2560x1440.png`
+- `tests/evidencias/m5g-fix02/dash_abade_3840x2160.png`
+- `tests/evidencias/m5g-fix02/recompensa_1280x720.png`
+- `tests/evidencias/m5g-fix02/recompensa_1920x1080.png`
+- `tests/evidencias/m5g-fix02/recompensa_2560x1440.png`
+- `tests/evidencias/m5g-fix02/recompensa_3840x2160.png`
+- `tests/evidencias/m5g-fix02/transicao_1920x1080.png`
+- `tests/evidencias/m5g-fix02/transicao_2560x1440.png`
+- `tests/evidencias/m5g-fix02/transicao_3840x2160.png`
+- `tests/evidencias/m5g-fix05/aviso_corrente_1280x720.png`
+- `tests/evidencias/m5g-fix05/aviso_corrente_1920x1080.png`
+- `tests/evidencias/m5g-fix05/aviso_corrente_2560x1440.png`
+- `tests/evidencias/m5g-fix05/aviso_corrente_3840x2160.png`
+- `tests/evidencias/m5g-fix05/aviso_dash_1280x720.png`
+- `tests/evidencias/m5g-fix05/aviso_dash_1920x1080.png`
+- `tests/evidencias/m5g-fix05/aviso_dash_2560x1440.png`
+- `tests/evidencias/m5g-fix05/aviso_dash_3840x2160.png`
+- `tests/evidencias/m5g-fix05/aviso_p0_lado-1.png`
+- `tests/evidencias/m5g-fix05/aviso_p0_lado1.png`
+- `tests/evidencias/m5g-fix05/aviso_p1_lado-1.png`
+- `tests/evidencias/m5g-fix05/aviso_p2_lado-1.png`
+- `tests/evidencias/m5g-fix05/aviso_p2_lado1.png`
+- `tests/evidencias/m5g-fix05/aviso_varredura_1280x720.png`
+- `tests/evidencias/m5g-fix05/aviso_varredura_1920x1080.png`
+- `tests/evidencias/m5g-fix05/aviso_varredura_2560x1440.png`
+- `tests/evidencias/m5g-fix05/aviso_varredura_3840x2160.png`
+- `tests/evidencias/m5g-fix05/caminhando_1280x720.png`
+- `tests/evidencias/m5g-fix05/caminhando_1920x1080.png`
+- `tests/evidencias/m5g-fix05/caminhando_2560x1440.png`
+- `tests/evidencias/m5g-fix05/caminhando_3840x2160.png`
+- `tests/evidencias/m5g-fix05/combate-real/arena_1280x720.png`
+- `tests/evidencias/m5g-fix05/combate-real/arena_1920x1080.png`
+- `tests/evidencias/m5g-fix05/combate-real/arena_2560x1440.png`
+- `tests/evidencias/m5g-fix05/combate-real/arena_3840x2160.png`
+- `tests/evidencias/m5g-fix05/combate-real/aviso_1920x1080.png`
+- `tests/evidencias/m5g-fix05/combate-real/aviso_2560x1440.png`
+- `tests/evidencias/m5g-fix05/combate-real/aviso_3840x2160.png`
+- `tests/evidencias/m5g-fix05/combate-real/dash_abade_1280x720.png`
+- `tests/evidencias/m5g-fix05/combate-real/dash_abade_1920x1080.png`
+- `tests/evidencias/m5g-fix05/combate-real/dash_abade_2560x1440.png`
+- `tests/evidencias/m5g-fix05/combate-real/dash_abade_3840x2160.png`
+- `tests/evidencias/m5g-fix05/combate-real/recompensa_1280x720.png`
+- `tests/evidencias/m5g-fix05/combate-real/recompensa_1920x1080.png`
+- `tests/evidencias/m5g-fix05/combate-real/recompensa_2560x1440.png`
+- `tests/evidencias/m5g-fix05/combate-real/recompensa_3840x2160.png`
+- `tests/evidencias/m5g-fix05/combate-real/transicao_1280x720.png`
+- `tests/evidencias/m5g-fix05/combate-real/transicao_1920x1080.png`
+- `tests/evidencias/m5g-fix05/combate-real/transicao_2560x1440.png`
+- `tests/evidencias/m5g-fix05/combate-real/transicao_3840x2160.png`
+- `tests/evidencias/m5g-fix05/corrente_1920x1080.png`
+- `tests/evidencias/m5g-fix05/corrente_2560x1440.png`
+- `tests/evidencias/m5g-fix05/corrente_3840x2160.png`
+- `tests/evidencias/m5g-fix05/dano_1280x720.png`
+- `tests/evidencias/m5g-fix05/dano_1920x1080.png`
+- `tests/evidencias/m5g-fix05/dano_2560x1440.png`
+- `tests/evidencias/m5g-fix05/dano_3840x2160.png`
+- `tests/evidencias/m5g-fix05/dash_1920x1080.png`
+- `tests/evidencias/m5g-fix05/dash_2560x1440.png`
+- `tests/evidencias/m5g-fix05/dash_3840x2160.png`
+- `tests/evidencias/m5g-fix05/derrota_1920x1080.png`
+- `tests/evidencias/m5g-fix05/derrota_2560x1440.png`
+- `tests/evidencias/m5g-fix05/derrota_3840x2160.png`
+- `tests/evidencias/m5g-fix05/parado_1920x1080.png`
+- `tests/evidencias/m5g-fix05/parado_2560x1440.png`
+- `tests/evidencias/m5g-fix05/parado_3840x2160.png`
+- `tests/evidencias/m5g-fix05/recuperacao_1920x1080.png`
+- `tests/evidencias/m5g-fix05/recuperacao_2560x1440.png`
+- `tests/evidencias/m5g-fix05/recuperacao_3840x2160.png`
+- `tests/evidencias/m5g-fix05/transicao_1280x720.png`
+- `tests/evidencias/m5g-fix05/transicao_1920x1080.png`
+- `tests/evidencias/m5g-fix05/transicao_2560x1440.png`
+- `tests/evidencias/m5g-fix05/transicao_3840x2160.png`
+- `tests/evidencias/m5g-fix05/varredura_1280x720.png`
+- `tests/evidencias/m5g-fix05/varredura_1920x1080.png`
+- `tests/evidencias/m5g-fix05/varredura_2560x1440.png`
+- `tests/evidencias/m5g-fix05/varredura_3840x2160.png`
+- `tests/evidencias/m5g/arena_1920x1080.png`
+- `tests/evidencias/m5g/arena_2560x1440.png`
+- `tests/evidencias/m5g/arena_3840x2160.png`
+- `tests/evidencias/m5g/aviso_1280x720.png`
+- `tests/evidencias/m5g/aviso_1920x1080.png`
+- `tests/evidencias/m5g/aviso_2560x1440.png`
+- `tests/evidencias/m5g/aviso_3840x2160.png`
+- `tests/evidencias/m5g/dash_abade_1920x1080.png`
+- `tests/evidencias/m5g/dash_abade_2560x1440.png`
+- `tests/evidencias/m5g/dash_abade_3840x2160.png`
+- `tests/evidencias/m5g/recompensa_1280x720.png`
+- `tests/evidencias/m5g/recompensa_1920x1080.png`
+- `tests/evidencias/m5g/recompensa_2560x1440.png`
+- `tests/evidencias/m5g/recompensa_3840x2160.png`
+- `tests/evidencias/m5g/transicao_1920x1080.png`
+- `tests/evidencias/m5g/transicao_2560x1440.png`
+- `tests/evidencias/m5g/transicao_3840x2160.png`

@@ -55,21 +55,26 @@ Entrar na fase → superar plataformas e perigos → enfrentar inimigos → alca
 - Golpe simples de espada (M1), com hitbox ativa apenas durante a janela de acerto.
 - Inimigos sinalizam ataques antes de causarem dano.
 - Vida, invulnerabilidade breve após dano e checkpoints (M2).
-- Adições posteriores (por exemplo, ataque aéreo) dependem de testes: evitar combos complexos de início.
+- **Decisão de progressão:** Aren desbloqueia permanentemente o dash/deslizamento terrestre após vitória válida sobre o Abade das Correntes, segundo chefe. Antes da vitória a habilidade permanece bloqueada; a recompensa é comunicada e persiste após reinício. O Abade usa dash ofensivo. M5-G foi homologado pelo responsável em 05/11/2026.
+- Ataque aéreo é melhoria independente planejada para depois do desenvolvimento do chefe; não faz parte do dash nem é pré-requisito para derrotar o Abade. Seu escopo depende de etapa própria. O dash foi homologado no M5-G; o ataque aéreo ainda não foi implementado.
 
 ## 4. Design das fases
 
-### Plano macro (sujeito a revisão)
+### Decisão oficial sobre chefes
+
+O responsável definiu que cada uma das cinco fases terá obrigatoriamente um chefe, além de um chefe final adicional e um chefe secreto adicional: **sete confrontos previstos**. O chefe da fase 1 é o **Guardião do Juramento**; o segundo é o **Abade das Correntes**, homologado no M5-G. Sua dificuldade atual foi aceita; os chefes posteriores devem exigir mais posicionamento, leitura de padrões e domínio das habilidades disponíveis, sem ataques inevitáveis ou números definidos prematuramente. Os chefes final e secreto são adicionais aos cinco chefes de fase; seus nomes e acessos ainda serão definidos.
+
+### Plano macro (ideias anteriores, sujeito a revisão)
 
 | Fase | Cenário | Principal desafio | Ideia de chefe |
 |---|---|---|---|
-| 1 — Caminho das Cinzas | Cemitério e muralhas | Aprender salto e espada | Sentinela de Pedra |
+| 1 — O Cemitério dos Esquecidos | Cemitério e Catedral | Aprender salto e espada | Guardião do Juramento (implementado) |
 | 2 — Abadia Silenciosa | Claustros e sinos | Ritmo de armadilhas | Abade das Correntes |
 | 3 — Floresta dos Ossos | Floresta petrificada | Plataformas e inimigos móveis | Cervo Espectral |
 | 4 — Fornalha do Juramento | Minas e fornalhas | Perigos do ambiente | Guardião das Brasas |
 | 5 — Trono Esquecido | Fortaleza central | Domínio de todas as mecânicas | Regente do Vazio |
 
-Todos os nomes e conceitos são provisórios. Fases de 8–12 minutos são uma meta de design, não uma promessa de duração.
+Os nomes e conceitos das fases e chefes futuros são provisórios; o Guardião do Juramento e O Cemitério dos Esquecidos são os nomes implementados. Fases de 8–12 minutos são uma meta de design, não uma promessa de duração.
 
 ### Vertical slice
 

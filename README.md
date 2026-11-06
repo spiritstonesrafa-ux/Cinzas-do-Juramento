@@ -1,4 +1,10 @@
-> **Estado atual:** M5-D homologado visual e funcionalmente pelo responsável, que informou após o playtest que está tudo OK. M5-C3 permanece encerrado administrativamente com ressalvas, sem converter testes inconclusivos em PASS. O próximo marco previsto é M5-E, de exploração, segredos e atalhos. Consulte o [relatório M5-D](tests/VALIDACAO_M5_D.md) e o [encerramento M5-C3](tests/ENCERRAMENTO_ADMINISTRATIVO_M5_C3.md).
+> **Estado atual (05/11/2026):** M5-D e M5-E homologados; M5-F homologado com ressalvas; M5-G e o Abade homologados pelo responsável. Dash terrestre é recompensa permanente após vitória. Consolidação Git e publicação não foram realizadas; ataque aéreo está somente em planejamento.
+
+> **Homologação posterior M5-F:** o responsável informou “playtest ok” e homologou o M5-F com as ressalvas documentadas. O mínimo físico global de 12.227,52 px continua não comprovado e não bloqueante; o modelo horizontal não é distância física. M5-C3, ObjectDB e o pico histórico de 183,878 ms permanecem registrados. Esta informação não representa nova execução automatizada.
+
+# Histórico das etapas anteriores
+
+Os registros abaixo descrevem a situação no momento de cada entrega; o estado atual consta acima.
 
 # M5-B-FIX01 — Correção local para novo playtest
 
