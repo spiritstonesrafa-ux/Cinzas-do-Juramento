@@ -9,7 +9,9 @@ const ORIGINS: Array[Vector2] = [
 	Vector2(2400, 0),
 	Vector2(3600, 0),
 	Vector2(4800, 0),
-	Vector2(6000, 0)
+	Vector2(6000, 0),
+	Vector2(7200, 0),
+	Vector2(8400, 0)
 ]
 const NAMES: Array[String] = [
 	"Entrada da Floresta",
@@ -17,7 +19,9 @@ const NAMES: Array[String] = [
 	"Passagem dos Fósseis",
 	"Clareira Ancestral",
 	"Passagem das Raízes Profundas",
-	"Galeria dos Ossos Antigos"
+	"Galeria dos Ossos Antigos",
+	"Fenda das Vértebras",
+	"Bosque dos Ecos"
 ]
 
 ## Setor 1: Entrada horizontal com desníveis orgânicos, raízes baixas e caminho alto opcional
@@ -30,11 +34,11 @@ const SECTOR_1_MAIN: Array[Rect2] = [
 ]
 
 const SECTOR_1_BRANCHES: Array[Rect2] = [
-	Rect2(190, 246, 70, 12),
-	Rect2(320, 222, 80, 12),
-	Rect2(470, 174, 140, 14),
-	Rect2(660, 220, 80, 12),
-	Rect2(800, 160, 90, 12),
+	# Caminho elevado pelo dossel de raízes acessível (subida em degraus suaves de <= 26 px)
+	Rect2(160, 252, 80, 8),
+	Rect2(290, 244, 90, 12),
+	Rect2(410, 222, 130, 14),
+	Rect2(570, 224, 90, 12),
 ]
 
 ## Setor 2: Bosque das Raízes com abismo de travessia (Salto + Dash), dossel de costelas e retorno bidirecional
@@ -60,10 +64,10 @@ const SECTOR_2_MAIN: Array[Rect2] = [
 ]
 
 const SECTOR_2_BRANCHES: Array[Rect2] = [
-	# Caminho elevado pelo dossel de raízes e costelas
-	Rect2(360, 238, 70, 12),
-	Rect2(460, 184, 150, 14),
-	Rect2(640, 210, 90, 12),
+	# Caminho elevado pelo dossel de raízes e costelas (acessível do solo oeste e do Santuário)
+	Rect2(350, 276, 90, 12),
+	Rect2(475, 252, 130, 14),
+	Rect2(640, 246, 80, 12),
 ]
 
 ## Setor 3: Passagem dos Fósseis - corredor fóssil ancestral com raízes profundas e desfiladeiro
@@ -82,12 +86,12 @@ const SECTOR_3_MAIN: Array[Rect2] = [
 ]
 
 const SECTOR_3_BRANCHES: Array[Rect2] = [
-	# Caminho aéreo por galhos fossilizados
-	Rect2(140, 230, 80, 12),
-	Rect2(260, 185, 120, 12),
-	Rect2(430, 215, 90, 12),
-	Rect2(650, 170, 130, 14),
-	Rect2(810, 220, 90, 12),
+	# Caminho aéreo por galhos fossilizados (acesso do solo oeste <= 24 px e livre vão sobre o desfiladeiro)
+	Rect2(120, 266, 80, 12),
+	Rect2(230, 244, 90, 12),
+	Rect2(350, 222, 110, 14),
+	Rect2(480, 200, 110, 12),
+	Rect2(620, 222, 90, 12),
 ]
 
 ## Setor 4: Clareira Ancestral - clareira gótica monumental com ruínas antigas e mirante
@@ -105,11 +109,11 @@ const SECTOR_4_MAIN: Array[Rect2] = [
 ]
 
 const SECTOR_4_BRANCHES: Array[Rect2] = [
-	# Plataformas elevadas sobre arcos de ruínas góticas
-	Rect2(160, 210, 90, 12),
-	Rect2(300, 160, 140, 14),
-	Rect2(520, 195, 100, 12),
-	Rect2(680, 150, 120, 14),
+	# Plataformas elevadas sobre arcos de ruínas góticas (acesso terraço oeste <= 22 px, livre para o mirante)
+	Rect2(210, 248, 80, 12),
+	Rect2(320, 226, 90, 14),
+	Rect2(440, 204, 100, 14),
+	Rect2(570, 190, 110, 14),
 ]
 
 ## Setor 5: Passagem das Raízes Profundas - túnel e fenda fechada dominada por raízes gigantes e arcos ósseos
@@ -130,12 +134,12 @@ const SECTOR_5_MAIN: Array[Rect2] = [
 ]
 
 const SECTOR_5_BRANCHES: Array[Rect2] = [
-	# Caminho aéreo por raízes suspensas e arcos fósseis
-	Rect2(140, 210, 80, 12),
-	Rect2(250, 170, 110, 12),
-	Rect2(420, 230, 100, 14),
-	Rect2(600, 190, 90, 12),
-	Rect2(750, 220, 90, 12),
+	# Caminho aéreo por raízes suspensas e arcos fósseis (acesso bidirecional solo/terraço <= 22 px)
+	Rect2(110, 238, 70, 12),
+	Rect2(210, 216, 90, 12),
+	Rect2(330, 216, 120, 14),
+	Rect2(480, 228, 110, 14),
+	Rect2(620, 250, 90, 12),
 ]
 
 ## Setor 6: Galeria dos Ossos Antigos - grande ossuário com costelas monumentais, vértebras e ruínas góticas
@@ -156,11 +160,65 @@ const SECTOR_6_MAIN: Array[Rect2] = [
 ]
 
 const SECTOR_6_BRANCHES: Array[Rect2] = [
-	# Plataformas aéreas formadas por costelas fósseis e arcos ogivais
-	Rect2(120, 215, 80, 12),
-	Rect2(250, 160, 110, 14),
-	Rect2(420, 200, 100, 12),
-	Rect2(620, 180, 120, 14),
+	# Plataformas aéreas formadas por costelas fósseis e arcos ogivais (acesso solo oeste <= 24 px, terraço <= 30 px)
+	Rect2(110, 256, 75, 12),
+	Rect2(215, 234, 85, 12),
+	Rect2(330, 212, 100, 12),
+	Rect2(460, 190, 150, 14),
+]
+
+## Setor 7: Fenda das Vértebras - fenda profunda com pontes de colunas vertebrais fósseis e névoa espectral
+const SECTOR_7_MAIN: Array[Rect2] = [
+	# Patamar de entrada seguro (alinhado a y=220 com a saída do Setor 6)
+	Rect2(0, 220, 180, 200),
+	# Descida suave sob espinhas fósseis (y=240, degrau acessível de 20 px)
+	Rect2(180, 240, 140, 180),
+	# Patamar rochoso e vértebras (y=260, degrau acessível de 20 px)
+	Rect2(320, 260, 160, 160),
+	# GAP: x: 480 -> 528 (48 px - vão sobre a fenda das vértebras, salto plano e retorno simétrico)
+	# Patamar de pouso calcificado (y=260, plano idêntico ao lado oeste)
+	Rect2(528, 260, 150, 160),
+	# Subida suave em degrau fóssil (y=240, subida acessível de 20 px)
+	Rect2(678, 240, 120, 180),
+	# Terraço de saída para o Setor 8 (y=240, alinhado com o próximo setor)
+	Rect2(798, 240, 162, 180),
+]
+
+const SECTOR_7_BRANCHES: Array[Rect2] = [
+	# Caminho aéreo por costelas suspensas sobre a fenda (acesso entrada <= 24 px, livre vão da fenda)
+	Rect2(100, 196, 75, 12),
+	Rect2(205, 174, 85, 12),
+	Rect2(320, 154, 90, 12),
+	Rect2(440, 154, 110, 14),
+	Rect2(580, 170, 90, 12),
+]
+
+## Setor 8: Bosque dos Ecos - abóbada vegetal ancestral, raízes entrelaçadas e monólitos sagrados
+const SECTOR_8_MAIN: Array[Rect2] = [
+	# Patamar de entrada seguro (alinhado a y=240 com a saída do Setor 7)
+	Rect2(0, 240, 180, 180),
+	# Descida suave em direção à clareira dos ecos (y=260, degrau acessível de 20 px)
+	Rect2(180, 260, 170, 160),
+	# Bacia central musgosa sob o dossel cerrado (y=280, degrau acessível de 20 px)
+	Rect2(350, 280, 130, 140),
+	# Patamar de impulsão elevado (y=260, degrau acessível de 20 px)
+	Rect2(480, 260, 40, 160),
+	# GAP: x: 520 -> 566 (46 px - vão atmosférico entre raízes antigas, salto plano nivelado)
+	# Patamar de recepção leste (y=260, plano nivelado)
+	Rect2(566, 260, 150, 160),
+	# Subida suave ao terraço monumental (y=240, subida acessível de 20 px)
+	Rect2(716, 240, 110, 180),
+	# Terraço culminante dos Monólitos e margem leste (y=240, sólida para futuras expansões)
+	Rect2(826, 240, 134, 180),
+]
+
+const SECTOR_8_BRANCHES: Array[Rect2] = [
+	# Caminho elevado por cipós e galhos fossilizados (acesso entrada <= 24 px, livre vão dos ecos)
+	Rect2(100, 216, 75, 12),
+	Rect2(205, 194, 85, 12),
+	Rect2(320, 172, 90, 12),
+	Rect2(440, 154, 110, 14),
+	Rect2(580, 172, 90, 12),
 ]
 
 static func surfaces(id: int) -> Array[Rect2]:
@@ -184,6 +242,12 @@ static func surfaces(id: int) -> Array[Rect2]:
 		5:
 			result.assign(SECTOR_6_MAIN)
 			result.append_array(SECTOR_6_BRANCHES)
+		6:
+			result.assign(SECTOR_7_MAIN)
+			result.append_array(SECTOR_7_BRANCHES)
+		7:
+			result.assign(SECTOR_8_MAIN)
+			result.append_array(SECTOR_8_BRANCHES)
 		_:
 			result.assign(SECTOR_2_MAIN)
 			result.append_array(SECTOR_2_BRANCHES)
@@ -215,6 +279,14 @@ static func entry(id: int, from_right: bool = false) -> Vector2:
 			if from_right:
 				return ORIGINS[5] + Vector2(912, 220)
 			return ORIGINS[5] + Vector2(48, 280)
+		6:
+			if from_right:
+				return ORIGINS[6] + Vector2(912, 240)
+			return ORIGINS[6] + Vector2(48, 220)
+		7:
+			if from_right:
+				return ORIGINS[7] + Vector2(912, 240)
+			return ORIGINS[7] + Vector2(48, 240)
 		_:
 			return ORIGINS[0] + Vector2(48, 300)
 

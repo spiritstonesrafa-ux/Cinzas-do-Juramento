@@ -70,3 +70,17 @@ Assets desenvolvidos e consolidados em 06/11/2026 para sanar em definitivo as co
 - **Conteúdo:** Grande ossuário cavernoso com arcadas monumentais de costelas titânicas e vértebras colossais formando corredores de abóbadas góticas, ruínas de catedral ancestral entrelaçadas à ossada petrificada, névoa rasteira turquesa/esmeralda sobre abismo profundo e feixes de luar espectral filtrados pelo teto ósseo.
 - **Isolamento:** Fundo puro. Não contém chão jogável, plataformas, personagens, HUD ou molduras.
 - **Renderização:** Paralaxe distante com fator (0.12, 0.08).
+
+## 10. forest_sector7_bg.png (M6-B3)
+- **Dimensões:** 1774 × 887 px (RGB 24-bit)
+- **Finalidade:** Fundo panorâmico distante do Setor 7 (Fenda das Vértebras).
+- **Conteúdo:** Fenda natural profunda e íngreme cruzada por pontes colossais de colunas vertebrais e costelas fossilizadas de titãs antigos, árvores de marfim petrificado inclinadas sobre o abismo, fragmentos de arcos góticos em ruínas engolidos por névoa espectral esverdeada e luar frio filtrado entre as frestas ósseas.
+- **Isolamento:** Fundo puro de paisagem distante. Não contém plataformas jogáveis, chão, personagens, HUD ou molduras.
+- **Renderização:** Paralaxe distante com fator (0.12, 0.08).
+
+## 11. forest_sector8_bg.png (M6-B3)
+- **Dimensões:** 1774 × 887 px (RGB 24-bit)
+- **Finalidade:** Fundo panorâmico distante do Setor 8 (Bosque dos Ecos).
+- **Conteúdo:** Santuário vegetal e ósseo ancestral e silencioso, abóbada gótica natural formada pelo entrelaçamento de árvores fossilizadas e raízes titânicas, feixes de luz espectral celeste descendo pela copa fechada, névoa turquesa e partículas bioluminescentes flutuando sobre monólitos e ruínas de criptas esquecidas.
+- **Isolamento:** Fundo puro. Não contém chão jogável, plataformas, personagens, HUD ou molduras.
+- **Renderização:** Paralaxe distante com fator (0.12, 0.08).

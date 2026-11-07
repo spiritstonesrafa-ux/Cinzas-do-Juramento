@@ -4,7 +4,7 @@ extends Node2D
 ## Elimina completamente colagens retangulares, recortes incorretos e duplicações.
 ## Utiliza assets pixel art dedicados e isolados com transparência alfa real em 320x180.
 
-@export_range(0, 5, 1) var sector_id: int = 0
+@export_range(0, 7, 1) var sector_id: int = 0
 
 const BACKGROUNDS: Array[Texture2D] = [
 	preload("res://assets/art/m6a/forest_sector1_bg.png"),
@@ -12,7 +12,9 @@ const BACKGROUNDS: Array[Texture2D] = [
 	preload("res://assets/art/m6a/forest_sector3_bg.png"),
 	preload("res://assets/art/m6a/forest_sector4_bg.png"),
 	preload("res://assets/art/m6a/forest_sector5_bg.png"),
-	preload("res://assets/art/m6a/forest_sector6_bg.png")
+	preload("res://assets/art/m6a/forest_sector6_bg.png"),
+	preload("res://assets/art/m6a/forest_sector7_bg.png"),
+	preload("res://assets/art/m6a/forest_sector8_bg.png")
 ]
 const MATERIAL: Texture2D = preload("res://assets/art/m6a/forest_materials.png")
 const PROPS: Texture2D = preload("res://assets/art/m6a/forest_props.png")
@@ -91,6 +93,10 @@ func _draw() -> void:
 		_draw_sector_5_root_features()
 	elif sector_id == 5:
 		_draw_sector_6_ossuary_features()
+	elif sector_id == 6:
+		_draw_sector_7_vertebrae_features()
+	elif sector_id == 7:
+		_draw_sector_8_echo_features()
 
 	# Camada 5: Acentos do cenário (fungos bioluminescentes, espículas de osso e líquens)
 	_draw_ground_accents()
@@ -113,6 +119,10 @@ func _draw_background_panorama(delta: Vector2) -> void:
 		tint = Color(0.86, 0.95, 0.90, 1.0)
 	elif sector_id == 5:
 		tint = Color(0.88, 0.92, 0.96, 1.0)
+	elif sector_id == 6:
+		tint = Color(0.86, 0.94, 0.92, 1.0)
+	elif sector_id == 7:
+		tint = Color(0.85, 0.92, 0.96, 1.0)
 	var bg_idx: int = clampi(sector_id, 0, BACKGROUNDS.size() - 1)
 	draw_texture_rect(BACKGROUNDS[bg_idx], bg_rect, false, tint)
 
@@ -175,6 +185,36 @@ func _draw_midground_structures(_delta: Vector2) -> void:
 		var antlers: Rect2 = Rect2(360, 170, 70, 60)
 		if antlers.intersects(_view.grow(48)):
 			draw_texture_rect_region(PROPS, antlers, REG_ANTLER_HORNS, Color(0.68, 0.72, 0.74, 0.70))
+	elif sector_id == 6:
+		# Setor 7: Fenda das Vértebras - colunas espinhais fósseis inclinadas e arcos sobre o abismo
+		var trees: Array[Vector2] = [Vector2(140, 80), Vector2(760, 85)]
+		for t_pos in trees:
+			var tree_rect: Rect2 = Rect2(t_pos, Vector2(94, 210))
+			if tree_rect.intersects(_view.grow(48)):
+				draw_texture_rect_region(PROPS, tree_rect, REG_COLOSSAL_TREE, Color(0.70, 0.75, 0.76, 0.85))
+		var ribs: Array[Vector2] = [Vector2(320, 140), Vector2(540, 130)]
+		for r_pos in ribs:
+			var rib_rect: Rect2 = Rect2(r_pos, Vector2(96, 96))
+			if rib_rect.intersects(_view.grow(48)):
+				draw_texture_rect_region(PROPS, rib_rect, REG_RIB_ARCH, Color(0.72, 0.77, 0.75, 0.80))
+		var antlers: Rect2 = Rect2(440, 180, 70, 60)
+		if antlers.intersects(_view.grow(48)):
+			draw_texture_rect_region(PROPS, antlers, REG_ANTLER_HORNS, Color(0.68, 0.74, 0.72, 0.75))
+	elif sector_id == 7:
+		# Setor 8: Bosque dos Ecos - abóbada natural de árvores e raízes ancestrais entrelaçadas
+		var trees: Array[Vector2] = [Vector2(110, 75), Vector2(440, 70), Vector2(810, 75)]
+		for t_pos in trees:
+			var tree_rect: Rect2 = Rect2(t_pos, Vector2(98, 220))
+			if tree_rect.intersects(_view.grow(48)):
+				draw_texture_rect_region(PROPS, tree_rect, REG_COLOSSAL_TREE, Color(0.68, 0.76, 0.74, 0.85))
+		var ribs: Array[Vector2] = [Vector2(260, 120), Vector2(620, 115)]
+		for r_pos in ribs:
+			var rib_rect: Rect2 = Rect2(r_pos, Vector2(88, 88))
+			if rib_rect.intersects(_view.grow(48)):
+				draw_texture_rect_region(PROPS, rib_rect, REG_RIB_ARCH, Color(0.66, 0.74, 0.72, 0.75))
+		var antlers: Rect2 = Rect2(830, 160, 68, 60)
+		if antlers.intersects(_view.grow(48)):
+			draw_texture_rect_region(PROPS, antlers, REG_ANTLER_HORNS, Color(0.72, 0.78, 0.76, 0.80))
 
 ## 3. Superfícies sólidas do plano de jogo (Alinhamento 100% físico e orgânico)
 func _draw_playfield_surfaces() -> void:
@@ -203,6 +243,10 @@ func _draw_playfield_surfaces() -> void:
 			root_positions = [Vector2(90, 260), Vector2(240, 284), Vector2(420, 308), Vector2(620, 290), Vector2(850, 280)]
 		5:
 			root_positions = [Vector2(80, 280), Vector2(240, 298), Vector2(400, 278), Vector2(610, 260), Vector2(740, 240), Vector2(850, 220)]
+		6:
+			root_positions = [Vector2(80, 220), Vector2(240, 240), Vector2(380, 260), Vector2(580, 260), Vector2(720, 240), Vector2(850, 240)]
+		7:
+			root_positions = [Vector2(80, 240), Vector2(240, 260), Vector2(400, 280), Vector2(500, 260), Vector2(620, 260), Vector2(760, 240), Vector2(870, 240)]
 
 	for root_pos: Vector2 in root_positions:
 		var root_rect: Rect2 = Rect2(root_pos + Vector2(0, 1), Vector2(145, 48))
@@ -310,7 +354,41 @@ func _draw_sector_6_ossuary_features() -> void:
 		draw_circle(ember_pos, 3.0 * pulse, PAL_GLOW_CORE)
 		draw_string(ThemeDB.fallback_font, Vector2(830, 120), "GRANDE OSSUÁRIO", HORIZONTAL_ALIGNMENT_LEFT, -1, 7, Color("d4cfbe"))
 
-## 10. Acentos do cenário: cogumelos bioluminescentes e espículas de ossos
+## 10. Cenografia da Fenda das Vértebras no Setor 7
+func _draw_sector_7_vertebrae_features() -> void:
+	# Vão da fenda sobre névoa espectral (x=480 -> 528)
+	var fissure_gap: Rect2 = Rect2(480, 268, 48, 80)
+	if fissure_gap.intersects(_view.grow(48)):
+		draw_texture_rect_region(MATERIAL, fissure_gap, REG_LICHEN_VEIL, Color(0.18, 0.48, 0.44, 0.35))
+
+	# Arcada óssea fóssil que atravessa o topo da fenda
+	var spine_pos: Vector2 = Vector2(460, 140)
+	if Rect2(spine_pos, Vector2(100, 90)).intersects(_view.grow(32)):
+		draw_texture_rect_region(PROPS, Rect2(spine_pos, Vector2(100, 90)), REG_RIB_ARCH, Color(0.76, 0.82, 0.80, 0.85))
+		var spine_light: Vector2 = spine_pos + Vector2(50, 40)
+		var pulse: float = 0.80 + 0.20 * sin(_spore_timer * 3.8)
+		draw_circle(spine_light, 7.5 * pulse, PAL_GLOW_HALO)
+		draw_circle(spine_light, 2.8 * pulse, PAL_GLOW_CORE)
+
+## 11. Cenografia do Bosque dos Ecos no Setor 8
+func _draw_sector_8_echo_features() -> void:
+	# Vão natural entre raízes ancestrais (x=520 -> 566)
+	var echo_chasm: Rect2 = Rect2(520, 268, 46, 80)
+	if echo_chasm.intersects(_view.grow(48)):
+		draw_texture_rect_region(MATERIAL, echo_chasm, REG_LICHEN_VEIL, Color(0.16, 0.44, 0.42, 0.35))
+
+	# Monólito e Altar dos Ecos no Terraço Culminante (x=840..900, y=150)
+	var shrine_pos: Vector2 = Vector2(840, 145)
+	if Rect2(shrine_pos, Vector2(85, 85)).intersects(_view.grow(32)):
+		draw_texture_rect_region(PROPS, Rect2(shrine_pos, Vector2(85, 85)), REG_RIB_ARCH, Color(0.74, 0.82, 0.80, 0.85))
+		draw_texture_rect_region(PROPS, Rect2(shrine_pos + Vector2(16, 26), Vector2(52, 55)), REG_ANTLER_HORNS, Color(0.80, 0.88, 0.84, 0.90))
+		var echo_flame: Vector2 = shrine_pos + Vector2(42, 42)
+		var pulse: float = 0.85 + 0.20 * sin(_spore_timer * 3.2)
+		draw_circle(echo_flame, 9.0 * pulse, PAL_GLOW_HALO)
+		draw_circle(echo_flame, 3.2 * pulse, PAL_GLOW_CORE)
+		draw_string(ThemeDB.fallback_font, Vector2(835, 135), "MONÓLITO DOS ECOS", HORIZONTAL_ALIGNMENT_LEFT, -1, 7, Color("d4cfbe"))
+
+## 12. Acentos do cenário: cogumelos bioluminescentes e espículas de ossos
 func _draw_ground_accents() -> void:
 	var mushroom_spots: Array[Vector2] = []
 	var bone_spots: Array[Vector2] = []
@@ -319,7 +397,7 @@ func _draw_ground_accents() -> void:
 		0:
 			mushroom_spots = [
 				Vector2(110, 300), Vector2(230, 300), Vector2(350, 288),
-				Vector2(490, 174), Vector2(650, 276), Vector2(820, 160), Vector2(880, 300)
+				Vector2(490, 222), Vector2(650, 276), Vector2(820, 300), Vector2(880, 300)
 			]
 			bone_spots = [Vector2(170, 300), Vector2(420, 300), Vector2(710, 276)]
 		1:
@@ -367,6 +445,26 @@ func _draw_ground_accents() -> void:
 				Vector2(130, 280), Vector2(280, 298), Vector2(440, 278),
 				Vector2(580, 260), Vector2(720, 240), Vector2(795, 220),
 				Vector2(880, 220), Vector2(940, 220)
+			]
+		6:
+			mushroom_spots = [
+				Vector2(70, 220), Vector2(220, 240), Vector2(360, 260),
+				Vector2(570, 260), Vector2(720, 240), Vector2(840, 240),
+				Vector2(920, 240), Vector2(280, 195), Vector2(630, 180)
+			]
+			bone_spots = [
+				Vector2(120, 220), Vector2(270, 240), Vector2(420, 260),
+				Vector2(610, 260), Vector2(750, 240), Vector2(890, 240)
+			]
+		7:
+			mushroom_spots = [
+				Vector2(80, 240), Vector2(220, 260), Vector2(390, 280),
+				Vector2(500, 260), Vector2(610, 260), Vector2(750, 240),
+				Vector2(860, 240), Vector2(930, 240), Vector2(310, 145), Vector2(670, 150)
+			]
+			bone_spots = [
+				Vector2(140, 240), Vector2(290, 260), Vector2(430, 280),
+				Vector2(590, 260), Vector2(780, 240), Vector2(900, 240)
 			]
 
 	for spot in mushroom_spots:

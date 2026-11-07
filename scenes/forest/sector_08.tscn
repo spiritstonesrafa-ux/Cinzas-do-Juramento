@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/forest/forest_sector.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/forest/forest_art.gd" id="2"]
+
+[node name="Sector08" type="Node2D"]
+script = ExtResource("1")
+sector_id = 7
+
+[node name="Art" type="Node2D" parent="."]
+z_index = -1
+script = ExtResource("2")
+sector_id = 7

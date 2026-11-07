@@ -56,8 +56,8 @@ func _test_layout_four_sectors() -> void:
 	var s2: Array[Rect2] = ForestLayout.surfaces(2)
 	var s3: Array[Rect2] = ForestLayout.surfaces(3)
 	
-	if s0.size() == 10:
-		log_pass("Setor 1 preservado intacto (10 superfícies)")
+	if s0.size() == 9:
+		log_pass("Setor 1 preservado intacto (9 superfícies após remoção da plataforma obstrutiva)")
 	else:
 		log_fail("Setor 1 divergente: %d superfícies" % s0.size())
 	
