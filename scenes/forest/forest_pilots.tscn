@@ -1,0 +1,88 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://scripts/forest/forest_demo.gd" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/player/knight.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://scenes/ui/health_hud.tscn" id="3"]
+[ext_resource type="Texture2D" path="res://assets/art/m6a/forest_stag_crest.png" id="4"]
+
+[sub_resource type="LabelSettings" id="TitleSettings"]
+font_size = 6
+font_color = Color(0.92, 0.88, 0.78, 1)
+shadow_size = 1
+shadow_color = Color(0.04, 0.06, 0.05, 0.95)
+
+[sub_resource type="LabelSettings" id="SubtitleSettings"]
+font_size = 6
+font_color = Color(0.82, 0.76, 0.62, 0.95)
+shadow_size = 1
+shadow_color = Color(0.04, 0.06, 0.05, 0.95)
+
+[sub_resource type="LabelSettings" id="DebugSettings"]
+font_size = 6
+font_color = Color(0.65, 0.88, 0.75, 1)
+shadow_size = 1
+shadow_color = Color(0.02, 0.04, 0.03, 1)
+
+[node name="ForestPilots" type="Node2D"]
+script = ExtResource("1")
+
+[node name="Rooms" type="Node2D" parent="."]
+
+[node name="Checkpoints" type="Node2D" parent="."]
+
+[node name="Knight" parent="." instance=ExtResource("2")]
+position = Vector2(48, 300)
+z_index = 2
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(160, 252)
+process_callback = 0
+
+[node name="HealthHUD" parent="." instance=ExtResource("3")]
+
+[node name="ForestHUD" type="CanvasLayer" parent="."]
+layer = 2
+
+[node name="StagCrest" type="TextureRect" parent="ForestHUD"]
+offset_left = 6.0
+offset_top = 17.0
+offset_right = 14.0
+offset_bottom = 29.0
+texture = ExtResource("4")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Caption" type="Label" parent="ForestHUD"]
+offset_left = 17.0
+offset_top = 16.0
+offset_right = 180.0
+offset_bottom = 26.0
+label_settings = SubResource("TitleSettings")
+text = "FLORESTA DOS OSSOS"
+
+[node name="SubCaption" type="Label" parent="ForestHUD"]
+visible = false
+offset_left = 20.0
+offset_top = 25.0
+offset_right = 180.0
+offset_bottom = 35.0
+label_settings = SubResource("SubtitleSettings")
+text = "Piloto 1/2 · Entrada da Floresta"
+
+[node name="Hint" type="Label" parent="ForestHUD"]
+visible = false
+offset_left = 4.0
+offset_top = 158.0
+offset_right = 316.0
+offset_bottom = 168.0
+label_settings = SubResource("DebugSettings")
+text = "A/D mover · Espaço saltar · Shift Dash · J espada · F7 reiniciar"
+
+[node name="SubHint" type="Label" parent="ForestHUD"]
+visible = false
+offset_left = 4.0
+offset_top = 168.0
+offset_right = 316.0
+offset_bottom = 178.0
+label_settings = SubResource("DebugSettings")
+text = ""

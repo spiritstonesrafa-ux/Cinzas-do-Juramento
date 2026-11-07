@@ -1,0 +1,308 @@
+class_name ForestArt
+extends Node2D
+## Renderizador artístico de alta fidelidade e modularidade para a Floresta dos Ossos (M6-A / M6-B1).
+## Elimina completamente colagens retangulares, recortes incorretos e duplicações.
+## Utiliza assets pixel art dedicados e isolados com transparência alfa real em 320x180.
+
+@export_range(0, 3, 1) var sector_id: int = 0
+
+const BACKGROUNDS: Array[Texture2D] = [
+	preload("res://assets/art/m6a/forest_sector1_bg.png"),
+	preload("res://assets/art/m6a/forest_bosque_codex.png"),
+	preload("res://assets/art/m6a/forest_sector3_bg.png"),
+	preload("res://assets/art/m6a/forest_sector4_bg.png")
+]
+const MATERIAL: Texture2D = preload("res://assets/art/m6a/forest_materials.png")
+const PROPS: Texture2D = preload("res://assets/art/m6a/forest_props.png")
+const ORGANIC_GROUND: Texture2D = preload("res://assets/art/m6a/forest_ground_codex.png")
+const ORGANIC_ROOT: Texture2D = preload("res://assets/art/m6a/forest_root_codex.png")
+
+# Regiões no atlas de materiais (forest_materials.png - 1024x512)
+const REG_PLATFORM_MID: Rect2 = Rect2(0, 0, 512, 48)
+const REG_PLATFORM_LEFT: Rect2 = Rect2(512, 0, 128, 48)
+const REG_PLATFORM_RIGHT: Rect2 = Rect2(640, 0, 128, 48)
+const REG_ELEVATED_BRANCH: Rect2 = Rect2(0, 64, 512, 32)
+const REG_LOAM_TILE: Rect2 = Rect2(0, 128, 128, 128)
+const REG_MUSHROOM_1: Rect2 = Rect2(256, 128, 64, 64)
+const REG_MUSHROOM_2: Rect2 = Rect2(320, 128, 64, 64)
+const REG_BONE_SPURS: Rect2 = Rect2(448, 128, 64, 64)
+const REG_LICHEN_VEIL: Rect2 = Rect2(576, 128, 64, 128)
+
+# Regiões no atlas de adereços (forest_props.png - 1024x512)
+const REG_COLOSSAL_TREE: Rect2 = Rect2(0, 0, 240, 480)
+const REG_RIB_ARCH: Rect2 = Rect2(400, 0, 220, 220)
+const REG_ANTLER_HORNS: Rect2 = Rect2(260, 240, 220, 180)
+const REG_ALTAR_SHRINE: Rect2 = Rect2(640, 0, 280, 360)
+
+# Paleta atmosférica gótica
+const PAL_MOSS_EDGE: Color = Color("8ebc96")
+const PAL_MOSS_DARK: Color = Color("233328")
+const PAL_BONE_PALE: Color = Color("dcd5c2")
+const PAL_BONE_SHADOW: Color = Color("5e594e")
+const PAL_EARTH_DEEP: Color = Color("121a14")
+const PAL_GLOW_HALO: Color = Color(0.27, 0.89, 0.58, 0.10)
+const PAL_GLOW_CORE: Color = Color(0.58, 0.98, 0.81, 0.85)
+
+var _view: Rect2 = Rect2(0, 0, 320, 180)
+var _last_cell: Vector2i = Vector2i(-999, -999)
+var _spore_timer: float = 0.0
+
+func _ready() -> void:
+	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	z_index = -1
+
+func _process(delta: float) -> void:
+	_spore_timer += delta
+	var camera: Camera2D = get_viewport().get_camera_2d()
+	if camera == null:
+		return
+	var local: Vector2 = camera.get_screen_center_position() - global_position
+	var cell: Vector2i = Vector2i(local.round())
+	if cell != _last_cell or fmod(_spore_timer, 0.15) < delta:
+		_last_cell = cell
+		_view = Rect2(local.round() - Vector2(160, 90), Vector2(320, 180))
+		queue_redraw()
+
+func _draw() -> void:
+	var cam_center: Vector2 = _view.get_center()
+	var sector_center: Vector2 = Vector2(480, 210)
+	var parallax_delta: Vector2 = cam_center - sector_center
+	
+	# Camada 1: Fundo panorâmico distante com céu tormentoso, lua e névoa
+	_draw_background_panorama(parallax_delta)
+	
+	# Camada 2: Estruturas monumentais de midground (árvores de ossos petrificados com transparência real)
+	_draw_midground_structures(parallax_delta)
+	
+	# Camada 3: Superfícies sólidas do plano de jogo (colisão física pixel-perfect e terreno orgânico)
+	_draw_playfield_surfaces()
+	
+	# Camada 4: Cenografia específica (Altar no Setor 2, Abismo de travessia, Desfiladeiro do Setor 3, Clareira do Setor 4)
+	if sector_id == 1:
+		_draw_sector_2_challenge_gap()
+		_draw_sector_2_altar()
+	elif sector_id == 2:
+		_draw_sector_3_ravine()
+	elif sector_id == 3:
+		_draw_sector_4_clearing_features()
+	
+	# Camada 5: Acentos do cenário (fungos bioluminescentes, espículas de osso e líquens)
+	_draw_ground_accents()
+	
+	# Camada 6: Esporos e bruma espectral viva
+	_draw_ambient_spores(parallax_delta)
+
+## 1. Fundo panorâmico distante
+func _draw_background_panorama(delta: Vector2) -> void:
+	var shift: Vector2 = delta * Vector2(0.12, 0.08)
+	var bg_rect: Rect2 = Rect2(_view.position - Vector2(80, 30) - shift, Vector2(480, 240))
+	var tint: Color = Color(0.90, 0.94, 0.98, 1.0)
+	if sector_id == 1:
+		tint = Color(0.92, 0.95, 0.98, 1.0)
+	elif sector_id == 2:
+		tint = Color(0.88, 0.94, 0.92, 1.0)
+	elif sector_id == 3:
+		tint = Color(0.90, 0.92, 0.96, 1.0)
+	var bg_idx: int = clampi(sector_id, 0, BACKGROUNDS.size() - 1)
+	draw_texture_rect(BACKGROUNDS[bg_idx], bg_rect, false, tint)
+
+## 2. Árvores monumentais de marfim petrificado no plano intermediário
+func _draw_midground_structures(_delta: Vector2) -> void:
+	if sector_id == 0:
+		# Posições das árvores colossais no Setor 1
+		var trees: Array[Vector2] = [Vector2(140, 110), Vector2(480, 110), Vector2(800, 110)]
+		for t_pos in trees:
+			var tree_rect: Rect2 = Rect2(t_pos, Vector2(84, 190))
+			if tree_rect.intersects(_view.grow(48)):
+				draw_texture_rect_region(PROPS, tree_rect, REG_COLOSSAL_TREE, Color(0.72, 0.78, 0.82, 0.85))
+	elif sector_id == 1:
+		# Setor 2: Árvore colossal dominante no centro
+		var tree_pos: Vector2 = Vector2(440, 96)
+		var tree_rect: Rect2 = Rect2(tree_pos, Vector2(100, 220))
+		if tree_rect.intersects(_view.grow(48)):
+			draw_texture_rect_region(PROPS, tree_rect, REG_COLOSSAL_TREE, Color(0.75, 0.80, 0.85, 0.85))
+	elif sector_id == 2:
+		# Setor 3: Passagem dos Fósseis - árvores ancestrais retorcidas e arcos ósseos
+		var trees: Array[Vector2] = [Vector2(220, 100), Vector2(680, 90)]
+		for t_pos in trees:
+			var tree_rect: Rect2 = Rect2(t_pos, Vector2(90, 200))
+			if tree_rect.intersects(_view.grow(48)):
+				draw_texture_rect_region(PROPS, tree_rect, REG_COLOSSAL_TREE, Color(0.70, 0.76, 0.80, 0.85))
+		var rib_rect: Rect2 = Rect2(440, 150, 80, 80)
+		if rib_rect.intersects(_view.grow(48)):
+			draw_texture_rect_region(PROPS, rib_rect, REG_RIB_ARCH, Color(0.65, 0.72, 0.75, 0.70))
+	elif sector_id == 3:
+		# Setor 4: Clareira Ancestral - formação rochosa monumental e árvores na borda
+		var trees: Array[Vector2] = [Vector2(130, 110), Vector2(780, 80)]
+		for t_pos in trees:
+			var tree_rect: Rect2 = Rect2(t_pos, Vector2(96, 210))
+			if tree_rect.intersects(_view.grow(48)):
+				draw_texture_rect_region(PROPS, tree_rect, REG_COLOSSAL_TREE, Color(0.74, 0.78, 0.82, 0.85))
+
+## 3. Superfícies sólidas do plano de jogo (Alinhamento 100% físico e orgânico)
+func _draw_playfield_surfaces() -> void:
+	for rect: Rect2 in ForestLayout.surfaces(sector_id):
+		if not rect.intersects(_view.grow(48)):
+			continue
+		if rect.size.y <= 16.0:
+			# Galhos elevados estreitos usam raiz sem trilho claro
+			_draw_organic_surface(Rect2(rect.position, Vector2(rect.size.x, rect.size.y)))
+			draw_texture_rect(ORGANIC_ROOT, Rect2(rect.position + Vector2(-2, 3), Vector2(rect.size.x + 4, 24)), false)
+		else:
+			_draw_organic_surface(rect)
+	
+	# Raízes ornamentais de conexão aos troncos e disfarce de repetição
+	var root_positions: Array = []
+	match sector_id:
+		0:
+			root_positions = [Vector2(112, 300), Vector2(454, 300), Vector2(774, 300)]
+		1:
+			root_positions = [Vector2(410, 316), Vector2(720, 288), Vector2(760, 268), Vector2(885, 268)]
+		2:
+			root_positions = [Vector2(80, 288), Vector2(240, 312), Vector2(420, 290), Vector2(650, 276), Vector2(820, 300)]
+		3:
+			root_positions = [Vector2(100, 300), Vector2(270, 270), Vector2(470, 300), Vector2(680, 280), Vector2(820, 260)]
+	
+	for root_pos: Vector2 in root_positions:
+		var root_rect: Rect2 = Rect2(root_pos + Vector2(0, 1), Vector2(145, 48))
+		if root_rect.intersects(_view.grow(32)):
+			draw_texture_rect(ORGANIC_ROOT, root_rect, false, Color(0.8, 0.85, 0.82, 0.8))
+
+func _draw_organic_surface(rect: Rect2) -> void:
+	# Textura ancorada no mundo: a fase horizontal não reinicia a cada colisor.
+	# O topo de musgo começa em y=130; a geometria física permanece autoritativa em y=0.
+	var visible: Rect2 = rect.intersection(_view.grow(32))
+	if not visible.has_area():
+		return
+	draw_rect(visible, PAL_EARTH_DEEP)
+	var period: float = 384.0
+	var scale_factor: float = float(ORGANIC_GROUND.get_width()) / period
+	var max_depth: float = (float(ORGANIC_GROUND.get_height()) - 130.0) / scale_factor
+	var material_rect: Rect2 = rect.intersection(Rect2(rect.position, Vector2(rect.size.x, minf(rect.size.y, max_depth))))
+	var region: Rect2 = material_rect.intersection(visible)
+	if not region.has_area():
+		return
+	var tile_start: int = floori(region.position.x / period)
+	var tile_end: int = floori((region.end.x - 0.001) / period)
+	for tile: int in range(tile_start, tile_end + 1):
+		var clip: Rect2 = region.intersection(Rect2(tile * period, rect.position.y, period, max_depth))
+		if not clip.has_area():
+			continue
+		var source: Rect2 = Rect2((clip.position.x - tile * period) * scale_factor, 130.0 + (clip.position.y - rect.position.y) * scale_factor, clip.size.x * scale_factor, clip.size.y * scale_factor)
+		draw_texture_rect_region(ORGANIC_GROUND, clip, source)
+
+## 4. Altar do Santuário do Cervo no Setor 2
+func _draw_sector_2_altar() -> void:
+	var altar_pos: Vector2 = Vector2(812, 196)
+	var altar_size: Vector2 = Vector2(76, 52)
+	if not Rect2(altar_pos, altar_size).intersects(_view.grow(32)):
+		return
+	
+	draw_texture_rect_region(PROPS, Rect2(altar_pos, altar_size), REG_ALTAR_SHRINE)
+	
+	var flame_pos: Vector2 = Vector2(altar_pos.x + 38, altar_pos.y + 26)
+	var pulse: float = 0.85 + 0.20 * sin(_spore_timer * 4.0)
+	draw_circle(flame_pos, 8.0 * pulse, PAL_GLOW_HALO)
+	draw_circle(flame_pos, 3.5 * pulse, PAL_GLOW_CORE)
+	
+	draw_string(ThemeDB.fallback_font, Vector2(810, 190), "SANTUÁRIO DO CERVO", HORIZONTAL_ALIGNMENT_LEFT, -1, 7, Color("d4cfbe"))
+
+## 5. Sinalização do desafio de travessia do abismo (Setor 2: 60 px)
+func _draw_sector_2_challenge_gap() -> void:
+	var gap: Rect2 = ForestLayout.get_sector_2_challenge_gap()
+	if not gap.intersects(_view.grow(48)):
+		return
+	
+	var mist_rect: Rect2 = Rect2(gap.position.x - 4, gap.position.y + 16, gap.size.x + 8, 80)
+	draw_texture_rect_region(MATERIAL, mist_rect, REG_LICHEN_VEIL, Color(0.20, 0.50, 0.40, 0.35))
+	
+	var stake_x: float = gap.position.x - 20
+	draw_line(Vector2(stake_x, gap.position.y), Vector2(stake_x, gap.position.y - 16), PAL_BONE_SHADOW, 2)
+	draw_circle(Vector2(stake_x, gap.position.y - 16), 3.0, PAL_BONE_PALE)
+	draw_circle(Vector2(stake_x, gap.position.y - 16), 5.0, PAL_GLOW_HALO)
+
+## 6. Desfiladeiro fóssil do Setor 3
+func _draw_sector_3_ravine() -> void:
+	var ravine_pos: Vector2 = Vector2(540, 310)
+	if not Rect2(ravine_pos, Vector2(50, 90)).intersects(_view.grow(48)):
+		return
+	var mist_rect: Rect2 = Rect2(536, 316, 58, 80)
+	draw_texture_rect_region(MATERIAL, mist_rect, REG_LICHEN_VEIL, Color(0.20, 0.45, 0.38, 0.30))
+
+## 7. Cenografia da Clareira Ancestral no Setor 4
+func _draw_sector_4_clearing_features() -> void:
+	var overlook_marker: Vector2 = Vector2(830, 190)
+	if Rect2(overlook_marker, Vector2(64, 70)).intersects(_view.grow(32)):
+		draw_texture_rect_region(PROPS, Rect2(overlook_marker, Vector2(64, 70)), REG_ANTLER_HORNS, Color(0.65, 0.70, 0.68, 0.75))
+		var beacon_pos: Vector2 = overlook_marker + Vector2(32, 28)
+		var pulse: float = 0.80 + 0.20 * sin(_spore_timer * 3.5)
+		draw_circle(beacon_pos, 7.0 * pulse, PAL_GLOW_HALO)
+		draw_circle(beacon_pos, 2.5 * pulse, PAL_GLOW_CORE)
+
+## 8. Acentos do cenário: cogumelos bioluminescentes e espículas de ossos
+func _draw_ground_accents() -> void:
+	var mushroom_spots: Array[Vector2] = []
+	var bone_spots: Array[Vector2] = []
+	
+	match sector_id:
+		0:
+			mushroom_spots = [
+				Vector2(110, 300), Vector2(230, 300), Vector2(350, 288),
+				Vector2(490, 174), Vector2(650, 276), Vector2(820, 160), Vector2(880, 300)
+			]
+			bone_spots = [Vector2(170, 300), Vector2(420, 300), Vector2(710, 276)]
+		1:
+			mushroom_spots = [
+				Vector2(80, 300), Vector2(170, 300), Vector2(310, 300),
+				Vector2(510, 316), Vector2(730, 288), Vector2(945, 288)
+			]
+			bone_spots = [Vector2(150, 300), Vector2(380, 300), Vector2(745, 288)]
+		2:
+			mushroom_spots = [
+				Vector2(90, 288), Vector2(210, 312), Vector2(380, 290),
+				Vector2(620, 276), Vector2(800, 300), Vector2(280, 185), Vector2(680, 170)
+			]
+			bone_spots = [
+				Vector2(130, 288), Vector2(290, 312), Vector2(480, 290),
+				Vector2(710, 276), Vector2(890, 300)
+			]
+		3:
+			mushroom_spots = [
+				Vector2(70, 300), Vector2(230, 270), Vector2(420, 300),
+				Vector2(520, 300), Vector2(640, 280), Vector2(790, 260),
+				Vector2(320, 160), Vector2(700, 150)
+			]
+			bone_spots = [
+				Vector2(160, 300), Vector2(310, 270), Vector2(480, 300),
+				Vector2(730, 280), Vector2(860, 260)
+			]
+	
+	for spot in mushroom_spots:
+		if _view.grow(24).has_point(spot):
+			var pulse: float = 0.85 + 0.15 * sin(_spore_timer * 2.8 + spot.x * 0.1)
+			draw_circle(spot + Vector2(7, -6), 9.0 * pulse, PAL_GLOW_HALO)
+			draw_texture_rect_region(MATERIAL, Rect2(spot + Vector2(0, -14), Vector2(14, 14)), REG_MUSHROOM_1, Color(1.0, 1.0, 1.0, pulse))
+	
+	for b_spot in bone_spots:
+		if _view.grow(24).has_point(b_spot):
+			draw_texture_rect_region(MATERIAL, Rect2(b_spot + Vector2(0, -12), Vector2(16, 12)), REG_BONE_SPURS, Color(0.85, 0.85, 0.82, 0.90))
+
+## 9. Esporos bioluminescentes flutuantes
+func _draw_ambient_spores(delta: Vector2) -> void:
+	for i: int in range(16):
+		var seed_val: int = i * 149
+		var sp_x: float = fmod(float(seed_val) + _spore_timer * 12.0 - delta.x * 0.35, 960.0)
+		var sp_y: float = 120.0 + fmod(float(seed_val * 23) + sin(_spore_timer * 1.5 + float(i)) * 14.0 - delta.y * 0.18, 220.0)
+		
+		var pos: Vector2 = Vector2(sp_x, sp_y)
+		if _view.has_point(pos):
+			var alpha: float = 0.25 + 0.20 * sin(_spore_timer * 2.2 + float(i))
+			var r: float = 1.0 if (i % 2 == 0) else 1.5
+			draw_circle(pos, r, Color(0.35, 0.92, 0.65, alpha))
+
+## 10. Enquadramento de primeiro plano (Foreground)
+func _draw_foreground_framing(delta: Vector2) -> void:
+	var shift: Vector2 = delta * Vector2(-0.04, -0.02)
+	for vx: int in range(int(_view.position.x / 120) * 120, int(_view.end.x) + 120, 120):
+		var top_pos: Vector2 = Vector2(vx, _view.position.y - 4) + shift
+		draw_texture_rect_region(MATERIAL, Rect2(top_pos, Vector2(32, 28)), REG_LICHEN_VEIL, Color(0.35, 0.42, 0.40, 0.55))
