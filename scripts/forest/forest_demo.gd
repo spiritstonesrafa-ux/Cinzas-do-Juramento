@@ -9,7 +9,9 @@ const ROOM_PATHS: Array[String] = [
 	"res://scenes/forest/sector_01.tscn",
 	"res://scenes/forest/sector_02.tscn",
 	"res://scenes/forest/sector_03.tscn",
-	"res://scenes/forest/sector_04.tscn"
+	"res://scenes/forest/sector_04.tscn",
+	"res://scenes/forest/sector_05.tscn",
+	"res://scenes/forest/sector_06.tscn"
 ]
 const CP_SCENE: PackedScene = preload("res://scenes/props/respawn_checkpoint.tscn")
 
@@ -150,8 +152,12 @@ func _physics_process(delta: float) -> void:
 		2:
 			subhint.text = "Passagem dos Fósseis: avance entre raízes ancestrais e estruturas ósseas petrificadas."
 		3:
+			subhint.text = "Clareira Ancestral alcançada · Prossiga à direita para a Passagem das Raízes Profundas."
+		4:
+			subhint.text = "Passagem das Raízes Profundas: túneis de raízes gigantes e arcos ósseos cobrem o caminho."
+		5:
 			completed = true
-			subhint.text = "Clareira Ancestral alcançada · F7 reinicia · Retorne à esquerda para revisitar os setores anteriores."
+			subhint.text = "Galeria dos Ossos Antigos alcançada · Grande ossuário monumental · F7 reinicia · Retorne à esquerda para revisitar os setores anteriores."
 	
 	if hero.survival.is_dead:
 		return

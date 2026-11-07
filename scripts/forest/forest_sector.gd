@@ -2,7 +2,7 @@ class_name ForestSector
 extends Node2D
 ## Instancia corpos físicos e gerencia limites locais para os setores piloto da Floresta dos Ossos.
 
-@export_range(0, 3, 1) var sector_id: int = 0
+@export_range(0, 5, 1) var sector_id: int = 0
 
 var world_geometry: Node2D
 

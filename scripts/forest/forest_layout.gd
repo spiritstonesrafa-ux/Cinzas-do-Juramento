@@ -7,13 +7,17 @@ const ORIGINS: Array[Vector2] = [
 	Vector2(0, 0),
 	Vector2(1200, 0),
 	Vector2(2400, 0),
-	Vector2(3600, 0)
+	Vector2(3600, 0),
+	Vector2(4800, 0),
+	Vector2(6000, 0)
 ]
 const NAMES: Array[String] = [
 	"Entrada da Floresta",
 	"Bosque das Raízes",
 	"Passagem dos Fósseis",
-	"Clareira Ancestral"
+	"Clareira Ancestral",
+	"Passagem das Raízes Profundas",
+	"Galeria dos Ossos Antigos"
 ]
 
 ## Setor 1: Entrada horizontal com desníveis orgânicos, raízes baixas e caminho alto opcional
@@ -108,6 +112,57 @@ const SECTOR_4_BRANCHES: Array[Rect2] = [
 	Rect2(680, 150, 120, 14),
 ]
 
+## Setor 5: Passagem das Raízes Profundas - túnel e fenda fechada dominada por raízes gigantes e arcos ósseos
+const SECTOR_5_MAIN: Array[Rect2] = [
+	# Patamar de entrada seguro (alinhado a y=260 com a saída do Setor 4)
+	Rect2(0, 260, 180, 160),
+	# Descida suave sob raízes monumentais (y=284, degrau acessível de 24 px)
+	Rect2(180, 284, 160, 136),
+	# Bacia inferior sombria entre raízes ancestrais (y=308, degrau acessível de 24 px)
+	Rect2(340, 308, 180, 112),
+	# GAP: x: 520 -> 568 (48 px - vão sobre abismo de raízes profundas, salto livre ou dash terrestre)
+	# Patamar calcificado sob arcos ósseos (y=290, subida acessível de 18 px)
+	Rect2(568, 290, 160, 130),
+	# Degrau de pedra e raízes (y=272, subida acessível de 18 px)
+	Rect2(728, 272, 100, 148),
+	# Terraço de saída com raízes antigas (y=280, descida suave de 8 px para conectar ao Setor 6)
+	Rect2(828, 280, 132, 140),
+]
+
+const SECTOR_5_BRANCHES: Array[Rect2] = [
+	# Caminho aéreo por raízes suspensas e arcos fósseis
+	Rect2(140, 210, 80, 12),
+	Rect2(250, 170, 110, 12),
+	Rect2(420, 230, 100, 14),
+	Rect2(600, 190, 90, 12),
+	Rect2(750, 220, 90, 12),
+]
+
+## Setor 6: Galeria dos Ossos Antigos - grande ossuário com costelas monumentais, vértebras e ruínas góticas
+const SECTOR_6_MAIN: Array[Rect2] = [
+	# Patamar de entrada seguro (alinhado a y=280 com a saída do Setor 5)
+	Rect2(0, 280, 180, 140),
+	# Galeria inferior do ossuário (y=298, descida de 18 px)
+	Rect2(180, 298, 160, 122),
+	# Patamar de vértebras fossilizadas (y=278, subida suave de 20 px)
+	Rect2(340, 278, 170, 142),
+	# GAP: x: 510 -> 555 (45 px - vão suave entre costelas caídas)
+	# Nave de ruínas góticas ancestrais (y=260, subida suave de 18 px)
+	Rect2(555, 260, 150, 160),
+	# Degrau do santuário ossuário (y=240, subida acessível de 20 px)
+	Rect2(705, 240, 80, 180),
+	# Grande Terraço Monumental dos Ossos Antigos (y=220, subida acessível de 20 px)
+	Rect2(785, 220, 175, 200),
+]
+
+const SECTOR_6_BRANCHES: Array[Rect2] = [
+	# Plataformas aéreas formadas por costelas fósseis e arcos ogivais
+	Rect2(120, 215, 80, 12),
+	Rect2(250, 160, 110, 14),
+	Rect2(420, 200, 100, 12),
+	Rect2(620, 180, 120, 14),
+]
+
 static func surfaces(id: int) -> Array[Rect2]:
 	var result: Array[Rect2] = []
 	match id:
@@ -123,6 +178,12 @@ static func surfaces(id: int) -> Array[Rect2]:
 		3:
 			result.assign(SECTOR_4_MAIN)
 			result.append_array(SECTOR_4_BRANCHES)
+		4:
+			result.assign(SECTOR_5_MAIN)
+			result.append_array(SECTOR_5_BRANCHES)
+		5:
+			result.assign(SECTOR_6_MAIN)
+			result.append_array(SECTOR_6_BRANCHES)
 		_:
 			result.assign(SECTOR_2_MAIN)
 			result.append_array(SECTOR_2_BRANCHES)
@@ -146,6 +207,14 @@ static func entry(id: int, from_right: bool = false) -> Vector2:
 			if from_right:
 				return ORIGINS[3] + Vector2(912, 260)
 			return ORIGINS[3] + Vector2(48, 300)
+		4:
+			if from_right:
+				return ORIGINS[4] + Vector2(912, 280)
+			return ORIGINS[4] + Vector2(48, 260)
+		5:
+			if from_right:
+				return ORIGINS[5] + Vector2(912, 220)
+			return ORIGINS[5] + Vector2(48, 280)
 		_:
 			return ORIGINS[0] + Vector2(48, 300)
 

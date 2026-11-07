@@ -56,3 +56,17 @@ Assets desenvolvidos e consolidados em 06/11/2026 para sanar em definitivo as co
 - **Conteúdo:** Clareira gótica ampla com ruínas de arcos ogivais em pedra e ossos gigantes semi-enterrados na neblina profunda, céu tempestuoso noturno com luar radiante quebrando nuvens escuras.
 - **Isolamento:** Fundo puro. Sem plataformas, chão ou personagens.
 - **Renderização:** Paralaxe distante com fator (0.12, 0.08).
+
+## 8. forest_sector5_bg.png (M6-B2)
+- **Dimensões:** 1774 × 887 px (RGB 24-bit)
+- **Finalidade:** Fundo panorâmico distante do Setor 5 (Passagem das Raízes Profundas).
+- **Conteúdo:** Túnel e abóbada profunda dominada por raízes retorcidas gigantescas, arcos ósseos e árvores fósseis densas em silhueta, ruínas antigas partidas engolidas pela vegetação fóssil, névoa espectral esverdeada/esmeralda e frestas de céu noturno com luar tímido.
+- **Isolamento:** Fundo puro de paisagem distante. Não contém plataformas, chão, personagens, HUD ou estruturas de primeiro plano.
+- **Renderização:** Paralaxe distante com fator (0.12, 0.08).
+
+## 9. forest_sector6_bg.png (M6-B2)
+- **Dimensões:** 1774 × 887 px (RGB 24-bit)
+- **Finalidade:** Fundo panorâmico distante do Setor 6 (Galeria dos Ossos Antigos).
+- **Conteúdo:** Grande ossuário cavernoso com arcadas monumentais de costelas titânicas e vértebras colossais formando corredores de abóbadas góticas, ruínas de catedral ancestral entrelaçadas à ossada petrificada, névoa rasteira turquesa/esmeralda sobre abismo profundo e feixes de luar espectral filtrados pelo teto ósseo.
+- **Isolamento:** Fundo puro. Não contém chão jogável, plataformas, personagens, HUD ou molduras.
+- **Renderização:** Paralaxe distante com fator (0.12, 0.08).

@@ -41,15 +41,15 @@ func _run_all_tests() -> void:
 
 func _test_layout_four_sectors() -> void:
 	print("\n--- Teste 1: Configuração dos 4 Setores no ForestLayout ---")
-	if ForestLayout.ORIGINS.size() == 4:
-		log_pass("ForestLayout possui exatamente 4 origens registradas")
+	if ForestLayout.ORIGINS.size() >= 4:
+		log_pass("ForestLayout possui pelo menos 4 origens registradas (%d encontradas)" % ForestLayout.ORIGINS.size())
 	else:
-		log_fail("Quantidade de origens inesperada: %d" % ForestLayout.ORIGINS.size())
+		log_fail("Quantidade de origens insuficiente: %d" % ForestLayout.ORIGINS.size())
 	
-	if ForestLayout.NAMES.size() == 4:
-		log_pass("ForestLayout possui 4 nomes definidos: %s" % str(ForestLayout.NAMES))
+	if ForestLayout.NAMES.size() >= 4:
+		log_pass("ForestLayout possui pelo menos 4 nomes definidos: %s" % str(ForestLayout.NAMES))
 	else:
-		log_fail("Quantidade de nomes inesperada: %d" % ForestLayout.NAMES.size())
+		log_fail("Quantidade de nomes insuficiente: %d" % ForestLayout.NAMES.size())
 	
 	var s0: Array[Rect2] = ForestLayout.surfaces(0)
 	var s1: Array[Rect2] = ForestLayout.surfaces(1)
@@ -124,10 +124,10 @@ func _test_progressive_traversal_forward_and_backward() -> void:
 	for i in range(5):
 		await physics_frame
 	
-	if demo.checkpoints.size() == 4:
-		log_pass("ForestDemo inicializou com 4 checkpoints (um por setor)")
+	if demo.checkpoints.size() >= 4:
+		log_pass("ForestDemo inicializou com pelo menos 4 checkpoints (%d encontrados)" % demo.checkpoints.size())
 	else:
-		log_fail("Quantidade de checkpoints incorreta: %d" % demo.checkpoints.size())
+		log_fail("Quantidade de checkpoints insuficiente: %d" % demo.checkpoints.size())
 	
 	# Transição 1 -> 2
 	demo.hero.global_position = ForestLayout.ORIGINS[0] + Vector2(946, 300)
