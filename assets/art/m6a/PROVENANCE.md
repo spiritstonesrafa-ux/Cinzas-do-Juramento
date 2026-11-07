@@ -78,9 +78,18 @@ Assets desenvolvidos e consolidados em 06/11/2026 para sanar em definitivo as co
 - **Isolamento:** Fundo puro de paisagem distante. Não contém plataformas jogáveis, chão, personagens, HUD ou molduras.
 - **Renderização:** Paralaxe distante com fator (0.12, 0.08).
 
-## 11. forest_sector8_bg.png (M6-B3)
+- **Renderização:** Paralaxe distante com fator (0.12, 0.08).
+
+## 12. forest_sector9_bg.png (M6-B4)
 - **Dimensões:** 1774 × 887 px (RGB 24-bit)
-- **Finalidade:** Fundo panorâmico distante do Setor 8 (Bosque dos Ecos).
-- **Conteúdo:** Santuário vegetal e ósseo ancestral e silencioso, abóbada gótica natural formada pelo entrelaçamento de árvores fossilizadas e raízes titânicas, feixes de luz espectral celeste descendo pela copa fechada, névoa turquesa e partículas bioluminescentes flutuando sobre monólitos e ruínas de criptas esquecidas.
-- **Isolamento:** Fundo puro. Não contém chão jogável, plataformas, personagens, HUD ou molduras.
+- **Finalidade:** Fundo panorâmico distante do Setor 9 (Ravina das Sombras Fósseis).
+- **Conteúdo:** Desfiladeiro profundo e íngreme ladeado por paredões rochosos e raízes retorcidas, com fósseis vertebrais e costelas monumentais incrustadas nas escarpas, abismo central vertiginoso envolto em bruma esmeralda/turquesa e luar frio filtrado por frestas de copas petrificadas.
+- **Isolamento:** Fundo puro de paisagem distante. Não contém plataformas jogáveis, chão, personagens, HUD ou molduras.
+- **Renderização:** Paralaxe distante com fator (0.12, 0.08).
+
+## 13. forest_sector10_bg.png (M6-B4)
+- **Dimensões:** 1774 × 887 px (RGB 24-bit)
+- **Finalidade:** Fundo panorâmico distante do Setor 10 (Clareira da Bruma Espectral / Futura Arena do Cervo Espectral).
+- **Conteúdo:** Clareira monumental e sagrada no coração mais profundo da floresta fóssil, emoldurada por gigantescos troncos petrificados e abóbada ogival natural de costelas titânicas. Ao centro ao fundo, ruínas de um altar corrompido velado por densa névoa espectral luminescente e silhuetas de chifres colossais que anunciam o confronto iminente. À direita, pórtico ancestral com runas espectrais dormentes.
+- **Isolamento:** Fundo puro de paisagem distante. Não contém chão jogável plano, entidades ativas, personagens ou HUD.
 - **Renderização:** Paralaxe distante com fator (0.12, 0.08).

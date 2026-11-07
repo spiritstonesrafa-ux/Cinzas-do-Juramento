@@ -2,7 +2,7 @@ class_name ForestSector
 extends Node2D
 ## Instancia corpos físicos e gerencia limites locais para os setores piloto da Floresta dos Ossos.
 
-@export_range(0, 7, 1) var sector_id: int = 0
+@export_range(0, 9, 1) var sector_id: int = 0
 
 var world_geometry: Node2D
 
@@ -27,6 +27,8 @@ func _build_surfaces() -> void:
 		shape.size = rect.size
 		collider.shape = shape
 		collider.position = rect.size * 0.5
+		if rect.size.y <= 16.0:
+			collider.one_way_collision = true
 		
 		body.add_child(collider)
 		world_geometry.add_child(body)

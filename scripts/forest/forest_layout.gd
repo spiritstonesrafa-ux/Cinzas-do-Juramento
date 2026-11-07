@@ -11,7 +11,9 @@ const ORIGINS: Array[Vector2] = [
 	Vector2(4800, 0),
 	Vector2(6000, 0),
 	Vector2(7200, 0),
-	Vector2(8400, 0)
+	Vector2(8400, 0),
+	Vector2(9600, 0),
+	Vector2(10800, 0)
 ]
 const NAMES: Array[String] = [
 	"Entrada da Floresta",
@@ -21,7 +23,9 @@ const NAMES: Array[String] = [
 	"Passagem das Raízes Profundas",
 	"Galeria dos Ossos Antigos",
 	"Fenda das Vértebras",
-	"Bosque dos Ecos"
+	"Bosque dos Ecos",
+	"Ravina das Sombras Fósseis",
+	"Clareira da Bruma Espectral"
 ]
 
 ## Setor 1: Entrada horizontal com desníveis orgânicos, raízes baixas e caminho alto opcional
@@ -221,6 +225,54 @@ const SECTOR_8_BRANCHES: Array[Rect2] = [
 	Rect2(580, 172, 90, 12),
 ]
 
+## Setor 9: Ravina das Sombras Fósseis - desfiladeiro cavernoso profundo, escarpas ósseas e abismo central
+const SECTOR_9_MAIN: Array[Rect2] = [
+	# Patamar de entrada seguro (alinhado a y=240 com a saída do Setor 8)
+	Rect2(0, 240, 160, 180),
+	# Descida suave para a ravina fóssil (y=260, degrau acessível de 20 px)
+	Rect2(160, 260, 150, 160),
+	# Patamar inferior da ravina oeste (y=280, degrau acessível de 20 px)
+	Rect2(310, 280, 150, 140),
+	# GAP: x: 460 -> 506 (46 px - vão sobre o abismo das sombras fósseis, salto plano e retorno simétrico)
+	# Patamar inferior da ravina leste (y=280, recepção plana nivelada)
+	Rect2(506, 280, 150, 140),
+	# Subida suave em degrau de rocha e vértebras (y=260, subida acessível de 20 px)
+	Rect2(656, 260, 150, 160),
+	# Terraço de saída leste (y=260, conexão direta e nivelada ao Setor 10)
+	Rect2(806, 260, 154, 160),
+]
+
+const SECTOR_9_BRANCHES: Array[Rect2] = [
+	# Caminho elevado por costelas e pontes fósseis suspensas sobre a ravina (acesso entrada <= 24 px, vão livre)
+	Rect2(100, 216, 75, 12),
+	Rect2(205, 194, 85, 12),
+	Rect2(320, 172, 90, 12),
+	Rect2(440, 154, 110, 14),
+	Rect2(580, 176, 90, 12),
+	Rect2(700, 202, 80, 12),
+	Rect2(805, 234, 75, 12),
+]
+
+## Setor 10: Clareira da Bruma Espectral - santuário e grande arena da futura batalha contra o Cervo Espectral
+const SECTOR_10_MAIN: Array[Rect2] = [
+	# Patamar de entrada seguro (alinhado a y=260 com a saída do Setor 9)
+	Rect2(0, 260, 160, 160),
+	# Piso monumental da Grande Arena de Combate (y=260 contínuo, 640 px de vão plano sem degraus)
+	Rect2(160, 260, 640, 160),
+	# Patamar do Altar Corrompido e Pórtico Rúnico Leste (y=260, margem extrema da fase)
+	Rect2(800, 260, 160, 160),
+]
+
+const SECTOR_10_BRANCHES: Array[Rect2] = [
+	# Abóbada catedralícia de costelas titânicas e poleiros táticos para evasão na arena (acessíveis com salto <= 26 px)
+	Rect2(140, 234, 85, 12),
+	Rect2(255, 210, 90, 12),
+	Rect2(375, 186, 90, 12),
+	Rect2(495, 186, 90, 12),
+	Rect2(615, 210, 90, 12),
+	Rect2(735, 234, 85, 12),
+]
+
 static func surfaces(id: int) -> Array[Rect2]:
 	var result: Array[Rect2] = []
 	match id:
@@ -248,6 +300,12 @@ static func surfaces(id: int) -> Array[Rect2]:
 		7:
 			result.assign(SECTOR_8_MAIN)
 			result.append_array(SECTOR_8_BRANCHES)
+		8:
+			result.assign(SECTOR_9_MAIN)
+			result.append_array(SECTOR_9_BRANCHES)
+		9:
+			result.assign(SECTOR_10_MAIN)
+			result.append_array(SECTOR_10_BRANCHES)
 		_:
 			result.assign(SECTOR_2_MAIN)
 			result.append_array(SECTOR_2_BRANCHES)
@@ -287,6 +345,14 @@ static func entry(id: int, from_right: bool = false) -> Vector2:
 			if from_right:
 				return ORIGINS[7] + Vector2(912, 240)
 			return ORIGINS[7] + Vector2(48, 240)
+		8:
+			if from_right:
+				return ORIGINS[8] + Vector2(912, 260)
+			return ORIGINS[8] + Vector2(48, 240)
+		9:
+			if from_right:
+				return ORIGINS[9] + Vector2(912, 260)
+			return ORIGINS[9] + Vector2(48, 260)
 		_:
 			return ORIGINS[0] + Vector2(48, 300)
 

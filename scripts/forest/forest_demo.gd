@@ -13,7 +13,9 @@ const ROOM_PATHS: Array[String] = [
 	"res://scenes/forest/sector_05.tscn",
 	"res://scenes/forest/sector_06.tscn",
 	"res://scenes/forest/sector_07.tscn",
-	"res://scenes/forest/sector_08.tscn"
+	"res://scenes/forest/sector_08.tscn",
+	"res://scenes/forest/sector_09.tscn",
+	"res://scenes/forest/sector_10.tscn"
 ]
 const CP_SCENE: PackedScene = preload("res://scenes/props/respawn_checkpoint.tscn")
 
@@ -162,8 +164,11 @@ func _physics_process(delta: float) -> void:
 		6:
 			subhint.text = "Fenda das Vértebras: colunas espinhais fósseis e abismos enevoados · Prossiga à direita para o Bosque dos Ecos."
 		7:
-			completed = true
-			subhint.text = "Bosque dos Ecos alcançado · Abóbada vegetal ancestral e silêncio sepulcral · F7 reinicia · Retorne à esquerda para revisitar a floresta."
+			subhint.text = "Bosque dos Ecos: abóbada vegetal ancestral e monólitos · Prossiga à direita para a Ravina das Sombras Fósseis."
+		8:
+			subhint.text = "Ravina das Sombras Fósseis: abismo vertiginoso e costelas titânicas · Prossiga à direita para a Clareira da Bruma Espectral."
+		9:
+			subhint.text = "Clareira da Bruma Espectral: santuário velado e futura arena do Cervo Espectral · F7 reinicia · Retorne à esquerda para revisitar a floresta."
 	
 	if hero.survival.is_dead:
 		return

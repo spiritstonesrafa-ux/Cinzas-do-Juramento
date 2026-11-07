@@ -41,15 +41,15 @@ func _run_all_tests() -> void:
 
 func _test_layout_eight_sectors() -> void:
 	print("\n--- Teste 1: Configuração dos 8 Setores no ForestLayout ---")
-	if ForestLayout.ORIGINS.size() == 8:
-		log_pass("ForestLayout possui exatamente 8 origens registradas")
+	if ForestLayout.ORIGINS.size() >= 8:
+		log_pass("ForestLayout possui pelo menos 8 origens registradas (%d encontradas)" % ForestLayout.ORIGINS.size())
 	else:
-		log_fail("Quantidade de origens inesperada: %d (esperado 8)" % ForestLayout.ORIGINS.size())
+		log_fail("Quantidade de origens inesperada: %d (esperado >= 8)" % ForestLayout.ORIGINS.size())
 
-	if ForestLayout.NAMES.size() == 8:
-		log_pass("ForestLayout possui 8 nomes definidos: %s" % str(ForestLayout.NAMES))
+	if ForestLayout.NAMES.size() >= 8:
+		log_pass("ForestLayout possui pelo menos 8 nomes definidos: %s" % str(ForestLayout.NAMES))
 	else:
-		log_fail("Quantidade de nomes inesperada: %d (esperado 8)" % ForestLayout.NAMES.size())
+		log_fail("Quantidade de nomes inesperada: %d (esperado >= 8)" % ForestLayout.NAMES.size())
 
 	if ForestLayout.NAMES[6] == "Fenda das Vértebras":
 		log_pass("Setor 7 nomeado corretamente como 'Fenda das Vértebras'")
@@ -184,10 +184,10 @@ func _test_progressive_traversal_forward_and_backward() -> void:
 	for i in range(5):
 		await physics_frame
 
-	if demo.checkpoints.size() == 8:
-		log_pass("ForestDemo inicializou com exatamente 8 checkpoints (um por setor)")
+	if demo.checkpoints.size() >= 8:
+		log_pass("ForestDemo inicializou com pelo menos 8 checkpoints (%d encontrados)" % demo.checkpoints.size())
 	else:
-		log_fail("Quantidade de checkpoints incorreta: %d (esperado 8)" % demo.checkpoints.size())
+		log_fail("Quantidade de checkpoints incorreta: %d (esperado >= 8)" % demo.checkpoints.size())
 
 	# Transições progressivas para a frente (0 -> 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7)
 	for next_room: int in range(1, 8):

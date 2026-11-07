@@ -4,7 +4,7 @@ extends Node2D
 ## Elimina completamente colagens retangulares, recortes incorretos e duplicações.
 ## Utiliza assets pixel art dedicados e isolados com transparência alfa real em 320x180.
 
-@export_range(0, 7, 1) var sector_id: int = 0
+@export_range(0, 9, 1) var sector_id: int = 0
 
 const BACKGROUNDS: Array[Texture2D] = [
 	preload("res://assets/art/m6a/forest_sector1_bg.png"),
@@ -14,7 +14,9 @@ const BACKGROUNDS: Array[Texture2D] = [
 	preload("res://assets/art/m6a/forest_sector5_bg.png"),
 	preload("res://assets/art/m6a/forest_sector6_bg.png"),
 	preload("res://assets/art/m6a/forest_sector7_bg.png"),
-	preload("res://assets/art/m6a/forest_sector8_bg.png")
+	preload("res://assets/art/m6a/forest_sector8_bg.png"),
+	preload("res://assets/art/m6a/forest_sector9_bg.png"),
+	preload("res://assets/art/m6a/forest_sector10_bg.png")
 ]
 const MATERIAL: Texture2D = preload("res://assets/art/m6a/forest_materials.png")
 const PROPS: Texture2D = preload("res://assets/art/m6a/forest_props.png")
@@ -97,6 +99,10 @@ func _draw() -> void:
 		_draw_sector_7_vertebrae_features()
 	elif sector_id == 7:
 		_draw_sector_8_echo_features()
+	elif sector_id == 8:
+		_draw_sector_9_ravine_features()
+	elif sector_id == 9:
+		_draw_sector_10_arena_features()
 
 	# Camada 5: Acentos do cenário (fungos bioluminescentes, espículas de osso e líquens)
 	_draw_ground_accents()
@@ -123,6 +129,10 @@ func _draw_background_panorama(delta: Vector2) -> void:
 		tint = Color(0.86, 0.94, 0.92, 1.0)
 	elif sector_id == 7:
 		tint = Color(0.85, 0.92, 0.96, 1.0)
+	elif sector_id == 8:
+		tint = Color(0.84, 0.90, 0.95, 1.0)
+	elif sector_id == 9:
+		tint = Color(0.82, 0.94, 0.92, 1.0)
 	var bg_idx: int = clampi(sector_id, 0, BACKGROUNDS.size() - 1)
 	draw_texture_rect(BACKGROUNDS[bg_idx], bg_rect, false, tint)
 
@@ -215,6 +225,36 @@ func _draw_midground_structures(_delta: Vector2) -> void:
 		var antlers: Rect2 = Rect2(830, 160, 68, 60)
 		if antlers.intersects(_view.grow(48)):
 			draw_texture_rect_region(PROPS, antlers, REG_ANTLER_HORNS, Color(0.72, 0.78, 0.76, 0.80))
+	elif sector_id == 8:
+		# Setor 9: Ravina das Sombras Fósseis - escarpas íngremes, raízes titânicas e arcos vertebrais
+		var trees: Array[Vector2] = [Vector2(120, 80), Vector2(810, 80)]
+		for t_pos in trees:
+			var tree_rect: Rect2 = Rect2(t_pos, Vector2(96, 220))
+			if tree_rect.intersects(_view.grow(48)):
+				draw_texture_rect_region(PROPS, tree_rect, REG_COLOSSAL_TREE, Color(0.68, 0.74, 0.78, 0.85))
+		var ribs: Array[Vector2] = [Vector2(290, 130), Vector2(610, 125)]
+		for r_pos in ribs:
+			var rib_rect: Rect2 = Rect2(r_pos, Vector2(92, 92))
+			if rib_rect.intersects(_view.grow(48)):
+				draw_texture_rect_region(PROPS, rib_rect, REG_RIB_ARCH, Color(0.68, 0.74, 0.76, 0.80))
+		var antlers: Rect2 = Rect2(440, 175, 75, 65)
+		if antlers.intersects(_view.grow(48)):
+			draw_texture_rect_region(PROPS, antlers, REG_ANTLER_HORNS, Color(0.70, 0.76, 0.78, 0.75))
+	elif sector_id == 9:
+		# Setor 10: Clareira da Bruma Espectral - grande arena de ossos e santuário do Cervo Espectral
+		var trees: Array[Vector2] = [Vector2(70, 70), Vector2(830, 70)]
+		for t_pos in trees:
+			var tree_rect: Rect2 = Rect2(t_pos, Vector2(104, 230))
+			if tree_rect.intersects(_view.grow(48)):
+				draw_texture_rect_region(PROPS, tree_rect, REG_COLOSSAL_TREE, Color(0.70, 0.78, 0.80, 0.85))
+		var ribs: Array[Vector2] = [Vector2(180, 100), Vector2(670, 100)]
+		for r_pos in ribs:
+			var rib_rect: Rect2 = Rect2(r_pos, Vector2(100, 100))
+			if rib_rect.intersects(_view.grow(48)):
+				draw_texture_rect_region(PROPS, rib_rect, REG_RIB_ARCH, Color(0.72, 0.80, 0.78, 0.82))
+		var antlers_arena: Rect2 = Rect2(445, 130, 85, 75)
+		if antlers_arena.intersects(_view.grow(48)):
+			draw_texture_rect_region(PROPS, antlers_arena, REG_ANTLER_HORNS, Color(0.82, 0.90, 0.88, 0.88))
 
 ## 3. Superfícies sólidas do plano de jogo (Alinhamento 100% físico e orgânico)
 func _draw_playfield_surfaces() -> void:
@@ -247,6 +287,10 @@ func _draw_playfield_surfaces() -> void:
 			root_positions = [Vector2(80, 220), Vector2(240, 240), Vector2(380, 260), Vector2(580, 260), Vector2(720, 240), Vector2(850, 240)]
 		7:
 			root_positions = [Vector2(80, 240), Vector2(240, 260), Vector2(400, 280), Vector2(500, 260), Vector2(620, 260), Vector2(760, 240), Vector2(870, 240)]
+		8:
+			root_positions = [Vector2(70, 240), Vector2(220, 260), Vector2(380, 280), Vector2(560, 280), Vector2(710, 260), Vector2(860, 260)]
+		9:
+			root_positions = [Vector2(70, 260), Vector2(230, 260), Vector2(390, 260), Vector2(550, 260), Vector2(710, 260), Vector2(870, 260)]
 
 	for root_pos: Vector2 in root_positions:
 		var root_rect: Rect2 = Rect2(root_pos + Vector2(0, 1), Vector2(145, 48))
@@ -388,7 +432,51 @@ func _draw_sector_8_echo_features() -> void:
 		draw_circle(echo_flame, 3.2 * pulse, PAL_GLOW_CORE)
 		draw_string(ThemeDB.fallback_font, Vector2(835, 135), "MONÓLITO DOS ECOS", HORIZONTAL_ALIGNMENT_LEFT, -1, 7, Color("d4cfbe"))
 
-## 12. Acentos do cenário: cogumelos bioluminescentes e espículas de ossos
+## 12. Cenografia da Ravina das Sombras Fósseis no Setor 9
+func _draw_sector_9_ravine_features() -> void:
+	# Vão da ravina abissal com névoa profunda (x=460 -> 506)
+	var ravine_chasm: Rect2 = Rect2(460, 288, 46, 80)
+	if ravine_chasm.intersects(_view.grow(48)):
+		draw_texture_rect_region(MATERIAL, ravine_chasm, REG_LICHEN_VEIL, Color(0.14, 0.40, 0.45, 0.40))
+
+	# Arcada vertebral colossal cruzando o centro da ravina no alto
+	var spine_pos: Vector2 = Vector2(445, 135)
+	if Rect2(spine_pos, Vector2(100, 90)).intersects(_view.grow(32)):
+		draw_texture_rect_region(PROPS, Rect2(spine_pos, Vector2(100, 90)), REG_RIB_ARCH, Color(0.72, 0.78, 0.82, 0.85))
+		var pulse: float = 0.82 + 0.18 * sin(_spore_timer * 3.4)
+		draw_circle(spine_pos + Vector2(50, 45), 8.0 * pulse, PAL_GLOW_HALO)
+		draw_circle(spine_pos + Vector2(50, 45), 2.8 * pulse, PAL_GLOW_CORE)
+
+## 13. Cenografia da Clareira da Bruma Espectral no Setor 10 (Arena do Cervo Espectral)
+func _draw_sector_10_arena_features() -> void:
+	# Bruma espectral rasteira sobre todo o chão da arena de combate (y=256..270)
+	for mist_x: int in range(0, 960, 120):
+		var mist_rect: Rect2 = Rect2(mist_x, 252, 128, 48)
+		if mist_rect.intersects(_view.grow(32)):
+			var mist_pulse: float = 0.25 + 0.12 * sin(_spore_timer * 2.0 + float(mist_x) * 0.05)
+			draw_texture_rect_region(MATERIAL, mist_rect, REG_LICHEN_VEIL, Color(0.20, 0.65, 0.60, mist_pulse))
+
+	# Altar Corrompido da Bruma Espectral ao centro da arena
+	var altar_pos: Vector2 = Vector2(442, 206)
+	var altar_size: Vector2 = Vector2(76, 54)
+	if Rect2(altar_pos, altar_size).intersects(_view.grow(48)):
+		draw_texture_rect_region(PROPS, Rect2(altar_pos, altar_size), REG_ALTAR_SHRINE, Color(0.78, 0.88, 0.85, 0.90))
+		var flame_pos: Vector2 = altar_pos + Vector2(38, 26)
+		var pulse: float = 0.85 + 0.25 * sin(_spore_timer * 3.0)
+		draw_circle(flame_pos, 12.0 * pulse, Color(0.15, 0.80, 0.75, 0.18))
+		draw_circle(flame_pos, 5.0 * pulse, Color(0.40, 0.95, 0.88, 0.75))
+		draw_string(ThemeDB.fallback_font, Vector2(400, 195), "ALTAR DA BRUMA ESPECTRAL", HORIZONTAL_ALIGNMENT_LEFT, -1, 7, Color("a8e6cf"))
+
+	# Pórtico Rúnico do Juramento no extremo leste da fase (x=870..950, y=175)
+	var arch_pos: Vector2 = Vector2(870, 175)
+	if Rect2(arch_pos, Vector2(80, 85)).intersects(_view.grow(32)):
+		draw_texture_rect_region(PROPS, Rect2(arch_pos, Vector2(80, 85)), REG_RIB_ARCH, Color(0.80, 0.86, 0.90, 0.90))
+		var rune_pulse: float = 0.70 + 0.30 * sin(_spore_timer * 2.5)
+		draw_circle(arch_pos + Vector2(40, 42), 10.0 * rune_pulse, Color(0.25, 0.85, 0.70, 0.15))
+		draw_circle(arch_pos + Vector2(40, 42), 3.5 * rune_pulse, Color(0.60, 0.98, 0.85, 0.70))
+		draw_string(ThemeDB.fallback_font, Vector2(850, 168), "PÓRTICO DO JURAMENTO", HORIZONTAL_ALIGNMENT_LEFT, -1, 7, Color("d4cfbe"))
+
+## 14. Acentos do cenário: cogumelos bioluminescentes e espículas de ossos
 func _draw_ground_accents() -> void:
 	var mushroom_spots: Array[Vector2] = []
 	var bone_spots: Array[Vector2] = []
@@ -465,6 +553,26 @@ func _draw_ground_accents() -> void:
 			bone_spots = [
 				Vector2(140, 240), Vector2(290, 260), Vector2(430, 280),
 				Vector2(590, 260), Vector2(780, 240), Vector2(900, 240)
+			]
+		8:
+			mushroom_spots = [
+				Vector2(70, 240), Vector2(210, 260), Vector2(360, 280),
+				Vector2(530, 280), Vector2(680, 260), Vector2(830, 260),
+				Vector2(920, 260), Vector2(290, 172), Vector2(650, 176)
+			]
+			bone_spots = [
+				Vector2(120, 240), Vector2(270, 260), Vector2(410, 280),
+				Vector2(570, 280), Vector2(740, 260), Vector2(880, 260)
+			]
+		9:
+			mushroom_spots = [
+				Vector2(90, 260), Vector2(220, 260), Vector2(350, 260),
+				Vector2(600, 260), Vector2(750, 260), Vector2(880, 260),
+				Vector2(200, 210), Vector2(760, 210)
+			]
+			bone_spots = [
+				Vector2(140, 260), Vector2(290, 260), Vector2(410, 260),
+				Vector2(540, 260), Vector2(670, 260), Vector2(820, 260)
 			]
 
 	for spot in mushroom_spots:
