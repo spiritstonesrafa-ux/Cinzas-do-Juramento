@@ -1,0 +1,50 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://scripts/enemies/forest_crawler.gd" id="1_ai"]
+[ext_resource type="Script" path="res://scripts/enemies/forest_crawler_visual.gd" id="2_visual"]
+[ext_resource type="Script" path="res://scripts/combat/sword_receiver.gd" id="3_receiver"]
+[ext_resource type="Script" path="res://scripts/enemies/forest_crawler_attack_source.gd" id="4_attack"]
+
+[sub_resource type="RectangleShape2D" id="Body"]
+size = Vector2(20, 16)
+
+[sub_resource type="RectangleShape2D" id="Receiver"]
+size = Vector2(24, 18)
+
+[sub_resource type="RectangleShape2D" id="Attack"]
+size = Vector2(24, 14)
+
+[node name="ForestCrawler" type="CharacterBody2D"]
+collision_layer = 128
+collision_mask = 1
+floor_snap_length = 3.0
+script = ExtResource("1_ai")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -8)
+shape = SubResource("Body")
+
+[node name="Visual" type="Node2D" parent="."]
+script = ExtResource("2_visual")
+
+[node name="SwordReceiver" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 4
+monitoring = false
+script = ExtResource("3_receiver")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SwordReceiver"]
+position = Vector2(0, -9)
+shape = SubResource("Receiver")
+
+[node name="AttackSource" type="Area2D" parent="."]
+position = Vector2(12, -7)
+collision_layer = 32
+collision_mask = 16
+monitoring = false
+script = ExtResource("4_attack")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackSource"]
+shape = SubResource("Attack")
+disabled = true
+

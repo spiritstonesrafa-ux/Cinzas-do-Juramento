@@ -1,0 +1,50 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://scripts/enemies/forest_sentinel.gd" id="1_ai"]
+[ext_resource type="Script" path="res://scripts/enemies/forest_sentinel_visual.gd" id="2_visual"]
+[ext_resource type="Script" path="res://scripts/combat/sword_receiver.gd" id="3_receiver"]
+[ext_resource type="Script" path="res://scripts/enemies/forest_sentinel_attack_source.gd" id="4_attack"]
+
+[sub_resource type="RectangleShape2D" id="Body"]
+size = Vector2(14, 30)
+
+[sub_resource type="RectangleShape2D" id="Receiver"]
+size = Vector2(18, 32)
+
+[sub_resource type="RectangleShape2D" id="Attack"]
+size = Vector2(26, 24)
+
+[node name="ForestSentinel" type="CharacterBody2D"]
+collision_layer = 128
+collision_mask = 1
+floor_snap_length = 3.0
+script = ExtResource("1_ai")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -15)
+shape = SubResource("Body")
+
+[node name="Visual" type="Node2D" parent="."]
+script = ExtResource("2_visual")
+
+[node name="SwordReceiver" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 4
+monitoring = false
+script = ExtResource("3_receiver")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SwordReceiver"]
+position = Vector2(0, -16)
+shape = SubResource("Receiver")
+
+[node name="AttackSource" type="Area2D" parent="."]
+position = Vector2(18, -14)
+collision_layer = 32
+collision_mask = 16
+monitoring = false
+script = ExtResource("4_attack")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackSource"]
+shape = SubResource("Attack")
+disabled = true
+

@@ -82,6 +82,9 @@ func switch_room(id: int, from_right: bool = false, resetting: bool = false) -> 
 	$Rooms.add_child(room)
 	current_room = id
 	
+	if room.has_method("set_hero"):
+		room.set_hero(hero)
+	
 	if not resetting and room.has_method("restore_state"):
 		room.restore_state(states.get(id, {}))
 	
