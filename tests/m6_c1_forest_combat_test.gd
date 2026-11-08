@@ -61,7 +61,6 @@ func _test_encounter_layout_distribution() -> void:
 	var s2 = ForestEncounterLayout.get_encounters_for_sector(1)
 	var s3 = ForestEncounterLayout.get_encounters_for_sector(2)
 	var s4 = ForestEncounterLayout.get_encounters_for_sector(3)
-	var s9 = ForestEncounterLayout.get_encounters_for_sector(8)
 	var s10 = ForestEncounterLayout.get_encounters_for_sector(9)
 	
 	# Setor 1: exatamente 2 Rastejantes
@@ -108,11 +107,11 @@ func _test_encounter_layout_distribution() -> void:
 	else:
 		log_fail("Setor 4 tem %d encontros (esperado 2)" % s4.size())
 	
-	# Setores 9 e 10: vazios (reservados para M6-C3 e Cervo Espectral)
-	if s9.is_empty() and s10.is_empty():
-		log_pass("Setores 9 e 10 vazios de encontros (reservados para M6-C3 e Cervo Espectral)")
+	# Setor 10: vazio de encontros comuns (reservado para o Cervo Espectral)
+	if s10.is_empty():
+		log_pass("Setor 10 vazio de encontros comuns (reservado para o Cervo Espectral)")
 	else:
-		log_fail("Encontros indevidos encontrados nos Setores 9 e 10!")
+		log_fail("Encontros indevidos encontrados no Setor 10!")
 
 # ------------------------------------------------------------------------------
 # 2. Rastejante Fóssil (ForestCrawler)

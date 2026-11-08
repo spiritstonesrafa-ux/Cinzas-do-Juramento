@@ -79,7 +79,6 @@ func _test_m6_c2_distribution() -> void:
 	var s6 = ForestEncounterLayout.get_encounters_for_sector(5)
 	var s7 = ForestEncounterLayout.get_encounters_for_sector(6)
 	var s8 = ForestEncounterLayout.get_encounters_for_sector(7)
-	var s9 = ForestEncounterLayout.get_encounters_for_sector(8)
 	var s10 = ForestEncounterLayout.get_encounters_for_sector(9)
 	
 	# Setor 5: 3 encontros (2 crawlers, 1 crow)
@@ -122,11 +121,11 @@ func _test_m6_c2_distribution() -> void:
 	else:
 		log_fail("Setor 8 IDs incorretos: %s" % str(s8))
 	
-	# Setores 9 e 10 estritamente vazios
-	if s9.is_empty() and s10.is_empty():
-		log_pass("Setores 9 e 10 permanecem estritamente vazios (0 encontros)")
+	# Setor 10 estritamente vazio de encontros comuns (reservado para o Cervo Espectral)
+	if s10.is_empty():
+		log_pass("Setor 10 permanece estritamente vazio de encontros comuns (0 encontros)")
 	else:
-		log_fail("Setores 9 ou 10 possuem encontros indevidos!")
+		log_fail("Setor 10 possui encontros indevidos!")
 	
 	# Total e IDs únicos
 	var all_ids: Array[String] = []

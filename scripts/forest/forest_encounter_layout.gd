@@ -1,7 +1,7 @@
 class_name ForestEncounterLayout
 extends RefCounted
 ## Definição de dados dos encontros de inimigos e perigos da Floresta dos Ossos.
-## Marco M6-C1: Setores 1 a 4. Marco M6-C2: Setores 5 a 8.
+## Marco M6-C1: Setores 1 a 4. Marco M6-C2: Setores 5 a 8. Marco M6-C3: Setor 9.
 
 const SECTOR_ENCOUNTERS: Dictionary = {
 	0: [
@@ -193,6 +193,36 @@ const SECTOR_ENCOUNTERS: Dictionary = {
 			"id": "E-21",
 			"type": "spectral_crow",
 			"position": Vector2(650.0, 170.0),
+			"patrol_half_width": 25.0,
+			"facing": -1
+		}
+	],
+	8: [
+		{
+			"id": "E-22",
+			"type": "crawler",
+			"position": Vector2(260.0, 260.0),
+			"patrol_left": -25.0,
+			"patrol_right": 25.0,
+			"facing": -1
+		},
+		{
+			"id": "P-04",
+			"type": "fossil_spikes",
+			"position": Vector2(360.0, 280.0)
+		},
+		{
+			"id": "E-23",
+			"type": "sentinel",
+			"position": Vector2(610.0, 280.0),
+			"patrol_left": -20.0,
+			"patrol_right": 25.0,
+			"facing": -1
+		},
+		{
+			"id": "E-24",
+			"type": "spectral_crow",
+			"position": Vector2(740.0, 160.0),
 			"patrol_half_width": 25.0,
 			"facing": -1
 		}
