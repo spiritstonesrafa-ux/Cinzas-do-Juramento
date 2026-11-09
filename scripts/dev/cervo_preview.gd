@@ -40,6 +40,8 @@ func _ready() -> void:
 	cervo.animation_looped.connect(_on_cervo_anim_looped)
 	cervo.charge_sequence_completed.connect(_on_cervo_charge_completed)
 	cervo.charge_stage_changed.connect(_on_cervo_charge_stage_changed)
+	cervo.antler_sequence_completed.connect(_on_cervo_antler_completed)
+	cervo.antler_stage_changed.connect(_on_cervo_antler_stage_changed)
 
 	cervo.play(CervoVisual.AnimState.IDLE)
 	queue_redraw()
@@ -92,6 +94,9 @@ func _unhandled_input(event: InputEvent) -> void:
 			_update_pause_state()
 		KEY_5:
 			cervo.start_charge_sequence()
+			_update_pause_state()
+		KEY_6:
+			cervo.start_antler_sequence()
 			_update_pause_state()
 		KEY_F, KEY_SPACE:
 			cervo.toggle_facing()
@@ -148,6 +153,12 @@ func _on_cervo_charge_completed() -> void:
 	queue_redraw()
 
 func _on_cervo_charge_stage_changed(_stage: String) -> void:
+	queue_redraw()
+
+func _on_cervo_antler_completed() -> void:
+	queue_redraw()
+
+func _on_cervo_antler_stage_changed(_stage: String) -> void:
 	queue_redraw()
 
 func _draw() -> void:
@@ -237,13 +248,13 @@ func _draw_hud() -> void:
 
 	# Título
 	draw_string(font, Vector2(6, 11), "CERVO ESPECTRAL", HORIZONTAL_ALIGNMENT_LEFT, -1, 8, Color("00f0ff"))
-	draw_string(font, Vector2(98, 11), "| ART-BOSS-02 PREVIEW", HORIZONTAL_ALIGNMENT_LEFT, -1, 7, Color("769aa8"))
+	draw_string(font, Vector2(98, 11), "| ART-BOSS-03 PREVIEW", HORIZONTAL_ALIGNMENT_LEFT, -1, 7, Color("769aa8"))
 
-	# Barra de seleção de animações (1 a 5)
-	var anim_names = ["1:IDLE", "2:WALK", "3:GALLOP", "4:TURN", "5:INVESTIDA"]
-	var anim_widths = [32.0, 34.0, 42.0, 34.0, 56.0]
+	# Barra de seleção de animações (1 a 6)
+	var anim_names = ["1:IDLE", "2:WALK", "3:GALLOP", "4:TURN", "5:INVEST", "6:GALHADAS"]
+	var anim_widths = [27.0, 29.0, 36.0, 29.0, 37.0, 48.0]
 	var bx: float = 4.0
-	for i in range(5):
+	for i in range(6):
 		var is_active: bool = false
 		var btn_w: float = anim_widths[i]
 		if i == 0:
@@ -260,6 +271,12 @@ func _draw_hud() -> void:
 				CervoVisual.AnimState.CHARGE_EXEC,
 				CervoVisual.AnimState.CHARGE_RECOVER
 			]
+		elif i == 5:
+			is_active = cervo.current_state in [
+				CervoVisual.AnimState.ANTLER_PREP,
+				CervoVisual.AnimState.ANTLER_EXEC,
+				CervoVisual.AnimState.ANTLER_RECOVER
+			]
 
 		var col: Color = Color("00f0ff") if is_active else Color("5a7585")
 		if is_active:
@@ -274,19 +291,25 @@ func _draw_hud() -> void:
 	var scale_txt: String = "%.2fx" % cervo.display_scale
 	var stage_txt: String = ""
 	if cervo.current_state == CervoVisual.AnimState.CHARGE_PREP:
-		stage_txt = "[PREP] "
+		stage_txt = "[C-PREP] "
 	elif cervo.current_state == CervoVisual.AnimState.CHARGE_EXEC:
-		stage_txt = "[EXEC] "
+		stage_txt = "[C-EXEC] "
 	elif cervo.current_state == CervoVisual.AnimState.CHARGE_RECOVER:
-		stage_txt = "[REC] "
+		stage_txt = "[C-REC] "
+	elif cervo.current_state == CervoVisual.AnimState.ANTLER_PREP:
+		stage_txt = "[A-PREP] "
+	elif cervo.current_state == CervoVisual.AnimState.ANTLER_EXEC:
+		stage_txt = "[A-EXEC] "
+	elif cervo.current_state == CervoVisual.AnimState.ANTLER_RECOVER:
+		stage_txt = "[A-REC] "
 
 	var pause_txt: String = " [P]" if is_paused else ""
 
 	var status_line: String = "%s%s | %s | %s%s" % [stage_txt, frame_txt, facing_txt, scale_txt, pause_txt]
-	draw_string(font, Vector2(212, 25), status_line, HORIZONTAL_ALIGNMENT_LEFT, -1, 6, Color("e5f2f5"))
+	draw_string(font, Vector2(218, 25), status_line, HORIZONTAL_ALIGNMENT_LEFT, -1, 6, Color("e5f2f5"))
 
 	# Rodapé de controles
 	draw_rect(Rect2(0, 168, 320, 12), Color(0.04, 0.06, 0.09, 0.85), true)
 	draw_line(Vector2(0, 168), Vector2(320, 168), Color(0.18, 0.28, 0.35, 0.5), 1)
-	var help_txt: String = "[1-5]Anim  [F/Espaço]Virar  [S]Escala  [M]Movimento  [P]Pausa  [G]Guias  [A]Aren  [R]Reset  [Esc]Sair"
+	var help_txt: String = "[1-6]Anim  [F/Espaço]Virar  [S]Escala  [M]Movimento  [P]Pausa  [G]Guias  [A]Aren  [R]Reset  [Esc]Sair"
 	draw_string(font, Vector2(6, 176), help_txt, HORIZONTAL_ALIGNMENT_LEFT, -1, 6, Color("7b9fae"))

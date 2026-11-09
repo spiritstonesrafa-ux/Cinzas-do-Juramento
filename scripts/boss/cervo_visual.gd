@@ -1,7 +1,7 @@
 class_name CervoVisual
 extends PixelCanvas
-## Visual oficial em pixel-art animado do chefe Cervo Espectral (ART-BOSS-01 / ART-BOSS-02).
-## Gerencia a exibição e transição das 7 animações canônicas de alta fidelidade:
+## Visual oficial em pixel-art animado do chefe Cervo Espectral (ART-BOSS-01 / ART-BOSS-02 / ART-BOSS-03).
+## Gerencia a exibição e transição das 10 animações canônicas de alta fidelidade:
 ## 1. IDLE (Repouso): 8 quadros, 4x2
 ## 2. WALK (Caminhada): 8 quadros, 4x2
 ## 3. GALLOP (Galope): 12 quadros, 4x3
@@ -9,6 +9,9 @@ extends PixelCanvas
 ## 5. CHARGE_PREP (Preparação da Investida): 8 quadros, 4x2
 ## 6. CHARGE_EXEC (Execução da Investida): 12 quadros, 4x3
 ## 7. CHARGE_RECOVER (Recuperação da Investida): 8 quadros, 4x2
+## 8. ANTLER_PREP (Preparação do Corte das Galhadas): 8 quadros, 4x2
+## 9. ANTLER_EXEC (Execução do Corte das Galhadas): 12 quadros, 4x3
+## 10. ANTLER_RECOVER (Recuperação do Corte das Galhadas): 8 quadros, 4x2
 
 enum AnimState {
 	IDLE,
@@ -17,7 +20,10 @@ enum AnimState {
 	TURN,
 	CHARGE_PREP,
 	CHARGE_EXEC,
-	CHARGE_RECOVER
+	CHARGE_RECOVER,
+	ANTLER_PREP,
+	ANTLER_EXEC,
+	ANTLER_RECOVER
 }
 
 signal animation_finished(anim_name: String)
@@ -26,8 +32,10 @@ signal frame_changed(anim_name: String, frame_index: int)
 signal facing_changed(new_facing: int)
 signal charge_sequence_completed()
 signal charge_stage_changed(stage_name: String)
+signal antler_sequence_completed()
+signal antler_stage_changed(stage_name: String)
 
-# Texturas oficiais pré-carregadas (7 spritesheets processadas)
+# Texturas oficiais pré-carregadas (10 spritesheets processadas)
 const TEX_IDLE: Texture2D = preload("res://assets/art/cervo/cervo_idle.png")
 const TEX_WALK: Texture2D = preload("res://assets/art/cervo/cervo_walk.png")
 const TEX_GALLOP: Texture2D = preload("res://assets/art/cervo/cervo_gallop.png")
@@ -35,6 +43,9 @@ const TEX_TURN: Texture2D = preload("res://assets/art/cervo/cervo_turn.png")
 const TEX_CHARGE_PREP: Texture2D = preload("res://assets/art/cervo/cervo_charge_prep.png")
 const TEX_CHARGE_EXEC: Texture2D = preload("res://assets/art/cervo/cervo_charge_exec.png")
 const TEX_CHARGE_RECOVER: Texture2D = preload("res://assets/art/cervo/cervo_charge_recover.png")
+const TEX_ANTLER_PREP: Texture2D = preload("res://assets/art/cervo/cervo_antler_prep.png")
+const TEX_ANTLER_EXEC: Texture2D = preload("res://assets/art/cervo/cervo_antler_exec.png")
+const TEX_ANTLER_RECOVER: Texture2D = preload("res://assets/art/cervo/cervo_antler_recover.png")
 
 # Configurações de grade das animações
 const ANIM_CONFIG: Dictionary = {
@@ -100,6 +111,33 @@ const ANIM_CONFIG: Dictionary = {
 		"total_frames": 8,
 		"fps": 8.0,
 		"loop": false
+	},
+	AnimState.ANTLER_PREP: {
+		"name": "antler_prep",
+		"texture": TEX_ANTLER_PREP,
+		"columns": 4,
+		"rows": 2,
+		"total_frames": 8,
+		"fps": 8.0,
+		"loop": false
+	},
+	AnimState.ANTLER_EXEC: {
+		"name": "antler_exec",
+		"texture": TEX_ANTLER_EXEC,
+		"columns": 4,
+		"rows": 3,
+		"total_frames": 12,
+		"fps": 12.0,
+		"loop": false
+	},
+	AnimState.ANTLER_RECOVER: {
+		"name": "antler_recover",
+		"texture": TEX_ANTLER_RECOVER,
+		"columns": 4,
+		"rows": 2,
+		"total_frames": 8,
+		"fps": 8.0,
+		"loop": false
 	}
 }
 
@@ -143,6 +181,11 @@ var _charge_prep_fps: float = -1.0
 var _charge_exec_fps: float = -1.0
 var _charge_recover_fps: float = -1.0
 
+var _is_antler_sequence: bool = false
+var _antler_prep_fps: float = -1.0
+var _antler_exec_fps: float = -1.0
+var _antler_recover_fps: float = -1.0
+
 func _ready() -> void:
 	texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
 	_apply_anim_config(current_state)
@@ -173,7 +216,7 @@ func _advance_frame() -> void:
 			frame_changed.emit(String(config["name"]), current_frame)
 			queue_redraw()
 		else:
-			# Fim de animação one-shot (como TURN, CHARGE_PREP, CHARGE_EXEC, CHARGE_RECOVER)
+			# Fim de animação one-shot (como TURN, CHARGE_PREP, CHARGE_EXEC, CHARGE_RECOVER, ANTLER_PREP, etc.)
 			current_frame = total - 1
 			var finished_anim: String = String(config["name"])
 			match current_state:
@@ -192,6 +235,17 @@ func _advance_frame() -> void:
 					charge_stage_changed.emit("idle")
 					play(AnimState.IDLE)
 					charge_sequence_completed.emit()
+				AnimState.ANTLER_PREP:
+					antler_stage_changed.emit("antler_exec")
+					play(AnimState.ANTLER_EXEC, _antler_exec_fps)
+				AnimState.ANTLER_EXEC:
+					antler_stage_changed.emit("antler_recover")
+					play(AnimState.ANTLER_RECOVER, _antler_recover_fps)
+				AnimState.ANTLER_RECOVER:
+					_is_antler_sequence = false
+					antler_stage_changed.emit("idle")
+					play(AnimState.IDLE)
+					antler_sequence_completed.emit()
 			animation_finished.emit(finished_anim)
 	else:
 		current_frame = next_frame
@@ -213,19 +267,25 @@ func play(state: AnimState, custom_fps: float = -1.0) -> void:
 	if state == AnimState.TURN:
 		_turn_initial_facing = facing
 
-	# Se for chamada direta para CHARGE_PREP sem start_charge_sequence, ativa o encadeamento
+	# Se for chamada direta para PREP sem método start_*, ativa o encadeamento correspondente
 	if state == AnimState.CHARGE_PREP:
 		_is_charge_sequence = true
-	elif state != AnimState.CHARGE_EXEC and state != AnimState.CHARGE_RECOVER:
+		_is_antler_sequence = false
+	elif state == AnimState.ANTLER_PREP:
+		_is_antler_sequence = true
 		_is_charge_sequence = false
+	elif state != AnimState.CHARGE_EXEC and state != AnimState.CHARGE_RECOVER and state != AnimState.ANTLER_EXEC and state != AnimState.ANTLER_RECOVER:
+		_is_charge_sequence = false
+		_is_antler_sequence = false
 
 	_apply_anim_config(state, custom_fps)
 	is_playing = true
 
 func start_charge_sequence(prep_fps: float = -1.0, exec_fps: float = -1.0, recover_fps: float = -1.0) -> void:
-	if is_charge_sequence_active():
+	if is_charge_sequence_active() or is_antler_sequence_active():
 		return
 	_is_charge_sequence = true
+	_is_antler_sequence = false
 	_charge_prep_fps = prep_fps
 	_charge_exec_fps = exec_fps
 	_charge_recover_fps = recover_fps
@@ -237,6 +297,24 @@ func is_charge_sequence_active() -> bool:
 		current_state == AnimState.CHARGE_PREP or
 		current_state == AnimState.CHARGE_EXEC or
 		current_state == AnimState.CHARGE_RECOVER
+	)
+
+func start_antler_sequence(prep_fps: float = -1.0, exec_fps: float = -1.0, recover_fps: float = -1.0) -> void:
+	if is_antler_sequence_active() or is_charge_sequence_active():
+		return
+	_is_antler_sequence = true
+	_is_charge_sequence = false
+	_antler_prep_fps = prep_fps
+	_antler_exec_fps = exec_fps
+	_antler_recover_fps = recover_fps
+	antler_stage_changed.emit("antler_prep")
+	play(AnimState.ANTLER_PREP, prep_fps)
+
+func is_antler_sequence_active() -> bool:
+	return _is_antler_sequence and (
+		current_state == AnimState.ANTLER_PREP or
+		current_state == AnimState.ANTLER_EXEC or
+		current_state == AnimState.ANTLER_RECOVER
 	)
 
 func play_by_name(anim_name: String, custom_fps: float = -1.0) -> void:
@@ -258,6 +336,14 @@ func play_by_name(anim_name: String, custom_fps: float = -1.0) -> void:
 			play(AnimState.CHARGE_RECOVER, custom_fps)
 		"charge", "investida":
 			start_charge_sequence(custom_fps, custom_fps, custom_fps)
+		"antler_prep":
+			play(AnimState.ANTLER_PREP, custom_fps)
+		"antler_exec":
+			play(AnimState.ANTLER_EXEC, custom_fps)
+		"antler_recover":
+			play(AnimState.ANTLER_RECOVER, custom_fps)
+		"antler", "corte", "galhadas", "corte_galhadas":
+			start_antler_sequence(custom_fps, custom_fps, custom_fps)
 		_:
 			push_warning("CervoVisual: Animação desconhecida '%s'" % anim_name)
 
@@ -310,7 +396,7 @@ func _draw() -> void:
 		if _turn_initial_facing < 0:
 			flip_h = true
 	else:
-		# Em IDLE, WALK, GALLOP e na INVESTIDA (PREP/EXEC/RECOVER), espelha se estiver virado para a esquerda
+		# Em IDLE, WALK, GALLOP, INVESTIDA e CORTE DAS GALHADAS, espelha se estiver virado para a esquerda
 		if facing < 0:
 			flip_h = true
 
