@@ -42,6 +42,8 @@ func _ready() -> void:
 	cervo.charge_stage_changed.connect(_on_cervo_charge_stage_changed)
 	cervo.antler_sequence_completed.connect(_on_cervo_antler_completed)
 	cervo.antler_stage_changed.connect(_on_cervo_antler_stage_changed)
+	cervo.stomp_sequence_completed.connect(_on_cervo_stomp_completed)
+	cervo.stomp_stage_changed.connect(_on_cervo_stomp_stage_changed)
 
 	cervo.play(CervoVisual.AnimState.IDLE)
 	queue_redraw()
@@ -97,6 +99,9 @@ func _unhandled_input(event: InputEvent) -> void:
 			_update_pause_state()
 		KEY_6:
 			cervo.start_antler_sequence()
+			_update_pause_state()
+		KEY_7:
+			cervo.start_stomp_sequence()
 			_update_pause_state()
 		KEY_F, KEY_SPACE:
 			cervo.toggle_facing()
@@ -159,6 +164,12 @@ func _on_cervo_antler_completed() -> void:
 	queue_redraw()
 
 func _on_cervo_antler_stage_changed(_stage: String) -> void:
+	queue_redraw()
+
+func _on_cervo_stomp_completed() -> void:
+	queue_redraw()
+
+func _on_cervo_stomp_stage_changed(_stage: String) -> void:
 	queue_redraw()
 
 func _draw() -> void:
@@ -248,13 +259,13 @@ func _draw_hud() -> void:
 
 	# Título
 	draw_string(font, Vector2(6, 11), "CERVO ESPECTRAL", HORIZONTAL_ALIGNMENT_LEFT, -1, 8, Color("00f0ff"))
-	draw_string(font, Vector2(98, 11), "| ART-BOSS-03 PREVIEW", HORIZONTAL_ALIGNMENT_LEFT, -1, 7, Color("769aa8"))
+	draw_string(font, Vector2(98, 11), "| ART-BOSS-04 PREVIEW", HORIZONTAL_ALIGNMENT_LEFT, -1, 7, Color("769aa8"))
 
-	# Barra de seleção de animações (1 a 6)
-	var anim_names = ["1:IDLE", "2:WALK", "3:GALLOP", "4:TURN", "5:INVEST", "6:GALHADAS"]
-	var anim_widths = [27.0, 29.0, 36.0, 29.0, 37.0, 48.0]
+	# Barra de seleção de animações (1 a 7)
+	var anim_names = ["1:IDLE", "2:WALK", "3:GALLOP", "4:TURN", "5:INVEST", "6:CORTE", "7:PISADA"]
+	var anim_widths = [25.0, 26.0, 33.0, 26.0, 31.0, 29.0, 32.0]
 	var bx: float = 4.0
-	for i in range(6):
+	for i in range(7):
 		var is_active: bool = false
 		var btn_w: float = anim_widths[i]
 		if i == 0:
@@ -277,13 +288,19 @@ func _draw_hud() -> void:
 				CervoVisual.AnimState.ANTLER_EXEC,
 				CervoVisual.AnimState.ANTLER_RECOVER
 			]
+		elif i == 6:
+			is_active = cervo.current_state in [
+				CervoVisual.AnimState.STOMP_PREP,
+				CervoVisual.AnimState.STOMP_EXEC,
+				CervoVisual.AnimState.STOMP_RECOVER
+			]
 
 		var col: Color = Color("00f0ff") if is_active else Color("5a7585")
 		if is_active:
 			draw_rect(Rect2(bx - 2, 16, btn_w, 12), Color(0.0, 0.4, 0.45, 0.35), true)
 			draw_rect(Rect2(bx - 2, 16, btn_w, 12), Color("00f0ff"), false, 1)
 		draw_string(font, Vector2(bx, 25), anim_names[i], HORIZONTAL_ALIGNMENT_LEFT, -1, 7, col)
-		bx += btn_w + 3.0
+		bx += btn_w + 2.0
 
 	# Status detalhado na direita do topo
 	var facing_txt: String = "DIR" if cervo.facing > 0 else "ESQ"
@@ -302,14 +319,20 @@ func _draw_hud() -> void:
 		stage_txt = "[A-EXEC] "
 	elif cervo.current_state == CervoVisual.AnimState.ANTLER_RECOVER:
 		stage_txt = "[A-REC] "
+	elif cervo.current_state == CervoVisual.AnimState.STOMP_PREP:
+		stage_txt = "[S-PREP] "
+	elif cervo.current_state == CervoVisual.AnimState.STOMP_EXEC:
+		stage_txt = "[S-EXEC] "
+	elif cervo.current_state == CervoVisual.AnimState.STOMP_RECOVER:
+		stage_txt = "[S-REC] "
 
 	var pause_txt: String = " [P]" if is_paused else ""
 
 	var status_line: String = "%s%s | %s | %s%s" % [stage_txt, frame_txt, facing_txt, scale_txt, pause_txt]
-	draw_string(font, Vector2(218, 25), status_line, HORIZONTAL_ALIGNMENT_LEFT, -1, 6, Color("e5f2f5"))
+	draw_string(font, Vector2(220, 25), status_line, HORIZONTAL_ALIGNMENT_LEFT, -1, 6, Color("e5f2f5"))
 
 	# Rodapé de controles
 	draw_rect(Rect2(0, 168, 320, 12), Color(0.04, 0.06, 0.09, 0.85), true)
 	draw_line(Vector2(0, 168), Vector2(320, 168), Color(0.18, 0.28, 0.35, 0.5), 1)
-	var help_txt: String = "[1-6]Anim  [F/Espaço]Virar  [S]Escala  [M]Movimento  [P]Pausa  [G]Guias  [A]Aren  [R]Reset  [Esc]Sair"
+	var help_txt: String = "[1-7]Anim  [F/Espaço]Virar  [S]Escala  [M]Movimento  [P]Pausa  [G]Guias  [A]Aren  [R]Reset  [Esc]Sair"
 	draw_string(font, Vector2(6, 176), help_txt, HORIZONTAL_ALIGNMENT_LEFT, -1, 6, Color("7b9fae"))

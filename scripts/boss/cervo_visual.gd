@@ -1,7 +1,7 @@
 class_name CervoVisual
 extends PixelCanvas
-## Visual oficial em pixel-art animado do chefe Cervo Espectral (ART-BOSS-01 / ART-BOSS-02 / ART-BOSS-03).
-## Gerencia a exibição e transição das 10 animações canônicas de alta fidelidade:
+## Visual oficial em pixel-art animado do chefe Cervo Espectral (ART-BOSS-01 / ART-BOSS-02 / ART-BOSS-03 / ART-BOSS-04).
+## Gerencia a exibição e transição das 13 animações canônicas de alta fidelidade:
 ## 1. IDLE (Repouso): 8 quadros, 4x2
 ## 2. WALK (Caminhada): 8 quadros, 4x2
 ## 3. GALLOP (Galope): 12 quadros, 4x3
@@ -12,6 +12,9 @@ extends PixelCanvas
 ## 8. ANTLER_PREP (Preparação do Corte das Galhadas): 8 quadros, 4x2
 ## 9. ANTLER_EXEC (Execução do Corte das Galhadas): 12 quadros, 4x3
 ## 10. ANTLER_RECOVER (Recuperação do Corte das Galhadas): 8 quadros, 4x2
+## 11. STOMP_PREP (Preparação da Pisada das Almas): 8 quadros, 4x2
+## 12. STOMP_EXEC (Execução da Pisada das Almas): 12 quadros, 4x3
+## 13. STOMP_RECOVER (Recuperação da Pisada das Almas): 8 quadros, 4x2
 
 enum AnimState {
 	IDLE,
@@ -23,7 +26,10 @@ enum AnimState {
 	CHARGE_RECOVER,
 	ANTLER_PREP,
 	ANTLER_EXEC,
-	ANTLER_RECOVER
+	ANTLER_RECOVER,
+	STOMP_PREP,
+	STOMP_EXEC,
+	STOMP_RECOVER
 }
 
 signal animation_finished(anim_name: String)
@@ -34,8 +40,10 @@ signal charge_sequence_completed()
 signal charge_stage_changed(stage_name: String)
 signal antler_sequence_completed()
 signal antler_stage_changed(stage_name: String)
+signal stomp_sequence_completed()
+signal stomp_stage_changed(stage_name: String)
 
-# Texturas oficiais pré-carregadas (10 spritesheets processadas)
+# Texturas oficiais pré-carregadas (13 spritesheets processadas)
 const TEX_IDLE: Texture2D = preload("res://assets/art/cervo/cervo_idle.png")
 const TEX_WALK: Texture2D = preload("res://assets/art/cervo/cervo_walk.png")
 const TEX_GALLOP: Texture2D = preload("res://assets/art/cervo/cervo_gallop.png")
@@ -46,6 +54,9 @@ const TEX_CHARGE_RECOVER: Texture2D = preload("res://assets/art/cervo/cervo_char
 const TEX_ANTLER_PREP: Texture2D = preload("res://assets/art/cervo/cervo_antler_prep.png")
 const TEX_ANTLER_EXEC: Texture2D = preload("res://assets/art/cervo/cervo_antler_exec.png")
 const TEX_ANTLER_RECOVER: Texture2D = preload("res://assets/art/cervo/cervo_antler_recover.png")
+const TEX_STOMP_PREP: Texture2D = preload("res://assets/art/cervo/cervo_stomp_prep.png")
+const TEX_STOMP_EXEC: Texture2D = preload("res://assets/art/cervo/cervo_stomp_exec.png")
+const TEX_STOMP_RECOVER: Texture2D = preload("res://assets/art/cervo/cervo_stomp_recover.png")
 
 # Configurações de grade das animações
 const ANIM_CONFIG: Dictionary = {
@@ -138,6 +149,33 @@ const ANIM_CONFIG: Dictionary = {
 		"total_frames": 8,
 		"fps": 8.0,
 		"loop": false
+	},
+	AnimState.STOMP_PREP: {
+		"name": "stomp_prep",
+		"texture": TEX_STOMP_PREP,
+		"columns": 4,
+		"rows": 2,
+		"total_frames": 8,
+		"fps": 8.0,
+		"loop": false
+	},
+	AnimState.STOMP_EXEC: {
+		"name": "stomp_exec",
+		"texture": TEX_STOMP_EXEC,
+		"columns": 4,
+		"rows": 3,
+		"total_frames": 12,
+		"fps": 12.0,
+		"loop": false
+	},
+	AnimState.STOMP_RECOVER: {
+		"name": "stomp_recover",
+		"texture": TEX_STOMP_RECOVER,
+		"columns": 4,
+		"rows": 2,
+		"total_frames": 8,
+		"fps": 8.0,
+		"loop": false
 	}
 }
 
@@ -185,6 +223,11 @@ var _is_antler_sequence: bool = false
 var _antler_prep_fps: float = -1.0
 var _antler_exec_fps: float = -1.0
 var _antler_recover_fps: float = -1.0
+
+var _is_stomp_sequence: bool = false
+var _stomp_prep_fps: float = -1.0
+var _stomp_exec_fps: float = -1.0
+var _stomp_recover_fps: float = -1.0
 
 func _ready() -> void:
 	texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
@@ -246,6 +289,17 @@ func _advance_frame() -> void:
 					antler_stage_changed.emit("idle")
 					play(AnimState.IDLE)
 					antler_sequence_completed.emit()
+				AnimState.STOMP_PREP:
+					stomp_stage_changed.emit("stomp_exec")
+					play(AnimState.STOMP_EXEC, _stomp_exec_fps)
+				AnimState.STOMP_EXEC:
+					stomp_stage_changed.emit("stomp_recover")
+					play(AnimState.STOMP_RECOVER, _stomp_recover_fps)
+				AnimState.STOMP_RECOVER:
+					_is_stomp_sequence = false
+					stomp_stage_changed.emit("idle")
+					play(AnimState.IDLE)
+					stomp_sequence_completed.emit()
 			animation_finished.emit(finished_anim)
 	else:
 		current_frame = next_frame
@@ -271,21 +325,31 @@ func play(state: AnimState, custom_fps: float = -1.0) -> void:
 	if state == AnimState.CHARGE_PREP:
 		_is_charge_sequence = true
 		_is_antler_sequence = false
+		_is_stomp_sequence = false
 	elif state == AnimState.ANTLER_PREP:
 		_is_antler_sequence = true
 		_is_charge_sequence = false
-	elif state != AnimState.CHARGE_EXEC and state != AnimState.CHARGE_RECOVER and state != AnimState.ANTLER_EXEC and state != AnimState.ANTLER_RECOVER:
+		_is_stomp_sequence = false
+	elif state == AnimState.STOMP_PREP:
+		_is_stomp_sequence = true
 		_is_charge_sequence = false
 		_is_antler_sequence = false
+	elif (state != AnimState.CHARGE_EXEC and state != AnimState.CHARGE_RECOVER and
+			state != AnimState.ANTLER_EXEC and state != AnimState.ANTLER_RECOVER and
+			state != AnimState.STOMP_EXEC and state != AnimState.STOMP_RECOVER):
+		_is_charge_sequence = false
+		_is_antler_sequence = false
+		_is_stomp_sequence = false
 
 	_apply_anim_config(state, custom_fps)
 	is_playing = true
 
 func start_charge_sequence(prep_fps: float = -1.0, exec_fps: float = -1.0, recover_fps: float = -1.0) -> void:
-	if is_charge_sequence_active() or is_antler_sequence_active():
+	if is_charge_sequence_active() or is_antler_sequence_active() or is_stomp_sequence_active():
 		return
 	_is_charge_sequence = true
 	_is_antler_sequence = false
+	_is_stomp_sequence = false
 	_charge_prep_fps = prep_fps
 	_charge_exec_fps = exec_fps
 	_charge_recover_fps = recover_fps
@@ -300,10 +364,11 @@ func is_charge_sequence_active() -> bool:
 	)
 
 func start_antler_sequence(prep_fps: float = -1.0, exec_fps: float = -1.0, recover_fps: float = -1.0) -> void:
-	if is_antler_sequence_active() or is_charge_sequence_active():
+	if is_antler_sequence_active() or is_charge_sequence_active() or is_stomp_sequence_active():
 		return
 	_is_antler_sequence = true
 	_is_charge_sequence = false
+	_is_stomp_sequence = false
 	_antler_prep_fps = prep_fps
 	_antler_exec_fps = exec_fps
 	_antler_recover_fps = recover_fps
@@ -315,6 +380,25 @@ func is_antler_sequence_active() -> bool:
 		current_state == AnimState.ANTLER_PREP or
 		current_state == AnimState.ANTLER_EXEC or
 		current_state == AnimState.ANTLER_RECOVER
+	)
+
+func start_stomp_sequence(prep_fps: float = -1.0, exec_fps: float = -1.0, recover_fps: float = -1.0) -> void:
+	if is_stomp_sequence_active() or is_charge_sequence_active() or is_antler_sequence_active():
+		return
+	_is_stomp_sequence = true
+	_is_charge_sequence = false
+	_is_antler_sequence = false
+	_stomp_prep_fps = prep_fps
+	_stomp_exec_fps = exec_fps
+	_stomp_recover_fps = recover_fps
+	stomp_stage_changed.emit("stomp_prep")
+	play(AnimState.STOMP_PREP, prep_fps)
+
+func is_stomp_sequence_active() -> bool:
+	return _is_stomp_sequence and (
+		current_state == AnimState.STOMP_PREP or
+		current_state == AnimState.STOMP_EXEC or
+		current_state == AnimState.STOMP_RECOVER
 	)
 
 func play_by_name(anim_name: String, custom_fps: float = -1.0) -> void:
@@ -344,6 +428,14 @@ func play_by_name(anim_name: String, custom_fps: float = -1.0) -> void:
 			play(AnimState.ANTLER_RECOVER, custom_fps)
 		"antler", "corte", "galhadas", "corte_galhadas":
 			start_antler_sequence(custom_fps, custom_fps, custom_fps)
+		"stomp_prep":
+			play(AnimState.STOMP_PREP, custom_fps)
+		"stomp_exec":
+			play(AnimState.STOMP_EXEC, custom_fps)
+		"stomp_recover":
+			play(AnimState.STOMP_RECOVER, custom_fps)
+		"stomp", "pisada", "pisada_almas", "pisada_das_almas":
+			start_stomp_sequence(custom_fps, custom_fps, custom_fps)
 		_:
 			push_warning("CervoVisual: Animação desconhecida '%s'" % anim_name)
 
@@ -396,7 +488,7 @@ func _draw() -> void:
 		if _turn_initial_facing < 0:
 			flip_h = true
 	else:
-		# Em IDLE, WALK, GALLOP, INVESTIDA e CORTE DAS GALHADAS, espelha se estiver virado para a esquerda
+		# Em IDLE, WALK, GALLOP, INVESTIDA, CORTE DAS GALHADAS e PISADA DAS ALMAS, espelha se estiver virado para a esquerda
 		if facing < 0:
 			flip_h = true
 
