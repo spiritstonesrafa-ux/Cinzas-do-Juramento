@@ -1,29 +1,40 @@
 class_name CervoVisual
 extends PixelCanvas
-## Visual oficial em pixel-art animado do chefe Cervo Espectral (ART-BOSS-01).
-## Gerencia a exibição e transição das 4 animações canônicas de alta fidelidade:
+## Visual oficial em pixel-art animado do chefe Cervo Espectral (ART-BOSS-01 / ART-BOSS-02).
+## Gerencia a exibição e transição das 7 animações canônicas de alta fidelidade:
 ## 1. IDLE (Repouso): 8 quadros, 4x2
 ## 2. WALK (Caminhada): 8 quadros, 4x2
 ## 3. GALLOP (Galope): 12 quadros, 4x3
 ## 4. TURN (Virada de direção): 8 quadros, 4x2
+## 5. CHARGE_PREP (Preparação da Investida): 8 quadros, 4x2
+## 6. CHARGE_EXEC (Execução da Investida): 12 quadros, 4x3
+## 7. CHARGE_RECOVER (Recuperação da Investida): 8 quadros, 4x2
 
 enum AnimState {
 	IDLE,
 	WALK,
 	GALLOP,
-	TURN
+	TURN,
+	CHARGE_PREP,
+	CHARGE_EXEC,
+	CHARGE_RECOVER
 }
 
 signal animation_finished(anim_name: String)
 signal animation_looped(anim_name: String)
 signal frame_changed(anim_name: String, frame_index: int)
 signal facing_changed(new_facing: int)
+signal charge_sequence_completed()
+signal charge_stage_changed(stage_name: String)
 
-# Texturas oficiais pré-carregadas (4 spritesheets processadas)
+# Texturas oficiais pré-carregadas (7 spritesheets processadas)
 const TEX_IDLE: Texture2D = preload("res://assets/art/cervo/cervo_idle.png")
 const TEX_WALK: Texture2D = preload("res://assets/art/cervo/cervo_walk.png")
 const TEX_GALLOP: Texture2D = preload("res://assets/art/cervo/cervo_gallop.png")
 const TEX_TURN: Texture2D = preload("res://assets/art/cervo/cervo_turn.png")
+const TEX_CHARGE_PREP: Texture2D = preload("res://assets/art/cervo/cervo_charge_prep.png")
+const TEX_CHARGE_EXEC: Texture2D = preload("res://assets/art/cervo/cervo_charge_exec.png")
+const TEX_CHARGE_RECOVER: Texture2D = preload("res://assets/art/cervo/cervo_charge_recover.png")
 
 # Configurações de grade das animações
 const ANIM_CONFIG: Dictionary = {
@@ -61,6 +72,33 @@ const ANIM_CONFIG: Dictionary = {
 		"rows": 2,
 		"total_frames": 8,
 		"fps": 10.0,
+		"loop": false
+	},
+	AnimState.CHARGE_PREP: {
+		"name": "charge_prep",
+		"texture": TEX_CHARGE_PREP,
+		"columns": 4,
+		"rows": 2,
+		"total_frames": 8,
+		"fps": 8.0,
+		"loop": false
+	},
+	AnimState.CHARGE_EXEC: {
+		"name": "charge_exec",
+		"texture": TEX_CHARGE_EXEC,
+		"columns": 4,
+		"rows": 3,
+		"total_frames": 12,
+		"fps": 12.0,
+		"loop": false
+	},
+	AnimState.CHARGE_RECOVER: {
+		"name": "charge_recover",
+		"texture": TEX_CHARGE_RECOVER,
+		"columns": 4,
+		"rows": 2,
+		"total_frames": 8,
+		"fps": 8.0,
 		"loop": false
 	}
 }
@@ -100,6 +138,10 @@ var current_frame: int = 0
 var _anim_time: float = 0.0
 var _current_fps: float = 8.0
 var _turn_initial_facing: int = 1
+var _is_charge_sequence: bool = false
+var _charge_prep_fps: float = -1.0
+var _charge_exec_fps: float = -1.0
+var _charge_recover_fps: float = -1.0
 
 func _ready() -> void:
 	texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
@@ -131,13 +173,25 @@ func _advance_frame() -> void:
 			frame_changed.emit(String(config["name"]), current_frame)
 			queue_redraw()
 		else:
-			# Fim de animação one-shot (como TURN)
+			# Fim de animação one-shot (como TURN, CHARGE_PREP, CHARGE_EXEC, CHARGE_RECOVER)
 			current_frame = total - 1
 			var finished_anim: String = String(config["name"])
-			if current_state == AnimState.TURN:
-				# Conclui a virada invertendo a orientação canônica
-				facing = -_turn_initial_facing
-				play(AnimState.IDLE)
+			match current_state:
+				AnimState.TURN:
+					# Conclui a virada invertendo a orientação canônica
+					facing = -_turn_initial_facing
+					play(AnimState.IDLE)
+				AnimState.CHARGE_PREP:
+					charge_stage_changed.emit("charge_exec")
+					play(AnimState.CHARGE_EXEC, _charge_exec_fps)
+				AnimState.CHARGE_EXEC:
+					charge_stage_changed.emit("charge_recover")
+					play(AnimState.CHARGE_RECOVER, _charge_recover_fps)
+				AnimState.CHARGE_RECOVER:
+					_is_charge_sequence = false
+					charge_stage_changed.emit("idle")
+					play(AnimState.IDLE)
+					charge_sequence_completed.emit()
 			animation_finished.emit(finished_anim)
 	else:
 		current_frame = next_frame
@@ -159,8 +213,31 @@ func play(state: AnimState, custom_fps: float = -1.0) -> void:
 	if state == AnimState.TURN:
 		_turn_initial_facing = facing
 
+	# Se for chamada direta para CHARGE_PREP sem start_charge_sequence, ativa o encadeamento
+	if state == AnimState.CHARGE_PREP:
+		_is_charge_sequence = true
+	elif state != AnimState.CHARGE_EXEC and state != AnimState.CHARGE_RECOVER:
+		_is_charge_sequence = false
+
 	_apply_anim_config(state, custom_fps)
 	is_playing = true
+
+func start_charge_sequence(prep_fps: float = -1.0, exec_fps: float = -1.0, recover_fps: float = -1.0) -> void:
+	if is_charge_sequence_active():
+		return
+	_is_charge_sequence = true
+	_charge_prep_fps = prep_fps
+	_charge_exec_fps = exec_fps
+	_charge_recover_fps = recover_fps
+	charge_stage_changed.emit("charge_prep")
+	play(AnimState.CHARGE_PREP, prep_fps)
+
+func is_charge_sequence_active() -> bool:
+	return _is_charge_sequence and (
+		current_state == AnimState.CHARGE_PREP or
+		current_state == AnimState.CHARGE_EXEC or
+		current_state == AnimState.CHARGE_RECOVER
+	)
 
 func play_by_name(anim_name: String, custom_fps: float = -1.0) -> void:
 	var lower: String = anim_name.to_lower().strip_edges()
@@ -173,6 +250,14 @@ func play_by_name(anim_name: String, custom_fps: float = -1.0) -> void:
 			play(AnimState.GALLOP, custom_fps)
 		"turn", "virada":
 			play(AnimState.TURN, custom_fps)
+		"charge_prep", "preparacao":
+			play(AnimState.CHARGE_PREP, custom_fps)
+		"charge_exec", "execucao":
+			play(AnimState.CHARGE_EXEC, custom_fps)
+		"charge_recover", "recuperacao":
+			play(AnimState.CHARGE_RECOVER, custom_fps)
+		"charge", "investida":
+			start_charge_sequence(custom_fps, custom_fps, custom_fps)
 		_:
 			push_warning("CervoVisual: Animação desconhecida '%s'" % anim_name)
 
@@ -225,7 +310,7 @@ func _draw() -> void:
 		if _turn_initial_facing < 0:
 			flip_h = true
 	else:
-		# Em IDLE, WALK e GALLOP, espelha se estiver virado para a esquerda
+		# Em IDLE, WALK, GALLOP e na INVESTIDA (PREP/EXEC/RECOVER), espelha se estiver virado para a esquerda
 		if facing < 0:
 			flip_h = true
 

@@ -38,6 +38,8 @@ func _ready() -> void:
 	cervo.frame_changed.connect(_on_cervo_frame_changed)
 	cervo.animation_finished.connect(_on_cervo_anim_finished)
 	cervo.animation_looped.connect(_on_cervo_anim_looped)
+	cervo.charge_sequence_completed.connect(_on_cervo_charge_completed)
+	cervo.charge_stage_changed.connect(_on_cervo_charge_stage_changed)
 
 	cervo.play(CervoVisual.AnimState.IDLE)
 	queue_redraw()
@@ -88,6 +90,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		KEY_4:
 			cervo.play(CervoVisual.AnimState.TURN)
 			_update_pause_state()
+		KEY_5:
+			cervo.start_charge_sequence()
+			_update_pause_state()
 		KEY_F, KEY_SPACE:
 			cervo.toggle_facing()
 			_update_pause_state()
@@ -137,6 +142,12 @@ func _on_cervo_anim_finished(anim: String) -> void:
 	queue_redraw()
 
 func _on_cervo_anim_looped(_anim: String) -> void:
+	queue_redraw()
+
+func _on_cervo_charge_completed() -> void:
+	queue_redraw()
+
+func _on_cervo_charge_stage_changed(_stage: String) -> void:
 	queue_redraw()
 
 func _draw() -> void:
@@ -226,33 +237,56 @@ func _draw_hud() -> void:
 
 	# Título
 	draw_string(font, Vector2(6, 11), "CERVO ESPECTRAL", HORIZONTAL_ALIGNMENT_LEFT, -1, 8, Color("00f0ff"))
-	draw_string(font, Vector2(100, 11), "| ART-BOSS-01 PREVIEW", HORIZONTAL_ALIGNMENT_LEFT, -1, 7, Color("769aa8"))
+	draw_string(font, Vector2(98, 11), "| ART-BOSS-02 PREVIEW", HORIZONTAL_ALIGNMENT_LEFT, -1, 7, Color("769aa8"))
 
-	# Barra de seleção de animações (1 a 4)
-	var anim_names = ["1:IDLE", "2:WALK", "3:GALLOP", "4:TURN"]
-	var anim_states = [CervoVisual.AnimState.IDLE, CervoVisual.AnimState.WALK, CervoVisual.AnimState.GALLOP, CervoVisual.AnimState.TURN]
-	var bx: float = 6.0
-	for i in range(4):
-		var is_active: bool = cervo.current_state == anim_states[i]
+	# Barra de seleção de animações (1 a 5)
+	var anim_names = ["1:IDLE", "2:WALK", "3:GALLOP", "4:TURN", "5:INVESTIDA"]
+	var anim_widths = [32.0, 34.0, 42.0, 34.0, 56.0]
+	var bx: float = 4.0
+	for i in range(5):
+		var is_active: bool = false
+		var btn_w: float = anim_widths[i]
+		if i == 0:
+			is_active = cervo.current_state == CervoVisual.AnimState.IDLE
+		elif i == 1:
+			is_active = cervo.current_state == CervoVisual.AnimState.WALK
+		elif i == 2:
+			is_active = cervo.current_state == CervoVisual.AnimState.GALLOP
+		elif i == 3:
+			is_active = cervo.current_state == CervoVisual.AnimState.TURN
+		elif i == 4:
+			is_active = cervo.current_state in [
+				CervoVisual.AnimState.CHARGE_PREP,
+				CervoVisual.AnimState.CHARGE_EXEC,
+				CervoVisual.AnimState.CHARGE_RECOVER
+			]
+
 		var col: Color = Color("00f0ff") if is_active else Color("5a7585")
 		if is_active:
-			draw_rect(Rect2(bx - 2, 16, 46, 12), Color(0.0, 0.4, 0.45, 0.35), true)
-			draw_rect(Rect2(bx - 2, 16, 46, 12), Color("00f0ff"), false, 1)
+			draw_rect(Rect2(bx - 2, 16, btn_w, 12), Color(0.0, 0.4, 0.45, 0.35), true)
+			draw_rect(Rect2(bx - 2, 16, btn_w, 12), Color("00f0ff"), false, 1)
 		draw_string(font, Vector2(bx, 25), anim_names[i], HORIZONTAL_ALIGNMENT_LEFT, -1, 7, col)
-		bx += 50.0
+		bx += btn_w + 3.0
 
 	# Status detalhado na direita do topo
-	var facing_txt: String = "DIR (+1)" if cervo.facing > 0 else "ESQ (-1)"
-	var frame_txt: String = "Q: %d/%d" % [cervo.current_frame + 1, cervo.get_total_frames()]
+	var facing_txt: String = "DIR" if cervo.facing > 0 else "ESQ"
+	var frame_txt: String = "Q:%d/%d" % [cervo.current_frame + 1, cervo.get_total_frames()]
 	var scale_txt: String = "%.2fx" % cervo.display_scale
-	var pause_txt: String = " [PAUSADO]" if is_paused else ""
-	var mov_txt: String = "MOV: ON" if moving_enabled else "MOV: OFF"
+	var stage_txt: String = ""
+	if cervo.current_state == CervoVisual.AnimState.CHARGE_PREP:
+		stage_txt = "[PREP] "
+	elif cervo.current_state == CervoVisual.AnimState.CHARGE_EXEC:
+		stage_txt = "[EXEC] "
+	elif cervo.current_state == CervoVisual.AnimState.CHARGE_RECOVER:
+		stage_txt = "[REC] "
 
-	var status_line: String = "%s | %s | Escala:%s | %s%s" % [frame_txt, facing_txt, scale_txt, mov_txt, pause_txt]
-	draw_string(font, Vector2(208, 25), status_line, HORIZONTAL_ALIGNMENT_LEFT, -1, 6, Color("e5f2f5"))
+	var pause_txt: String = " [P]" if is_paused else ""
+
+	var status_line: String = "%s%s | %s | %s%s" % [stage_txt, frame_txt, facing_txt, scale_txt, pause_txt]
+	draw_string(font, Vector2(212, 25), status_line, HORIZONTAL_ALIGNMENT_LEFT, -1, 6, Color("e5f2f5"))
 
 	# Rodapé de controles
 	draw_rect(Rect2(0, 168, 320, 12), Color(0.04, 0.06, 0.09, 0.85), true)
 	draw_line(Vector2(0, 168), Vector2(320, 168), Color(0.18, 0.28, 0.35, 0.5), 1)
-	var help_txt: String = "[1-4]Anim  [F/Espaço]Virar  [S]Escala  [M]Movimento  [P]Pausa  [G]Guias  [A]Aren  [R]Reset  [Esc]Sair"
+	var help_txt: String = "[1-5]Anim  [F/Espaço]Virar  [S]Escala  [M]Movimento  [P]Pausa  [G]Guias  [A]Aren  [R]Reset  [Esc]Sair"
 	draw_string(font, Vector2(6, 176), help_txt, HORIZONTAL_ALIGNMENT_LEFT, -1, 6, Color("7b9fae"))
