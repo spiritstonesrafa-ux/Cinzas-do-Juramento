@@ -1,7 +1,7 @@
 class_name CervoVisual
 extends PixelCanvas
-## Visual oficial em pixel-art animado do chefe Cervo Espectral (ART-BOSS-01 / ART-BOSS-02 / ART-BOSS-03 / ART-BOSS-04).
-## Gerencia a exibição e transição das 13 animações canônicas de alta fidelidade:
+## Visual oficial em pixel-art animado do chefe Cervo Espectral (ART-BOSS-01 / ART-BOSS-02 / ART-BOSS-03 / ART-BOSS-04 / ART-BOSS-05).
+## Gerencia a exibição e transição das 16 animações canônicas de alta fidelidade:
 ## 1. IDLE (Repouso): 8 quadros, 4x2
 ## 2. WALK (Caminhada): 8 quadros, 4x2
 ## 3. GALLOP (Galope): 12 quadros, 4x3
@@ -15,6 +15,9 @@ extends PixelCanvas
 ## 11. STOMP_PREP (Preparação da Pisada das Almas): 8 quadros, 4x2
 ## 12. STOMP_EXEC (Execução da Pisada das Almas): 12 quadros, 4x3
 ## 13. STOMP_RECOVER (Recuperação da Pisada das Almas): 8 quadros, 4x2
+## 14. LEAP_PREP (Preparação do Salto Predatório): 8 quadros, 4x2
+## 15. LEAP_EXEC (Execução do Salto Predatório): 12 quadros, 4x3
+## 16. LEAP_RECOVER (Recuperação do Salto Predatório): 8 quadros, 4x2
 
 enum AnimState {
 	IDLE,
@@ -29,7 +32,10 @@ enum AnimState {
 	ANTLER_RECOVER,
 	STOMP_PREP,
 	STOMP_EXEC,
-	STOMP_RECOVER
+	STOMP_RECOVER,
+	LEAP_PREP,
+	LEAP_EXEC,
+	LEAP_RECOVER
 }
 
 signal animation_finished(anim_name: String)
@@ -42,8 +48,10 @@ signal antler_sequence_completed()
 signal antler_stage_changed(stage_name: String)
 signal stomp_sequence_completed()
 signal stomp_stage_changed(stage_name: String)
+signal leap_sequence_completed()
+signal leap_stage_changed(stage_name: String)
 
-# Texturas oficiais pré-carregadas (13 spritesheets processadas)
+# Texturas oficiais pré-carregadas (16 spritesheets processadas)
 const TEX_IDLE: Texture2D = preload("res://assets/art/cervo/cervo_idle.png")
 const TEX_WALK: Texture2D = preload("res://assets/art/cervo/cervo_walk.png")
 const TEX_GALLOP: Texture2D = preload("res://assets/art/cervo/cervo_gallop.png")
@@ -57,6 +65,9 @@ const TEX_ANTLER_RECOVER: Texture2D = preload("res://assets/art/cervo/cervo_antl
 const TEX_STOMP_PREP: Texture2D = preload("res://assets/art/cervo/cervo_stomp_prep.png")
 const TEX_STOMP_EXEC: Texture2D = preload("res://assets/art/cervo/cervo_stomp_exec.png")
 const TEX_STOMP_RECOVER: Texture2D = preload("res://assets/art/cervo/cervo_stomp_recover.png")
+const TEX_LEAP_PREP: Texture2D = preload("res://assets/art/cervo/cervo_leap_prep.png")
+const TEX_LEAP_EXEC: Texture2D = preload("res://assets/art/cervo/cervo_leap_exec.png")
+const TEX_LEAP_RECOVER: Texture2D = preload("res://assets/art/cervo/cervo_leap_recover.png")
 
 # Configurações de grade das animações
 const ANIM_CONFIG: Dictionary = {
@@ -176,6 +187,33 @@ const ANIM_CONFIG: Dictionary = {
 		"total_frames": 8,
 		"fps": 8.0,
 		"loop": false
+	},
+	AnimState.LEAP_PREP: {
+		"name": "leap_prep",
+		"texture": TEX_LEAP_PREP,
+		"columns": 4,
+		"rows": 2,
+		"total_frames": 8,
+		"fps": 8.0,
+		"loop": false
+	},
+	AnimState.LEAP_EXEC: {
+		"name": "leap_exec",
+		"texture": TEX_LEAP_EXEC,
+		"columns": 4,
+		"rows": 3,
+		"total_frames": 12,
+		"fps": 12.0,
+		"loop": false
+	},
+	AnimState.LEAP_RECOVER: {
+		"name": "leap_recover",
+		"texture": TEX_LEAP_RECOVER,
+		"columns": 4,
+		"rows": 2,
+		"total_frames": 8,
+		"fps": 8.0,
+		"loop": false
 	}
 }
 
@@ -228,6 +266,11 @@ var _is_stomp_sequence: bool = false
 var _stomp_prep_fps: float = -1.0
 var _stomp_exec_fps: float = -1.0
 var _stomp_recover_fps: float = -1.0
+
+var _is_leap_sequence: bool = false
+var _leap_prep_fps: float = -1.0
+var _leap_exec_fps: float = -1.0
+var _leap_recover_fps: float = -1.0
 
 func _ready() -> void:
 	texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
@@ -300,6 +343,17 @@ func _advance_frame() -> void:
 					stomp_stage_changed.emit("idle")
 					play(AnimState.IDLE)
 					stomp_sequence_completed.emit()
+				AnimState.LEAP_PREP:
+					leap_stage_changed.emit("leap_exec")
+					play(AnimState.LEAP_EXEC, _leap_exec_fps)
+				AnimState.LEAP_EXEC:
+					leap_stage_changed.emit("leap_recover")
+					play(AnimState.LEAP_RECOVER, _leap_recover_fps)
+				AnimState.LEAP_RECOVER:
+					_is_leap_sequence = false
+					leap_stage_changed.emit("idle")
+					play(AnimState.IDLE)
+					leap_sequence_completed.emit()
 			animation_finished.emit(finished_anim)
 	else:
 		current_frame = next_frame
@@ -326,30 +380,41 @@ func play(state: AnimState, custom_fps: float = -1.0) -> void:
 		_is_charge_sequence = true
 		_is_antler_sequence = false
 		_is_stomp_sequence = false
+		_is_leap_sequence = false
 	elif state == AnimState.ANTLER_PREP:
 		_is_antler_sequence = true
 		_is_charge_sequence = false
 		_is_stomp_sequence = false
+		_is_leap_sequence = false
 	elif state == AnimState.STOMP_PREP:
 		_is_stomp_sequence = true
 		_is_charge_sequence = false
 		_is_antler_sequence = false
-	elif (state != AnimState.CHARGE_EXEC and state != AnimState.CHARGE_RECOVER and
-			state != AnimState.ANTLER_EXEC and state != AnimState.ANTLER_RECOVER and
-			state != AnimState.STOMP_EXEC and state != AnimState.STOMP_RECOVER):
+		_is_leap_sequence = false
+	elif state == AnimState.LEAP_PREP:
+		_is_leap_sequence = true
 		_is_charge_sequence = false
 		_is_antler_sequence = false
 		_is_stomp_sequence = false
+	elif (state != AnimState.CHARGE_EXEC and state != AnimState.CHARGE_RECOVER and
+			state != AnimState.ANTLER_EXEC and state != AnimState.ANTLER_RECOVER and
+			state != AnimState.STOMP_EXEC and state != AnimState.STOMP_RECOVER and
+			state != AnimState.LEAP_EXEC and state != AnimState.LEAP_RECOVER):
+		_is_charge_sequence = false
+		_is_antler_sequence = false
+		_is_stomp_sequence = false
+		_is_leap_sequence = false
 
 	_apply_anim_config(state, custom_fps)
 	is_playing = true
 
 func start_charge_sequence(prep_fps: float = -1.0, exec_fps: float = -1.0, recover_fps: float = -1.0) -> void:
-	if is_charge_sequence_active() or is_antler_sequence_active() or is_stomp_sequence_active():
+	if is_charge_sequence_active() or is_antler_sequence_active() or is_stomp_sequence_active() or is_leap_sequence_active():
 		return
 	_is_charge_sequence = true
 	_is_antler_sequence = false
 	_is_stomp_sequence = false
+	_is_leap_sequence = false
 	_charge_prep_fps = prep_fps
 	_charge_exec_fps = exec_fps
 	_charge_recover_fps = recover_fps
@@ -364,11 +429,12 @@ func is_charge_sequence_active() -> bool:
 	)
 
 func start_antler_sequence(prep_fps: float = -1.0, exec_fps: float = -1.0, recover_fps: float = -1.0) -> void:
-	if is_antler_sequence_active() or is_charge_sequence_active() or is_stomp_sequence_active():
+	if is_antler_sequence_active() or is_charge_sequence_active() or is_stomp_sequence_active() or is_leap_sequence_active():
 		return
 	_is_antler_sequence = true
 	_is_charge_sequence = false
 	_is_stomp_sequence = false
+	_is_leap_sequence = false
 	_antler_prep_fps = prep_fps
 	_antler_exec_fps = exec_fps
 	_antler_recover_fps = recover_fps
@@ -383,11 +449,12 @@ func is_antler_sequence_active() -> bool:
 	)
 
 func start_stomp_sequence(prep_fps: float = -1.0, exec_fps: float = -1.0, recover_fps: float = -1.0) -> void:
-	if is_stomp_sequence_active() or is_charge_sequence_active() or is_antler_sequence_active():
+	if is_stomp_sequence_active() or is_charge_sequence_active() or is_antler_sequence_active() or is_leap_sequence_active():
 		return
 	_is_stomp_sequence = true
 	_is_charge_sequence = false
 	_is_antler_sequence = false
+	_is_leap_sequence = false
 	_stomp_prep_fps = prep_fps
 	_stomp_exec_fps = exec_fps
 	_stomp_recover_fps = recover_fps
@@ -399,6 +466,26 @@ func is_stomp_sequence_active() -> bool:
 		current_state == AnimState.STOMP_PREP or
 		current_state == AnimState.STOMP_EXEC or
 		current_state == AnimState.STOMP_RECOVER
+	)
+
+func start_leap_sequence(prep_fps: float = -1.0, exec_fps: float = -1.0, recover_fps: float = -1.0) -> void:
+	if is_leap_sequence_active() or is_charge_sequence_active() or is_antler_sequence_active() or is_stomp_sequence_active():
+		return
+	_is_leap_sequence = true
+	_is_charge_sequence = false
+	_is_antler_sequence = false
+	_is_stomp_sequence = false
+	_leap_prep_fps = prep_fps
+	_leap_exec_fps = exec_fps
+	_leap_recover_fps = recover_fps
+	leap_stage_changed.emit("leap_prep")
+	play(AnimState.LEAP_PREP, prep_fps)
+
+func is_leap_sequence_active() -> bool:
+	return _is_leap_sequence and (
+		current_state == AnimState.LEAP_PREP or
+		current_state == AnimState.LEAP_EXEC or
+		current_state == AnimState.LEAP_RECOVER
 	)
 
 func play_by_name(anim_name: String, custom_fps: float = -1.0) -> void:
@@ -436,6 +523,14 @@ func play_by_name(anim_name: String, custom_fps: float = -1.0) -> void:
 			play(AnimState.STOMP_RECOVER, custom_fps)
 		"stomp", "pisada", "pisada_almas", "pisada_das_almas":
 			start_stomp_sequence(custom_fps, custom_fps, custom_fps)
+		"leap_prep":
+			play(AnimState.LEAP_PREP, custom_fps)
+		"leap_exec":
+			play(AnimState.LEAP_EXEC, custom_fps)
+		"leap_recover":
+			play(AnimState.LEAP_RECOVER, custom_fps)
+		"leap", "salto", "salto_predatorio":
+			start_leap_sequence(custom_fps, custom_fps, custom_fps)
 		_:
 			push_warning("CervoVisual: Animação desconhecida '%s'" % anim_name)
 
@@ -488,7 +583,7 @@ func _draw() -> void:
 		if _turn_initial_facing < 0:
 			flip_h = true
 	else:
-		# Em IDLE, WALK, GALLOP, INVESTIDA, CORTE DAS GALHADAS e PISADA DAS ALMAS, espelha se estiver virado para a esquerda
+		# Em IDLE, WALK, GALLOP, INVESTIDA, CORTE DAS GALHADAS, PISADA DAS ALMAS e SALTO PREDATÓRIO, espelha se estiver virado para a esquerda
 		if facing < 0:
 			flip_h = true
 
