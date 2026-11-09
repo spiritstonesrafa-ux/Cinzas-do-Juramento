@@ -5,6 +5,7 @@ extends Node2D
 ## e teste de deslocamento lateral para validação de atrito/deslizamento de cascos.
 
 const CervoVisual = preload("res://scripts/boss/cervo_visual.gd")
+const CervoEchoVisual = preload("res://scripts/boss/cervo_echo_visual.gd")
 const AREN_POSES: Texture2D = preload("res://assets/art/fix02/aren_poses.png")
 const AREN_IDLE_RECT: Rect2 = Rect2(86, 18, 230, 386)
 
@@ -12,6 +13,8 @@ const FLOOR_Y: float = 138.0
 const SCALES: Array[float] = [0.38, 0.50, 1.00]
 
 var cervo: CervoVisual
+var echo_a: CervoEchoVisual
+var echo_b: CervoEchoVisual
 var scale_index: int = 0
 var moving_enabled: bool = false
 var show_aren: bool = true
@@ -27,13 +30,30 @@ const SPEED_WALK_BASE: float = 42.0
 const SPEED_GALLOP_BASE: float = 100.0
 
 func _ready() -> void:
-	# Instancia o componente visual oficial
+	# Instancia o componente visual oficial do chefe
 	cervo = CervoVisual.new()
 	cervo.name = "CervoVisual"
 	cervo.position = Vector2(180.0, FLOOR_Y)
 	cervo.display_scale = SCALES[scale_index]
 	cervo.facing = 1
 	add_child(cervo)
+
+	# Instancia as duas manifestações espectrais independentes (Ecos da Floresta)
+	echo_a = CervoEchoVisual.new()
+	echo_a.name = "CervoEchoVisual_A"
+	echo_a.position = Vector2(120.0, FLOOR_Y)
+	echo_a.display_scale = SCALES[scale_index]
+	echo_a.facing = -1
+	echo_a.visible = false
+	add_child(echo_a)
+
+	echo_b = CervoEchoVisual.new()
+	echo_b.name = "CervoEchoVisual_B"
+	echo_b.position = Vector2(240.0, FLOOR_Y)
+	echo_b.display_scale = SCALES[scale_index]
+	echo_b.facing = 1
+	echo_b.visible = false
+	add_child(echo_b)
 
 	cervo.frame_changed.connect(_on_cervo_frame_changed)
 	cervo.animation_finished.connect(_on_cervo_anim_finished)
@@ -46,6 +66,8 @@ func _ready() -> void:
 	cervo.stomp_stage_changed.connect(_on_cervo_stomp_stage_changed)
 	cervo.leap_sequence_completed.connect(_on_cervo_leap_completed)
 	cervo.leap_stage_changed.connect(_on_cervo_leap_stage_changed)
+	cervo.echo_sequence_completed.connect(_on_cervo_echo_completed)
+	cervo.echo_stage_changed.connect(_on_cervo_echo_stage_changed)
 
 	cervo.play(CervoVisual.AnimState.IDLE)
 	queue_redraw()
@@ -108,17 +130,28 @@ func _unhandled_input(event: InputEvent) -> void:
 		KEY_8:
 			cervo.start_leap_sequence()
 			_update_pause_state()
+		KEY_9:
+			cervo.start_echo_sequence()
+			_update_pause_state()
 		KEY_F, KEY_SPACE:
 			cervo.toggle_facing()
 			_update_pause_state()
 		KEY_S:
 			scale_index = (scale_index + 1) % SCALES.size()
 			cervo.display_scale = SCALES[scale_index]
+			if echo_a:
+				echo_a.display_scale = SCALES[scale_index]
+			if echo_b:
+				echo_b.display_scale = SCALES[scale_index]
 		KEY_M:
 			moving_enabled = not moving_enabled
 		KEY_P:
 			is_paused = not is_paused
 			cervo.is_playing = not is_paused
+			if echo_a:
+				echo_a.is_playing = not is_paused
+			if echo_b:
+				echo_b.is_playing = not is_paused
 		KEY_LEFT:
 			if is_paused:
 				var prev_f: int = (cervo.current_frame - 1 + cervo.get_total_frames()) % cervo.get_total_frames()
@@ -135,6 +168,10 @@ func _unhandled_input(event: InputEvent) -> void:
 			cervo.position = Vector2(180.0, FLOOR_Y)
 			cervo.facing = 1
 			cervo.play(CervoVisual.AnimState.IDLE)
+			if echo_a:
+				echo_a.dismiss()
+			if echo_b:
+				echo_b.dismiss()
 			moving_enabled = false
 			is_paused = false
 			cervo.is_playing = true
@@ -146,6 +183,10 @@ func _unhandled_input(event: InputEvent) -> void:
 func _update_pause_state() -> void:
 	if is_paused:
 		cervo.is_playing = false
+		if echo_a:
+			echo_a.is_playing = false
+		if echo_b:
+			echo_b.is_playing = false
 
 func _on_cervo_frame_changed(_anim: String, _frame: int) -> void:
 	queue_redraw()
@@ -181,6 +222,32 @@ func _on_cervo_leap_completed() -> void:
 	queue_redraw()
 
 func _on_cervo_leap_stage_changed(_stage: String) -> void:
+	queue_redraw()
+
+func _on_cervo_echo_completed() -> void:
+	queue_redraw()
+
+func _on_cervo_echo_stage_changed(stage: String) -> void:
+	if stage == "echo_cast":
+		# Início do chamado: o chefe canaliza energia na spritesheet
+		if echo_a:
+			echo_a.dismiss()
+		if echo_b:
+			echo_b.dismiss()
+	elif stage == "echo_recover":
+		# Transição contínua perfeita: CAST finalizou a materialização nos frames 8-12
+		# Agora as instâncias independentes assumem as posições laterais sem sobreposição
+		var c_pos: Vector2 = cervo.position
+		if echo_a:
+			echo_a.spawn_active(c_pos + Vector2(-60.0, 0.0), -1, 3.0, 35.0)
+		if echo_b:
+			echo_b.spawn_active(c_pos + Vector2(+60.0, 0.0), 1, 3.0, 35.0)
+	elif stage == "idle":
+		# Ao retornar para Idle, se os ecos ainda estiverem ativos, iniciam dissipação
+		if echo_a and echo_a.is_active_echo():
+			echo_a.start_dissolve()
+		if echo_b and echo_b.is_active_echo():
+			echo_b.start_dissolve()
 	queue_redraw()
 
 func _draw() -> void:
@@ -270,13 +337,13 @@ func _draw_hud() -> void:
 
 	# Título
 	draw_string(font, Vector2(6, 11), "CERVO ESPECTRAL", HORIZONTAL_ALIGNMENT_LEFT, -1, 8, Color("00f0ff"))
-	draw_string(font, Vector2(98, 11), "| ART-BOSS-05 PREVIEW", HORIZONTAL_ALIGNMENT_LEFT, -1, 7, Color("769aa8"))
+	draw_string(font, Vector2(98, 11), "| ART-BOSS-06 PREVIEW", HORIZONTAL_ALIGNMENT_LEFT, -1, 7, Color("769aa8"))
 
-	# Barra de seleção de animações (1 a 8)
-	var anim_names = ["1:IDLE", "2:WALK", "3:GALLOP", "4:TURN", "5:INVEST", "6:CORTE", "7:PISADA", "8:SALTO"]
-	var anim_widths = [23.0, 24.0, 29.0, 24.0, 28.0, 27.0, 29.0, 27.0]
+	# Barra de seleção de animações (1 a 9)
+	var anim_names = ["1:IDLE", "2:WALK", "3:GALLOP", "4:TURN", "5:INVEST", "6:CORTE", "7:PISADA", "8:SALTO", "9:ECOS"]
+	var anim_widths = [21.0, 22.0, 26.0, 21.0, 24.0, 23.0, 25.0, 23.0, 23.0]
 	var bx: float = 3.0
-	for i in range(8):
+	for i in range(9):
 		var is_active: bool = false
 		var btn_w: float = anim_widths[i]
 		if i == 0:
@@ -311,6 +378,12 @@ func _draw_hud() -> void:
 				CervoVisual.AnimState.LEAP_EXEC,
 				CervoVisual.AnimState.LEAP_RECOVER
 			]
+		elif i == 8:
+			is_active = cervo.current_state in [
+				CervoVisual.AnimState.ECHO_PREP,
+				CervoVisual.AnimState.ECHO_CAST,
+				CervoVisual.AnimState.ECHO_RECOVER
+			] or (echo_a and not echo_a.is_inactive()) or (echo_b and not echo_b.is_inactive())
 
 		var col: Color = Color("00f0ff") if is_active else Color("5a7585")
 		if is_active:
@@ -348,6 +421,14 @@ func _draw_hud() -> void:
 		stage_txt = "[L-EXEC] "
 	elif cervo.current_state == CervoVisual.AnimState.LEAP_RECOVER:
 		stage_txt = "[L-REC] "
+	elif cervo.current_state == CervoVisual.AnimState.ECHO_PREP:
+		stage_txt = "[E-PREP] "
+	elif cervo.current_state == CervoVisual.AnimState.ECHO_CAST:
+		stage_txt = "[E-CAST] "
+	elif cervo.current_state == CervoVisual.AnimState.ECHO_RECOVER:
+		stage_txt = "[E-REC] "
+	elif (echo_a and not echo_a.is_inactive()) or (echo_b and not echo_b.is_inactive()):
+		stage_txt = "[E-ACT] "
 
 	var pause_txt: String = " [P]" if is_paused else ""
 
@@ -357,5 +438,5 @@ func _draw_hud() -> void:
 	# Rodapé de controles
 	draw_rect(Rect2(0, 168, 320, 12), Color(0.04, 0.06, 0.09, 0.85), true)
 	draw_line(Vector2(0, 168), Vector2(320, 168), Color(0.18, 0.28, 0.35, 0.5), 1)
-	var help_txt: String = "[1-8]Anim  [F/Espaço]Virar  [S]Escala  [M]Movimento  [P]Pausa  [G]Guias  [A]Aren  [R]Reset  [Esc]Sair"
+	var help_txt: String = "[1-9]Anim  [F/Espaço]Virar  [S]Escala  [M]Movimento  [P]Pausa  [G]Guias  [A]Aren  [R]Reset  [Esc]Sair"
 	draw_string(font, Vector2(6, 176), help_txt, HORIZONTAL_ALIGNMENT_LEFT, -1, 6, Color("7b9fae"))
