@@ -171,7 +171,11 @@ func _physics_process(delta: float) -> void:
 		8:
 			subhint.text = "Ravina das Sombras Fósseis: abismo vertiginoso e costelas titânicas · Prossiga à direita para a Clareira da Bruma Espectral."
 		9:
-			subhint.text = "Clareira da Bruma Espectral: santuário velado e futura arena do Cervo Espectral · F7 reinicia · Retorne à esquerda para revisitar a floresta."
+			var abbey_prog: Script = preload("res://scripts/abbey/abbey_progress.gd")
+			if abbey_prog.is_flag_set("cervo_defeated"):
+				subhint.text = "Clareira da Bruma Espectral: Cervo Espectral pacificado · Salto Espectral disponível · Exploração livre · F7 reinicia."
+			else:
+				subhint.text = "Clareira da Bruma Espectral: santuário velado · Avance para enfrentar o Cervo Espectral · F7 reinicia · Retorne à esquerda."
 	
 	if hero.survival.is_dead:
 		return
@@ -198,6 +202,15 @@ func _unhandled_key_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
 		if event.keycode == KEY_F7:
 			get_tree().reload_current_scene()
+		elif event.keycode == KEY_F6:
+			var abbey_prog: Script = preload("res://scripts/abbey/abbey_progress.gd")
+			abbey_prog.set_flag("cervo_defeated", false)
+			abbey_prog.set_flag("spectral_jump_unlocked", false)
+			if is_instance_valid(room) and room.has_node("ClearingEncounter"):
+				var arena_node = room.get_node("ClearingEncounter")
+				arena_node.completed = false
+				arena_node.reset_encounter()
+			hint.text = "Encontro do Cervo Espectral resetado para playtest!"
 		elif event.keycode == KEY_F1 or event.keycode == KEY_H:
 			hint.visible = not hint.visible
 			subhint.visible = hint.visible

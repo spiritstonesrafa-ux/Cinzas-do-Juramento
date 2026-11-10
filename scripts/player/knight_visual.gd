@@ -236,6 +236,11 @@ func _draw() -> void:
 	var destination: Rect2 = Rect2(Vector2(-roundf(dimensions.x * 0.76), -36), dimensions)
 	draw_texture_rect_region(POSES, destination, region, Color(1.4, 1.43, 1.38, 1))
 
+	if hero._spectral_jump_fx_timer > 0.0:
+		var alpha: float = hero._spectral_jump_fx_timer / 0.20
+		var r_val: float = (1.0 - alpha) * 14.0 + 4.0
+		draw_arc(Vector2(0, -2), r_val, 0, TAU, 12, Color(0.25, 0.95, 1.0, alpha * 0.85), 1.5)
+
 	# 5. Revive and invulnerability indicators
 	if _revive > 0.0:
 		l(Vector2(-10, -1), Vector2(10, -1), Color(TEAL, _revive))

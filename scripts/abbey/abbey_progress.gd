@@ -5,7 +5,7 @@ const BACKUP_PREFIX: String = "cinzas_abbey_progress_v1.json.bak-"
 const LOCK_PATH: String = "user://cinzas_abbey_progress_v1.lock"
 const REVISION: String = "_save_revision"
 const CHECKSUM: String = "_save_checksum"
-const FLAGS: Array[String] = ["abbot_defeated", "dash_unlocked", "guardian_defeated", "health_upgrade_unlocked"]
+const FLAGS: Array[String] = ["abbot_defeated", "dash_unlocked", "guardian_defeated", "health_upgrade_unlocked", "cervo_defeated", "spectral_jump_unlocked"]
 static var _mutex: Mutex = Mutex.new()
 
 static func _load_valid(path: String) -> Dictionary:
@@ -174,3 +174,18 @@ static func guardian_reward_unlocked() -> bool:
 
 static func grant_guardian_reward() -> bool:
 	return _grant_fields({"guardian_defeated": true, "health_upgrade_unlocked": true})
+
+static func is_flag_set(flag: String) -> bool:
+	var data: Dictionary = read_progress()
+	return data.get(flag) == true
+
+static func is_cervo_defeated() -> bool:
+	return is_flag_set("cervo_defeated")
+
+static func spectral_jump_unlocked() -> bool:
+	var data: Dictionary = read_progress()
+	return data.get("cervo_defeated") == true and data.get("spectral_jump_unlocked") == true
+
+static func grant_cervo_reward() -> bool:
+	return _grant_fields({"cervo_defeated": true, "spectral_jump_unlocked": true})
+

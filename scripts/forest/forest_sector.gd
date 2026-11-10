@@ -15,12 +15,14 @@ const CRAWLER_SCENE: PackedScene = preload("res://scenes/enemies/forest_crawler.
 const SENTINEL_SCENE: PackedScene = preload("res://scenes/enemies/forest_sentinel.tscn")
 const CROW_SCENE: PackedScene = preload("res://scenes/enemies/forest_spectral_crow.tscn")
 const SPIKES_SCENE: PackedScene = preload("res://scenes/props/forest_fossil_spikes.tscn")
+const CervoBossArena = preload("res://scripts/boss/cervo_boss_arena.gd")
 
 var world_geometry: Node2D
 var encounters: Node2D
 var enemies: Array = []
 var hazards: Array = []
 var hero: KnightController = null
+var arena: CervoBossArena = null
 
 func _ready() -> void:
 	world_geometry = Node2D.new()
@@ -32,6 +34,12 @@ func _ready() -> void:
 	encounters.name = "Encounters"
 	add_child(encounters)
 	_build_encounters()
+	
+	var boss_arena_node: Node = get_node_or_null("ClearingEncounter")
+	if boss_arena_node == null:
+		boss_arena_node = get_node_or_null("BossArena")
+	if boss_arena_node != null:
+		arena = boss_arena_node as CervoBossArena
 	
 	if hero == null:
 		var parent_node: Node = get_parent()
@@ -45,6 +53,8 @@ func set_hero(p_hero: KnightController) -> void:
 	for enemy in enemies:
 		if is_instance_valid(enemy):
 			enemy.target = hero
+	if is_instance_valid(arena):
+		arena.set_hero(hero)
 
 func _build_surfaces() -> void:
 	var index: int = 0
@@ -180,6 +190,8 @@ func reset_encounters() -> void:
 	for hazard in hazards:
 		if is_instance_valid(hazard):
 			hazard.reset_hazard()
+	if is_instance_valid(arena):
+		arena.reset_encounter()
 
 func disarm() -> void:
 	for enemy in enemies:
@@ -188,3 +200,5 @@ func disarm() -> void:
 	for hazard in hazards:
 		if is_instance_valid(hazard):
 			hazard.disarm()
+	if is_instance_valid(arena):
+		arena.disarm()

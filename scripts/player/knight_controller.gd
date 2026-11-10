@@ -28,6 +28,11 @@ var dash_remaining: float = 0.0
 var dash_cooldown_remaining: float = 0.0
 var dash_direction: int = 1
 
+@export var spectral_jump_unlocked: bool = false
+@export var spectral_jump_impulse: float = -230.0
+var can_spectral_jump: bool = false
+var _spectral_jump_fx_timer: float = 0.0
+
 @onready var visual: Node2D = $Visual
 @onready var sword_attack: SwordAttack = $SwordAttack
 @onready var survival: KnightSurvival = $Survival
@@ -36,12 +41,14 @@ var dash_direction: int = 1
 func _ready() -> void:
 	survival.died.connect(_on_died)
 	dash_unlocked = ABBEY_PROGRESS.unlocked()
+	spectral_jump_unlocked = ABBEY_PROGRESS.spectral_jump_unlocked()
 	if ABBEY_PROGRESS.guardian_reward_unlocked():
 		survival.max_health = 6
 		survival.restore()
 
 func _on_died() -> void:
 	dash_remaining = 0.0
+	can_spectral_jump = false
 	state = MovementState.DEAD
 	velocity = Vector2.ZERO
 	_coyote_remaining = 0.0
@@ -71,9 +78,11 @@ func _physics_process(delta: float) -> void:
 		return
 	if is_on_floor():
 		_coyote_remaining = coyote_time
+		can_spectral_jump = spectral_jump_unlocked
 	else:
 		_coyote_remaining = maxf(0.0, _coyote_remaining - delta)
 	_buffer_remaining = maxf(0.0, _buffer_remaining - delta)
+	_spectral_jump_fx_timer = maxf(0.0, _spectral_jump_fx_timer - delta)
 	var jump_pressed: bool = Input.is_action_just_pressed("jump")
 	if jump_pressed:
 		_buffer_remaining = jump_buffer_time
@@ -90,6 +99,14 @@ func _physics_process(delta: float) -> void:
 		velocity.y = jump_impulse
 		_coyote_remaining = 0.0
 		_buffer_remaining = 0.0
+		can_spectral_jump = spectral_jump_unlocked
+	elif jump_pressed and can_spectral_jump and not is_on_floor() and not survival.is_dead:
+		velocity.y = spectral_jump_impulse
+		can_spectral_jump = false
+		_buffer_remaining = 0.0
+		_coyote_remaining = 0.0
+		_spectral_jump_fx_timer = 0.20
+		visual.queue_redraw()
 
 	move_and_slide()
 	sword_attack.tick(delta, is_on_floor(), facing)
@@ -180,6 +197,8 @@ func reset_to(spawn_position: Vector2) -> void:
 	sword_attack.cancel()
 	sword_attack.reset_air_cycle()
 	dash_remaining = 0.0
+	can_spectral_jump = false
+	_spectral_jump_fx_timer = 0.0
 	global_position = spawn_position
 	velocity = Vector2.ZERO
 	_coyote_remaining = 0.0

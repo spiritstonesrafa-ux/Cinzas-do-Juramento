@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=4 format=3]
 
 [ext_resource type="Script" path="res://scripts/forest/forest_sector.gd" id="1"]
 [ext_resource type="Script" path="res://scripts/forest/forest_art.gd" id="2"]
+[ext_resource type="PackedScene" path="res://scenes/boss/cervo_boss_arena.tscn" id="3"]
 
 [node name="Sector10" type="Node2D"]
 script = ExtResource("1")
@@ -11,3 +12,5 @@ sector_id = 9
 z_index = -1
 script = ExtResource("2")
 sector_id = 9
+
+[node name="ClearingEncounter" parent="." instance=ExtResource("3")]
