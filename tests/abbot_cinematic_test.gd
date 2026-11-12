@@ -122,13 +122,9 @@ func run() -> void:
 	check(hero.dash_unlocked, "Point 14: Hero retains dash in Sector 12")
 
 	# POINT 12 & 13: Revisit with boss defeated without repeating cinematic
-	hero.reset_to(AbbeyChapterLayout.origin(11) + Vector2(AbbeyChapterLayout.WIDTHS[11] - 30, 300))
-	Input.action_press("move_right")
-	for i in range(180):
-		await frames(1)
-		if chapter.arena_active and not chapter.busy:
-			break
-	Input.action_release("move_right")
+	# The completed campaign exit now leads physically to the Forest. Inspect
+	# the defeated arena explicitly as a fixture, not as a claim of a passage.
+	await chapter._enter_abbot_arena()
 
 	check(chapter.arena_active, "Point 12: Re-entered arena")
 	var abbot2: CharacterBody2D = chapter.room.boss

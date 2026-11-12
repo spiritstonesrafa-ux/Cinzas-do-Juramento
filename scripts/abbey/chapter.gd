@@ -33,6 +33,8 @@ var unlocked_shortcuts: Dictionary={}
 var forward_completed: Dictionary={}
 var arena_active: bool=false
 var abbot_won: bool=false
+var _abbot_progress_unlocked: bool=false
+var _checkpoint_writer: Thread
 var passage_index: int=-1
 var passage_origin: Vector2=Vector2.ZERO
 var states: Dictionary={}
@@ -67,11 +69,69 @@ func _ready() -> void:
   $Checkpoints.add_child(cp)
   checkpoints.append(cp)
   checkpoint_sectors[cp.get_instance_id()]=id
+  cp.activated.connect(_checkpoint_activated.bind(cp))
  hero.survival.died.connect(_on_death)
  hero.survival.respawn_requested.connect(_respawn)
  $HealthHUD.bind(hero.survival)
- await switch_room(0)
- hero.set_default_respawn(AbbeyChapterLayout.entry(0))
+ ABBEY_PROGRESS.sync_hero_progression(hero)
+ _abbot_progress_unlocked=ABBEY_PROGRESS.unlocked()
+ states=ABBEY_PROGRESS.load_chapter_states("abbey")
+ var metadata: Dictionary=ABBEY_PROGRESS.load_chapter_metadata("abbey")
+ unlocked_shortcuts=_restore_indexed_flags(metadata.get("unlocked_shortcuts",{}))
+ forward_completed=_restore_indexed_flags(metadata.get("forward_completed",{}))
+ m5e_discovered=_restore_indexed_flags(metadata.get("m5e_discovered",{}))
+ var arrival: String=ABBEY_PROGRESS.consume_pending_entrance()
+ if arrival == "resume":
+  var token: String=ABBEY_PROGRESS.campaign_location().checkpoint
+  var cp: RespawnCheckpoint=null
+  for candidate: RespawnCheckpoint in checkpoints:
+   if str(candidate.name)==token: cp=candidate
+  if cp!=null:
+   await switch_room(int(cp.get_meta("sector_id")))
+   hero.set_default_respawn(AbbeyChapterLayout.origin(current_room)+AbbeyChapterLayout.entry(current_room))
+   hero.activate_checkpoint(cp)
+   if hero.active_checkpoint==cp: hero.reset_to(cp.respawn_point.global_position)
+  elif token=="entry_east":
+   await switch_room(11,true)
+   hero.set_default_respawn(AbbeyChapterLayout.origin(11)+AbbeyChapterLayout.entry(11,true))
+  else:
+   await switch_room(0)
+   hero.set_default_respawn(AbbeyChapterLayout.entry(0))
+ elif arrival == "from_forest":
+  await switch_room(11, true)
+  hero.set_default_respawn(AbbeyChapterLayout.origin(11) + AbbeyChapterLayout.entry(11, true))
+  ABBEY_PROGRESS.save_campaign_location("abbey","entry_east")
+ else:
+  await switch_room(0)
+  hero.set_default_respawn(AbbeyChapterLayout.entry(0))
+  if arrival=="from_cemetery": ABBEY_PROGRESS.save_campaign_location("abbey","entry_west")
+func _checkpoint_activated(cp: RespawnCheckpoint) -> void:
+ if hero.active_checkpoint==cp:
+  if is_instance_valid(room) and current_room>=0 and not arena_active: states[current_room]=room.snapshot()
+  _finish_checkpoint_write()
+  _checkpoint_writer=Thread.new()
+  var metadata: Dictionary={"unlocked_shortcuts":unlocked_shortcuts,"forward_completed":forward_completed,"m5e_discovered":m5e_discovered}
+  var job: Callable=Callable(ABBEY_PROGRESS,"save_chapter_checkpoint").bind("abbey",str(cp.name),states.duplicate(true),metadata.duplicate(true))
+  if _checkpoint_writer.start(job)!=OK:
+   _checkpoint_writer=null
+   if not job.call(): push_warning("Checkpoint da Abadia não pôde ser salvo.")
+func _finish_checkpoint_write() -> void:
+ if _checkpoint_writer!=null:
+  if not bool(_checkpoint_writer.wait_to_finish()): push_warning("Checkpoint da Abadia não pôde ser salvo.")
+  _checkpoint_writer=null
+func _save_resident_states() -> void:
+ if is_instance_valid(room) and current_room>=0 and not arena_active:
+  states[current_room]=room.snapshot()
+ ABBEY_PROGRESS.save_chapter_states("abbey",states,{"unlocked_shortcuts":unlocked_shortcuts,"forward_completed":forward_completed,"m5e_discovered":m5e_discovered})
+func _restore_indexed_flags(data: Variant) -> Dictionary:
+ var result: Dictionary={}
+ if data is Dictionary:
+  for key in data:
+   if str(key).is_valid_int() and data[key] is bool: result[int(key)]=data[key]
+ return result
+func _exit_tree() -> void:
+ _finish_checkpoint_write()
+ if current_room>=0 or (arena_active and not states.is_empty()): _save_resident_states()
 func _on_death() -> void:
  if is_instance_valid(room): room.disarm()
 func switch_room(id: int, backwards: bool=false, fresh: bool=false, service_point: Vector2=Vector2(INF,INF)) -> void:
@@ -210,11 +270,17 @@ func camera_target() -> Vector2:
  if current_room==4 and cistern_annex: right_limit=1440
  return AbbeyChapterLayout.origin(maxi(0,current_room))+Vector2(clampf(p.x+hero.facing*24,160,right_limit),y)
 func _physics_process(delta: float) -> void:
+ if _checkpoint_writer!=null and not _checkpoint_writer.is_alive(): _finish_checkpoint_write()
  _poll_backgrounds()
  if arena_active:
   if busy: return
   camera.position=ARENA_ORIGIN+Vector2(160,90)
-  hint.text="Técnica assimilada: Shift deslizar · E retornar" if abbot_won and hero.dash_unlocked else ("Falha ao salvar: E tentar novamente" if abbot_won else "A/D mover · Espaço saltar · J espada")
+  var arena_p: Vector2=hero.global_position-ARENA_ORIGIN
+  if abbot_won and arena_p.x>=300:
+   ABBEY_PROGRESS.set_pending_entrance("from_abbey")
+   get_tree().change_scene_to_file.call_deferred("res://scenes/forest/forest_pilots.tscn")
+   return
+  hint.text="Passo das Sombras assimilado (Shift) · Avance à direita para a Floresta dos Ossos · E retornar" if abbot_won and hero.dash_unlocked else ("Falha ao salvar: E tentar novamente" if abbot_won else "A/D mover · Espaço saltar · J espada")
   return
  if passage_index>=0:
   if busy: return
@@ -238,6 +304,8 @@ func _physics_process(delta: float) -> void:
  caption.text="ABADIA · %02d/12 · %s" % [current_room+1,AbbeyChapterLayout.NAMES[current_room]]
  hint.text="A/D mover · Espaço saltar · J espada · F7 reiniciar Abadia"
  var p: Vector2=hero.global_position-AbbeyChapterLayout.origin(current_room)
+ if current_room==0 and p.x<80.0:
+  hint.text="À esquerda: retornar ao Cemitério Esquecido · À direita: avançar na Abadia"
  # Holding the existing jump input while moving right signals deliberate
  # exploration; a short tap near the normal exit does not open an annex.
  if current_room in [2,4,6,8,9] and not hero.is_on_floor() and Input.is_action_pressed("jump") and hero.velocity.x>0:
@@ -324,7 +392,7 @@ func _physics_process(delta: float) -> void:
    elif current_room==link[2]: hint.text="Conclua o setor para liberar a passagem"
    else: hint.text="Passagem trancada pelo lado distante"
  if current_room==11 and p.x>AbbeyChapterLayout.WIDTHS[11]-110:
-  hint.text="À direita: arena do Abade" if not ABBEY_PROGRESS.unlocked() else "À direita: arena do Abade derrotado"
+  hint.text="À direita: arena do Abade" if not _abbot_progress_unlocked else "À direita: passagem para a Floresta dos Ossos"
  if hero.survival.is_dead: return
  if p.y>AbbeyChapterLayout.bounds(current_room).end.y+120:
   _alive_fall.call_deferred()
@@ -340,7 +408,14 @@ func _physics_process(delta: float) -> void:
     if not back: forward_completed[current_room]=true
     switch_room.call_deferred(next,back)
    elif next==12:
-    _enter_abbot_arena.call_deferred()
+    if _abbot_progress_unlocked:
+     ABBEY_PROGRESS.set_pending_entrance("from_abbey")
+     get_tree().change_scene_to_file.call_deferred("res://scenes/forest/forest_pilots.tscn")
+    else:
+     _enter_abbot_arena.call_deferred()
+   elif next==-1:
+    ABBEY_PROGRESS.set_pending_entrance("from_abbey")
+    get_tree().change_scene_to_file.call_deferred("res://scenes/main.tscn")
  var max_x: float=1450 if current_room==9 and garden_annex else AbbeyChapterLayout.WIDTHS[current_room]-6
  if current_room==6 and forge_annex: max_x=1698
  if current_room==8 and archive_annex: max_x=1570
@@ -449,6 +524,7 @@ func _on_abbot_defeated() -> void:
  abbot_won=true
  if ABBEY_PROGRESS.grant():
   hero.dash_unlocked=true
+  _abbot_progress_unlocked=true
   completed=true
  if is_instance_valid(defeated_arena) and is_instance_valid(defeated_arena.boss) and defeated_arena.boss.has_node("Conclusion"):
   var ending: Node2D = defeated_arena.boss.get_node("Conclusion")
@@ -457,6 +533,6 @@ func _on_abbot_defeated() -> void:
  await get_tree().create_timer(0.8).timeout
  if not is_instance_valid(hero) or hero.survival.is_dead or not arena_active or room!=defeated_arena: return
  if hero.dash_unlocked:
-  hint.text="Técnica assimilada: Shift deslizar · E retornar"
+  hint.text="Passo das Sombras assimilado: Shift deslizar · Avance à direita para a Floresta dos Ossos · E retornar"
  else:
   hint.text="Vitória! Não foi possível salvar o deslizamento."

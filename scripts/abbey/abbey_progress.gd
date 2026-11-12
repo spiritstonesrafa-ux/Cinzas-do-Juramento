@@ -7,6 +7,18 @@ const REVISION: String = "_save_revision"
 const CHECKSUM: String = "_save_checksum"
 const FLAGS: Array[String] = ["abbot_defeated", "dash_unlocked", "guardian_defeated", "health_upgrade_unlocked", "cervo_defeated", "spectral_jump_unlocked"]
 static var _mutex: Mutex = Mutex.new()
+static var _pending_entrance: String = ""
+
+static func set_pending_entrance(val: String) -> void:
+	_pending_entrance = val
+
+static func get_pending_entrance() -> String:
+	return _pending_entrance
+
+static func consume_pending_entrance() -> String:
+	var val: String = _pending_entrance
+	_pending_entrance = ""
+	return val
 
 static func _load_valid(path: String) -> Dictionary:
 	if not FileAccess.file_exists(path): return {}
@@ -77,8 +89,7 @@ static func _equivalent(first: Dictionary, second: Dictionary) -> bool:
 	# JSON parsing normalizes numeric types; compare canonicalized JSON values.
 	return JSON.stringify(first) == JSON.stringify(JSON.parse_string(JSON.stringify(second)))
 
-static func _save_locked(data: Dictionary, fault: String = "") -> bool:
-	var previous: Dictionary = _best_valid()
+static func _save_locked(data: Dictionary, fault: String = "", previous: Dictionary = {}) -> bool:
 	var has_primary: bool = FileAccess.file_exists(PATH)
 	var primary: Dictionary = _load_valid(PATH)
 	if previous.is_empty() and (has_primary or not _backup_names().is_empty()):
@@ -138,7 +149,7 @@ static func _has_valid_backup() -> bool:
 		if not _load_valid("user://" + name).is_empty(): return true
 	return false
 
-static func _grant_fields(fields: Dictionary, fault: String = "") -> bool:
+static func _grant_fields(fields: Dictionary, fault: String = "", required_chapter: String = "") -> bool:
 	_mutex.lock()
 	var lock_abs: String = ProjectSettings.globalize_path(LOCK_PATH)
 	# Atomic directory creation is the inter-process coordination mechanism.
@@ -148,14 +159,17 @@ static func _grant_fields(fields: Dictionary, fault: String = "") -> bool:
 		return false
 	var data: Dictionary = _best_valid()
 	var invalid_existing: bool = data.is_empty() and (FileAccess.file_exists(PATH) or not _backup_names().is_empty())
+	if required_chapter == "abbey" and not (data.get("guardian_defeated") == true and data.get("health_upgrade_unlocked") == true) and not (data.get("abbot_defeated") == true and data.get("dash_unlocked") == true): invalid_existing = true
+	if required_chapter == "forest" and not (data.get("abbot_defeated") == true and data.get("dash_unlocked") == true): invalid_existing = true
 	var success: bool = false
 	if not invalid_existing:
+		var data_before_update: Dictionary = data.duplicate(true)
 		var already: bool = true
 		for key: String in fields:
 			if data.get(key) != fields[key]: already = false
 			data[key] = fields[key]
 		if already and not fields.is_empty() and _equivalent(_load_valid(PATH), data) and _has_valid_backup(): success = true
-		else: success = _save_locked(data, fault)
+		else: success = _save_locked(data, fault, data_before_update)
 	var unlock_error: Error = DirAccess.remove_absolute(lock_abs)
 	if unlock_error != OK: push_warning("Não foi possível liberar a trava de gravação.")
 	_mutex.unlock()
@@ -188,4 +202,71 @@ static func spectral_jump_unlocked() -> bool:
 
 static func grant_cervo_reward() -> bool:
 	return _grant_fields({"cervo_defeated": true, "spectral_jump_unlocked": true})
+
+# Campaign location metadata is optional: legacy saves continue to use the
+# original cemetery start. Callers must only store authored, safe checkpoints.
+static func campaign_location() -> Dictionary:
+	var data: Dictionary = read_progress()
+	var chapter: Variant = data.get("current_chapter", "cemetery")
+	if chapter not in ["cemetery", "abbey", "forest"]:
+		chapter = "cemetery"
+	var checkpoint: Variant = data.get("campaign_checkpoint", "")
+	if typeof(checkpoint) != TYPE_STRING:
+		checkpoint = ""
+	var highest: int = 0
+	if data.get("guardian_defeated") == true and data.get("health_upgrade_unlocked") == true: highest = 1
+	if data.get("abbot_defeated") == true and data.get("dash_unlocked") == true: highest = 2
+	var requested: int = ["cemetery", "abbey", "forest"].find(chapter)
+	if requested > highest:
+		chapter = "cemetery"
+		checkpoint = ""
+	return {"chapter": chapter, "highest_unlocked": highest, "checkpoint": checkpoint}
+
+static func save_campaign_location(chapter: String, checkpoint: String) -> bool:
+	if chapter not in ["cemetery", "abbey", "forest"] or checkpoint.length() > 128:
+		return false
+	var location: Dictionary = campaign_location()
+	if ["cemetery", "abbey", "forest"].find(chapter) > location.highest_unlocked:
+		return false
+	return _grant_fields({"current_chapter": chapter, "campaign_checkpoint": checkpoint})
+
+static func load_chapter_states(chapter: String) -> Dictionary:
+	var value: Variant = read_progress().get("chapter_states_" + chapter, {})
+	if not value is Dictionary: return {}
+	var result: Dictionary = {}
+	for key in value:
+		if str(key).is_valid_int() and value[key] is Dictionary:
+			result[int(key)] = value[key]
+	return result
+
+static func save_chapter_states(chapter: String, states: Dictionary, metadata: Dictionary = {}) -> bool:
+	if chapter not in ["abbey", "forest"]: return false
+	var encoded: Dictionary = {}
+	for key in states:
+		if states[key] is Dictionary: encoded[str(key)] = states[key]
+	return _grant_fields({"chapter_states_" + chapter: encoded, "chapter_metadata_" + chapter: metadata})
+
+static func save_chapter_checkpoint(chapter: String, checkpoint: String, states: Dictionary, metadata: Dictionary = {}) -> bool:
+	if chapter not in ["abbey", "forest"] or checkpoint.length() > 128: return false
+	var encoded: Dictionary = {}
+	for key in states:
+		if states[key] is Dictionary: encoded[str(key)] = states[key]
+	return _grant_fields({"chapter_states_" + chapter: encoded, "chapter_metadata_" + chapter: metadata, "current_chapter": chapter, "campaign_checkpoint": checkpoint}, "", chapter)
+
+static func load_chapter_metadata(chapter: String) -> Dictionary:
+	var value: Variant = read_progress().get("chapter_metadata_" + chapter, {})
+	return value if value is Dictionary else {}
+
+static func sync_hero_progression(hero: Node) -> void:
+	if hero == null: return
+	if guardian_reward_unlocked():
+		var survival = hero.get("survival")
+		if survival != null and survival.get("max_health") != null and survival.max_health < 6:
+			survival.max_health = 6
+			if survival.has_method("restore"):
+				survival.restore()
+	if is_flag_set("dash_unlocked"):
+		hero.set("dash_unlocked", true)
+	if spectral_jump_unlocked():
+		hero.set("spectral_jump_unlocked", true)
 

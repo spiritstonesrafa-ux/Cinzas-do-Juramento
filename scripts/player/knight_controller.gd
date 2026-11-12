@@ -33,6 +33,10 @@ var dash_direction: int = 1
 var can_spectral_jump: bool = false
 var _spectral_jump_fx_timer: float = 0.0
 
+@export var knockback_enabled: bool = true
+@export var knockback_speed: float = 110.0
+@export var knockback_lift: float = -60.0
+
 @onready var visual: Node2D = $Visual
 @onready var sword_attack: SwordAttack = $SwordAttack
 @onready var survival: KnightSurvival = $Survival
@@ -73,7 +77,7 @@ func _physics_process(delta: float) -> void:
 		_update_state()
 		visual.queue_redraw()
 		var dash_contact: int = hurtbox.contact_damage()
-		if dash_contact > 0: receive_damage(dash_contact)
+		if dash_contact > 0: receive_damage(dash_contact, hurtbox.last_source_position)
 		_update_survival_visual()
 		return
 	if is_on_floor():
@@ -115,7 +119,7 @@ func _physics_process(delta: float) -> void:
 	visual.queue_redraw()
 	var contact_damage: int = hurtbox.contact_damage()
 	if contact_damage > 0:
-		receive_damage(contact_damage)
+		receive_damage(contact_damage, hurtbox.last_source_position)
 	_update_survival_visual()
 
 func _unhandled_key_input(event: InputEvent) -> void:
@@ -128,11 +132,23 @@ func _unhandled_key_input(event: InputEvent) -> void:
 			dash_cooldown_remaining = dash_cooldown
 			sword_attack.cancel()
 
-func receive_damage(amount: int = 1) -> bool:
+func receive_damage(amount: int = 1, source_position: Vector2 = Vector2.ZERO) -> bool:
 	var received: bool = survival.receive_damage(amount)
-	if received and sword_attack.aerial:
-		sword_attack.cancel()
+	if received:
+		if sword_attack.aerial:
+			sword_attack.cancel()
+		if knockback_enabled and dash_remaining <= 0.0:
+			_apply_knockback(source_position)
 	return received
+
+func _apply_knockback(source_pos: Vector2) -> void:
+	var k_dir: float = -float(facing)
+	if source_pos != Vector2.ZERO:
+		var diff: float = global_position.x - source_pos.x
+		if absf(diff) > 0.5:
+			k_dir = signf(diff)
+	velocity.x = k_dir * knockback_speed
+	velocity.y = minf(velocity.y, knockback_lift)
 
 func _update_survival_visual() -> void:
 	visual.rotation = -PI / 2.0 if survival.is_dead else 0.0

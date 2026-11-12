@@ -26,6 +26,8 @@ var completed: bool = false
 var transitions: int = 0
 var states: Dictionary = {}
 var checkpoints: Array[RespawnCheckpoint] = []
+var _cervo_defeated_on_entry: bool = false
+var _checkpoint_writer: Thread
 
 @onready var hero: KnightController = $Knight
 @onready var camera: Camera2D = $Camera2D
@@ -44,16 +46,57 @@ func _ready() -> void:
 		cp.position = ForestLayout.ORIGINS[id] + Vector2(96, entry_y)
 		$Checkpoints.add_child(cp)
 		checkpoints.append(cp)
+		cp.activated.connect(_checkpoint_activated.bind(cp))
 	
 	hero.survival.respawn_requested.connect(_respawn)
 	hero.survival.died.connect(_on_death)
 	$HealthHUD.bind(hero.survival)
 	
 	# Na Fase 3 (Floresta dos Ossos), Aren possui o Passo das Sombras (Dash)
+	var abbey_prog_init: Script = preload("res://scripts/abbey/abbey_progress.gd")
+	abbey_prog_init.sync_hero_progression(hero)
+	_cervo_defeated_on_entry = abbey_prog_init.is_flag_set("cervo_defeated")
+	states = abbey_prog_init.load_chapter_states("forest")
 	hero.dash_unlocked = true
+	var arrival: String = abbey_prog_init.consume_pending_entrance()
 	
-	await switch_room(0, false)
-	hero.set_default_respawn(ForestLayout.entry(0))
+	var cp: RespawnCheckpoint = null
+	if arrival == "resume":
+		var token: String = abbey_prog_init.campaign_location().checkpoint
+		for candidate: RespawnCheckpoint in checkpoints:
+			if str(candidate.name) == token: cp = candidate
+	var room_id: int = checkpoints.find(cp) if cp != null else 0
+	await switch_room(room_id, false)
+	hero.set_default_respawn(ForestLayout.entry(room_id))
+	if cp != null:
+		hero.activate_checkpoint(cp)
+		if hero.active_checkpoint == cp: hero.reset_to(cp.respawn_point.global_position)
+	if arrival == "from_abbey": abbey_prog_init.save_campaign_location("forest", "entry_west")
+
+func _checkpoint_activated(cp: RespawnCheckpoint) -> void:
+	if hero.active_checkpoint == cp:
+		if is_instance_valid(room) and current_room >= 0: states[current_room] = room.snapshot()
+		_finish_checkpoint_write()
+		_checkpoint_writer = Thread.new()
+		var progress: Script = preload("res://scripts/abbey/abbey_progress.gd")
+		var job: Callable = Callable(progress, "save_chapter_checkpoint").bind("forest", str(cp.name), states.duplicate(true), {})
+		if _checkpoint_writer.start(job) != OK:
+			_checkpoint_writer = null
+			if not job.call(): push_warning("Checkpoint da Floresta não pôde ser salvo.")
+
+func _finish_checkpoint_write() -> void:
+	if _checkpoint_writer != null:
+		if not bool(_checkpoint_writer.wait_to_finish()): push_warning("Checkpoint da Floresta não pôde ser salvo.")
+		_checkpoint_writer = null
+
+func _save_resident_states() -> void:
+	if is_instance_valid(room) and current_room >= 0:
+		states[current_room] = room.snapshot()
+	preload("res://scripts/abbey/abbey_progress.gd").save_chapter_states("forest", states)
+
+func _exit_tree() -> void:
+	_finish_checkpoint_write()
+	if current_room >= 0: _save_resident_states()
 
 func _on_death() -> void:
 	if is_instance_valid(room) and room.has_method("disarm"):
@@ -133,6 +176,7 @@ func camera_target() -> Vector2:
 	)
 
 func _physics_process(delta: float) -> void:
+	if _checkpoint_writer != null and not _checkpoint_writer.is_alive(): _finish_checkpoint_write()
 	if busy or current_room < 0:
 		return
 	
@@ -148,7 +192,10 @@ func _physics_process(delta: float) -> void:
 	
 	match current_room:
 		0:
-			subhint.text = "Explore o chão e as raízes elevadas. Vá para a direita para alcançar o Bosque das Raízes."
+			if local.x < 80.0:
+				subhint.text = "À esquerda: retornar à Abadia Silenciosa · À direita: avançar para o Bosque das Raízes."
+			else:
+				subhint.text = "Explore o chão e as raízes elevadas. Vá para a direita para alcançar o Bosque das Raízes."
 		1:
 			if local.x < 260.0:
 				subhint.text = "Abismo de raízes à frente: combine Salto + Passo das Sombras (Shift) para atravessar!"
@@ -171,9 +218,16 @@ func _physics_process(delta: float) -> void:
 		8:
 			subhint.text = "Ravina das Sombras Fósseis: abismo vertiginoso e costelas titânicas · Prossiga à direita para a Clareira da Bruma Espectral."
 		9:
-			var abbey_prog: Script = preload("res://scripts/abbey/abbey_progress.gd")
-			if abbey_prog.is_flag_set("cervo_defeated"):
-				subhint.text = "Clareira da Bruma Espectral: Cervo Espectral pacificado · Salto Espectral disponível · Exploração livre · F7 reinicia."
+			if _cervo_defeated_on_entry or hero.spectral_jump_unlocked:
+				if is_instance_valid(subcaption):
+					caption.text = "FLORESTA DOS OSSOS · CLÍMAX DA CAMPANHA"
+					subcaption.text = "Três Juramentos Rompidos: Guardião · Abade · Cervo"
+				if local.x >= 800.0:
+					hint.text = "FIM DO CONTEÚDO ATUAL · Salto Espectral conquistado · A jornada de Aren continuará na Fase 4!"
+					subhint.text = "Obrigado por jogar Cinzas do Juramento! Pressione Espaço no ar para Salto Duplo."
+				else:
+					hint.text = "Cervo Espectral pacificado · Salto Espectral disponível (Espaço no ar para Salto Duplo)"
+					subhint.text = "Avance até o Pórtico do Juramento à direita para concluir a jornada."
 			else:
 				subhint.text = "Clareira da Bruma Espectral: santuário velado · Avance para enfrentar o Cervo Espectral · F7 reinicia · Retorne à esquerda."
 	
@@ -191,6 +245,12 @@ func _physics_process(delta: float) -> void:
 	# Retorno bidirecional para a esquerda (regresso de setor)
 	elif current_room > 0 and local.x <= 16.0 and hero.facing < 0:
 		switch_room.call_deferred(current_room - 1, true)
+	# Retorno da Floresta para a Abadia Silenciosa a partir do Setor 0
+	elif current_room == 0 and local.x <= 16.0 and hero.facing < 0 and not busy and not hero.survival.is_dead:
+		var abbey_prog: Script = preload("res://scripts/abbey/abbey_progress.gd")
+		abbey_prog.set_pending_entrance("from_forest")
+		get_tree().change_scene_to_file.call_deferred("res://scenes/abbey/abbey_chapter.tscn")
+		return
 	
 	# Limites laterais da sala (só bloqueia nas extremidades absolutas do mapa)
 	if current_room == 0 and local.x < 6.0:
@@ -203,6 +263,7 @@ func _unhandled_key_input(event: InputEvent) -> void:
 		if event.keycode == KEY_F7:
 			get_tree().reload_current_scene()
 		elif event.keycode == KEY_F6:
+			_cervo_defeated_on_entry = false
 			var abbey_prog: Script = preload("res://scripts/abbey/abbey_progress.gd")
 			abbey_prog.set_flag("cervo_defeated", false)
 			abbey_prog.set_flag("spectral_jump_unlocked", false)
