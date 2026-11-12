@@ -16,7 +16,7 @@ enum AttackPhase { WINDUP, ACTIVE, RECOVERY }
 @export_range(1, 9, 1) var damage: int = 1
 @export var patrol_speed: float = 28.0
 @export var chase_speed: float = 38.0
-@export var detection_distance: float = 90.0
+@export var detection_distance: float = 165.0
 @export var attack_distance: float = 26.0
 @export var attack_interval: float = 1.3
 @export var patrol_left: float = -40.0
@@ -37,6 +37,8 @@ var origin: Vector2
 var _timer: float = 0.0
 var _cooldown: float = 0.0
 var _lost_time: float = 0.0
+var _reacquire_delay: float = 0.0
+var _last_seen_x: float = 0.0
 var _poise_flash_timer: float = 0.0
 
 @onready var attack_source: ForestSentinelAttackSource = $AttackSource
@@ -60,6 +62,8 @@ func reset_enemy() -> void:
 	_timer = idle_duration
 	_cooldown = 0.0
 	_lost_time = 0.0
+	_reacquire_delay = 0.0
+	_last_seen_x = origin.x
 	_poise_flash_timer = 0.0
 	if is_instance_valid(attack_source):
 		attack_source.set_active(false)
@@ -125,6 +129,7 @@ func _physics_process(delta: float) -> void:
 	if state == State.DEAD:
 		return
 	_cooldown = maxf(0.0, _cooldown - delta)
+	_reacquire_delay = maxf(0.0, _reacquire_delay - delta)
 	if _poise_flash_timer > 0.0:
 		_poise_flash_timer = maxf(0.0, _poise_flash_timer - delta)
 		if _poise_flash_timer == 0.0:
@@ -164,10 +169,19 @@ func _sees_target() -> bool:
 		global_position + Vector2(0, -16), target.global_position + Vector2(0, -14), 1)
 	return get_world_2d().direct_space_state.intersect_ray(ray).is_empty()
 
+func _visible_for_attack() -> bool:
+	var camera: Camera2D = get_viewport().get_camera_2d()
+	if camera == null:
+		return true
+	var size: Vector2 = get_viewport_rect().size / camera.zoom
+	var view := Rect2(camera.get_screen_center_position() - size * 0.5, size).grow(-4.0)
+	return view.has_point(global_position + Vector2(0, -14))
+
 func _tick_navigation(delta: float) -> void:
 	var sees: bool = _sees_target()
-	if sees:
+	if sees and _reacquire_delay <= 0.0:
 		_lost_time = 0.0
+		_last_seen_x = target.global_position.x
 		state = State.CHASE
 	elif state == State.CHASE:
 		_lost_time += delta
@@ -178,10 +192,12 @@ func _tick_navigation(delta: float) -> void:
 	if state == State.CHASE:
 		if not is_instance_valid(target):
 			return
-		var offset: float = target.global_position.x - global_position.x
+		var offset: float = _last_seen_x - global_position.x
 		if absf(offset) > 0.1:
 			facing = 1 if offset > 0.0 else -1
-		if sees and absf(offset) <= attack_distance:
+		if not sees and absf(offset) <= 1.0:
+			return
+		if sees and absf(offset) <= attack_distance and _visible_for_attack():
 			if _cooldown == 0.0 and is_on_floor():
 				state = State.ATTACK
 				attack_phase = AttackPhase.WINDUP
@@ -190,7 +206,11 @@ func _tick_navigation(delta: float) -> void:
 				if is_instance_valid(attack_source):
 					attack_source.position.x = 18.0 * facing
 			return
-		_walk(chase_speed, delta)
+		if not _walk(chase_speed, delta):
+			state = State.IDLE
+			_timer = idle_duration
+			_reacquire_delay = 1.5
+			facing *= -1
 	elif state == State.IDLE:
 		_timer -= delta
 		if _timer <= 0.0:
@@ -203,7 +223,7 @@ func _tick_navigation(delta: float) -> void:
 
 func _walk(speed: float, delta: float) -> bool:
 	var next_x: float = global_position.x + facing * speed * delta
-	if next_x < origin.x + patrol_left or next_x > origin.x + patrol_right:
+	if (next_x < origin.x + patrol_left and facing < 0) or (next_x > origin.x + patrol_right and facing > 0):
 		return false
 	var ahead: float = facing * (10.0 + speed * delta)
 	var space: PhysicsDirectSpaceState2D = get_world_2d().direct_space_state

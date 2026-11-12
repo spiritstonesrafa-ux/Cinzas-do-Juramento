@@ -78,6 +78,31 @@ func _build_surfaces() -> void:
 		world_geometry.add_child(body)
 		index += 1
 
+func _ground_patrol_bounds(item: Dictionary, configs: Array[Dictionary]) -> Vector2:
+	var pos: Vector2 = item.get("position", Vector2.ZERO)
+	var fallback := Vector2(item.get("patrol_left", -40.0), item.get("patrol_right", 40.0))
+	for surface: Rect2 in ForestLayout.surfaces(sector_id):
+		if absf(pos.y - surface.position.y) > 2.0 or pos.x < surface.position.x or pos.x > surface.end.x:
+			continue
+		# Stay on the same authored surface, inside the sector, and clear of
+		# other encounters and hazards. The live floor/wall probes still apply.
+		var left: float = maxf(maxf(surface.position.x + 16.0, 16.0), pos.x - 100.0)
+		var right: float = minf(minf(surface.end.x - 16.0, ForestLayout.ROOM_SIZE.x - 16.0), pos.x + 100.0)
+		if sector_id == 1:
+			right = minf(right, 684.0) # Preserve the empty sanctuary approach.
+		for other: Dictionary in configs:
+			if other.get("id", "") == item.get("id", ""):
+				continue
+			var other_pos: Vector2 = other.get("position", Vector2.ZERO)
+			if absf(other_pos.y - pos.y) > 40.0:
+				continue
+			if other_pos.x < pos.x:
+				left = maxf(left, other_pos.x + 36.0)
+			elif other_pos.x > pos.x:
+				right = minf(right, other_pos.x - 36.0)
+		return Vector2(minf(0.0, left - pos.x), maxf(0.0, right - pos.x))
+	return fallback
+
 func _build_encounters() -> void:
 	enemies.clear()
 	hazards.clear()
@@ -92,8 +117,9 @@ func _build_encounters() -> void:
 				crawler.encounter_id = mob_id
 				crawler.name = mob_id
 				crawler.position = pos
-				crawler.patrol_left = item.get("patrol_left", -40.0)
-				crawler.patrol_right = item.get("patrol_right", 40.0)
+				var patrol: Vector2 = _ground_patrol_bounds(item, configs)
+				crawler.patrol_left = patrol.x
+				crawler.patrol_right = patrol.y
 				crawler.facing = item.get("facing", -1)
 				if hero != null:
 					crawler.target = hero
@@ -104,8 +130,9 @@ func _build_encounters() -> void:
 				sentinel.encounter_id = mob_id
 				sentinel.name = mob_id
 				sentinel.position = pos
-				sentinel.patrol_left = item.get("patrol_left", -40.0)
-				sentinel.patrol_right = item.get("patrol_right", 40.0)
+				var patrol: Vector2 = _ground_patrol_bounds(item, configs)
+				sentinel.patrol_left = patrol.x
+				sentinel.patrol_right = patrol.y
 				sentinel.facing = item.get("facing", -1)
 				if hero != null:
 					sentinel.target = hero
@@ -117,6 +144,9 @@ func _build_encounters() -> void:
 				crow.name = mob_id
 				crow.position = pos
 				crow.patrol_half_width = item.get("patrol_half_width", 25.0)
+				crow.flight_min_x = global_position.x + 12.0
+				crow.flight_max_x = global_position.x + (684.0 if sector_id == 1 else ForestLayout.ROOM_SIZE.x - 12.0)
+				crow.flight_scan_enabled = true
 				crow.facing = item.get("facing", -1)
 				if hero != null:
 					crow.target = hero
@@ -169,6 +199,11 @@ func restore_state(data: Dictionary) -> void:
 				enemy.current_health = ed.get("hp", enemy.max_health)
 				if ed.has("pos_x") and ed.has("pos_y"):
 					enemy.position = Vector2(ed["pos_x"], ed["pos_y"])
+					if enemy is ForestSpectralCrow and enemy.global_position.distance_to(enemy.origin) > 0.1:
+						# Resume a harmless return after unloading mid-flight or dive.
+						enemy.state = enemy.State.RECOVER
+						enemy._timer = 0.0
+						enemy.disarm()
 				if ed.has("facing"):
 					enemy.facing = ed["facing"]
 				if enemy.has_method("_sync_visual"):

@@ -15,7 +15,4 @@ func _draw() -> void:
  draw_set_transform(Vector2.ZERO,0,Vector2(enemy.facing,1))
  draw_texture_rect_region(texture,Rect2(-24,-40,60,44),Rect2(Vector2(frame%4,floori(frame/4.0))*cell,cell),Color(1.6,1.5,1.4) if enemy.flash>0 else Color.WHITE)
  if enemy.state==ChainedMonk.State.WARNING:
-  var length: float=50 if enemy.archetype==2 else (90 if enemy.archetype==0 else 72)
-  var start: float=6 if enemy.archetype==2 else 8
-  draw_line(Vector2(start,-3),Vector2(length,-3),Color("f5d286"),1)
   draw_string(ThemeDB.fallback_font,Vector2(0,-42),"!",HORIZONTAL_ALIGNMENT_LEFT,-1,9,Color("fff1c4"))

@@ -23,8 +23,10 @@ func _ready() -> void:
 	knight.survival.respawn_requested.connect(_restore_enemies)
 	for enemy: Node in $Enemies.get_children():
 		if enemy is SkeletonPatrol:
+			_configure_skeleton_patrol(enemy as SkeletonPatrol)
 			(enemy as SkeletonPatrol).target = knight
 		elif enemy is CursedRaven:
+			_configure_raven_patrol(enemy as CursedRaven)
 			(enemy as CursedRaven).target = knight
 	$HealthHUD.bind(knight.survival)
 	ABBEY_PROGRESS.sync_hero_progression(knight)
@@ -50,6 +52,51 @@ func _ready() -> void:
 			knight.facing = -1
 			knight.set_default_respawn(Vector2(1936, 156))
 	_update_presentation()
+
+func _configure_skeleton_patrol(enemy: SkeletonPatrol) -> void:
+	# Use the authored floor under this spawn rather than extending the
+	# per-instance interval across a step, gap, wall or nearby mechanism.
+	var spawn_pos: Vector2 = enemy.global_position
+	for body: Node in $WorldGeometry.get_children():
+		if not body is StaticBody2D:
+			continue
+		var collider := body.get_node_or_null("CollisionShape2D") as CollisionShape2D
+		if collider == null or not collider.shape is RectangleShape2D:
+			continue
+		var shape := collider.shape as RectangleShape2D
+		var floor_rect := Rect2(collider.global_position - shape.size * 0.5, shape.size)
+		if absf(floor_rect.position.y - spawn_pos.y) > 2.0 or spawn_pos.x < floor_rect.position.x or spawn_pos.x > floor_rect.end.x:
+			continue
+		var left: float = maxf(floor_rect.position.x + 12.0, spawn_pos.x - 100.0)
+		var right: float = minf(floor_rect.end.x - 12.0, spawn_pos.x + 100.0)
+		var local_x: float = to_local(spawn_pos).x
+		var sector: int = 0
+		for i in range(SECTOR_STARTS.size()):
+			if local_x >= SECTOR_STARTS[i]: sector = i
+		left = maxf(left, to_global(Vector2(SECTOR_STARTS[sector] + 12.0, 0)).x)
+		right = minf(right, to_global(Vector2(SECTOR_STARTS[sector + 1] - 12.0 if sector + 1 < SECTOR_STARTS.size() else 2340.0, 0)).x)
+		for mechanism: Node in $Mechanisms.get_children():
+			if not mechanism is Node2D:
+				continue
+			var other: Vector2 = (mechanism as Node2D).global_position
+			if absf(other.y - spawn_pos.y) > 40.0:
+				continue
+			if other.x < spawn_pos.x:
+				left = maxf(left, other.x + 36.0)
+			elif other.x > spawn_pos.x:
+				right = minf(right, other.x - 36.0)
+		enemy.patrol_left = minf(0.0, left - spawn_pos.x)
+		enemy.patrol_right = maxf(0.0, right - spawn_pos.x)
+		return
+
+func _configure_raven_patrol(enemy: CursedRaven) -> void:
+	var local_x: float = to_local(enemy.global_position).x
+	var sector: int = 0
+	for i in range(SECTOR_STARTS.size()):
+		if local_x >= SECTOR_STARTS[i]: sector = i
+	enemy.flight_min_x = to_global(Vector2(SECTOR_STARTS[sector] + 12.0, 0)).x
+	enemy.flight_max_x = to_global(Vector2(SECTOR_STARTS[sector + 1] - 12.0 if sector + 1 < SECTOR_STARTS.size() else 2340.0, 0)).x
+	enemy.flight_scan_enabled = true
 
 func _checkpoint_activated(cp: RespawnCheckpoint) -> void:
 	if knight.active_checkpoint == cp:

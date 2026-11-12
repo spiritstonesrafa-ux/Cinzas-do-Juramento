@@ -50,7 +50,7 @@ func _draw() -> void:
 			frame = 4 # Alert asas abertas
 		else:
 			frame = 5 # Windup preparação
-	elif is_recover:
+	elif is_recover and crow.velocity.length_squared() < 0.01:
 		frame = 7 # Recuperação pós-mergulho
 		hover_y = -1.0
 	elif is_hurt:

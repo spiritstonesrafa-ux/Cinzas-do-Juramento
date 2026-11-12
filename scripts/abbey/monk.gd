@@ -12,6 +12,12 @@ var age: float = 0
 var flash: float = 0
 var attacks: int = 0
 var hits_received: int = 0
+var patrol_min_x: float = -64.0
+var patrol_max_x: float = 64.0
+var reacquire_pause: float = 0.0
+var lost_target_time: float = 0.0
+var last_seen_x: float = 0.0
+var target_visible: bool = false
 @onready var source: SkeletonAttackSource = $AttackSource
 @onready var receiver: SwordReceiver = $SwordReceiver
 @onready var visual: Node2D = $Visual
@@ -32,6 +38,9 @@ func reset_enemy() -> void:
  global_position = origin
  current_health = 3
  facing = -1
+ reacquire_pause = 0.0
+ lost_target_time = 0.0
+ target_visible = false
  $SwordReceiver/CollisionShape2D.set_deferred("disabled",false)
  $CollisionShape2D.set_deferred("disabled",false)
  set_state(State.PATROL)
@@ -50,10 +59,40 @@ func receive_hit() -> void:
 func sees_target() -> bool:
  if not is_instance_valid(target) or target.survival.is_dead: return false
  var offset: Vector2 = target.global_position-global_position
- if absf(offset.x)>104 or absf(offset.y)>20: return false
+ if absf(offset.x)>170 or absf(offset.y)>20: return false
  var view: Rect2 = Rect2(get_viewport().get_camera_2d().get_screen_center_position()-Vector2(160,90),Vector2(320,180))
  if not view.grow(-12).has_point(global_position+Vector2(0,-16)): return false
  return get_world_2d().direct_space_state.intersect_ray(PhysicsRayQueryParameters2D.create(global_position+Vector2(0,-14),target.global_position+Vector2(0,-14),1)).is_empty()
+func update_target_awareness(delta: float) -> bool:
+ target_visible = reacquire_pause<=0 and sees_target()
+ if target_visible:
+  last_seen_x=target.global_position.x
+  lost_target_time=0.0
+  return true
+ if state==State.CHASE and reacquire_pause<=0 and is_instance_valid(target):
+  lost_target_time+=delta
+  if lost_target_time<0.6: return true
+ lost_target_time=0.0
+ return false
+func patrol_step(speed: float) -> void:
+ if global_position.x <= origin.x+patrol_min_x: facing=1
+ if global_position.x >= origin.x+patrol_max_x: facing=-1
+ velocity.x=facing*speed
+func guard_ground_motion(delta: float) -> void:
+ if velocity.x==0: return
+ var direction: float=signf(velocity.x)
+ var ahead: Vector2=global_position+Vector2(direction*14,-2)
+ var space: PhysicsDirectSpaceState2D=get_world_2d().direct_space_state
+ var floor_hit: Dictionary=space.intersect_ray(PhysicsRayQueryParameters2D.create(ahead,ahead+Vector2(0,12),1))
+ var wall_hit: Dictionary=space.intersect_ray(PhysicsRayQueryParameters2D.create(global_position+Vector2(0,-12),global_position+Vector2(direction*14,-12),1))
+ var next_x: float=global_position.x+velocity.x*delta
+ if floor_hit.is_empty() or not wall_hit.is_empty() or next_x<origin.x+patrol_min_x or next_x>origin.x+patrol_max_x:
+  velocity.x=0
+  if state in [State.PATROL,State.CHASE]:
+   facing *= -1
+   if state==State.CHASE:
+    reacquire_pause=1.5
+    state=State.PATROL
 func _physics_process(delta: float) -> void:
  age += delta
  flash = maxf(0,flash-delta)
@@ -64,6 +103,7 @@ func _physics_process(delta: float) -> void:
   velocity = Vector2.ZERO
   return
  remaining = maxf(0,remaining-delta)
+ reacquire_pause = maxf(0,reacquire_pause-delta)
  velocity.x = 0
  match state:
   State.WARNING:
@@ -73,21 +113,17 @@ func _physics_process(delta: float) -> void:
   State.RECOVER, State.HURT:
    if remaining == 0: set_state(State.PATROL)
   _:
-   if sees_target():
-    var dx: float = target.global_position.x-global_position.x
+   if update_target_awareness(delta):
+    var dx: float = last_seen_x-global_position.x
     facing = 1 if dx>0 else -1
-    if absf(dx)<=44: set_state(State.WARNING,0.55)
+    if target_visible and absf(dx)<=44: set_state(State.WARNING,0.55)
     else:
      state = State.CHASE
-     velocity.x = facing*32.0
+     if absf(dx)>3.0: velocity.x = facing*32.0
    else:
     state = State.PATROL
-    if absf(global_position.x-origin.x)>=56: facing = -1 if global_position.x>origin.x else 1
-    velocity.x = facing*23.0
-   var ahead: Vector2 = global_position+Vector2(facing*14,-2)
-   if get_world_2d().direct_space_state.intersect_ray(PhysicsRayQueryParameters2D.create(ahead,ahead+Vector2(0,12),1)).is_empty():
-    velocity.x=0
-    facing *= -1
+    patrol_step(23.0)
+ guard_ground_motion(delta)
  velocity.y = minf(velocity.y+680*delta,360)
  move_and_slide()
- global_position.x = clampf(global_position.x,origin.x-64,origin.x+64)
+ global_position.x = clampf(global_position.x,origin.x+patrol_min_x,origin.x+patrol_max_x)

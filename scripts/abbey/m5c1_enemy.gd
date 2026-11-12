@@ -24,11 +24,12 @@ func _physics_process(delta: float) -> void:
  flash=maxf(0,flash-delta)
  visual.queue_redraw()
  if state==State.DEAD: return
- if not is_instance_valid(target) or target.survival.is_dead:
+ if is_instance_valid(target) and target.survival.is_dead:
   source.set_active(false)
   velocity=Vector2.ZERO
   return
  remaining=maxf(0,remaining-delta)
+ reacquire_pause=maxf(0,reacquire_pause-delta)
  velocity.x=0
  match state:
   State.WARNING:
@@ -39,20 +40,26 @@ func _physics_process(delta: float) -> void:
   State.RECOVER,State.HURT:
    if remaining==0: set_state(State.PATROL)
   _:
-   if sees_target():
-    var dx: float=target.global_position.x-global_position.x
+   if update_target_awareness(delta):
+    var dx: float=last_seen_x-global_position.x
     facing=1 if dx>0 else -1
     var attack_range: float=[92.0,52.0,50.0][archetype]
-    if absf(dx)<=attack_range: set_state(State.WARNING,0.75 if archetype!=1 else 0.65)
-    elif archetype!=2: velocity.x=facing*(26.0 if archetype==0 else 40.0)
-   elif archetype==1:
-    if absf(global_position.x-origin.x)>=40: facing=-1 if global_position.x>origin.x else 1
-    velocity.x=facing*22.0
- if velocity.x!=0:
-  var ahead: Vector2=global_position+Vector2(signf(velocity.x)*14,-2)
-  if get_world_2d().direct_space_state.intersect_ray(PhysicsRayQueryParameters2D.create(ahead,ahead+Vector2(0,12),1)).is_empty(): velocity.x=0
+    if target_visible and absf(dx)<=attack_range: set_state(State.WARNING,0.75 if archetype!=1 else 0.65)
+    else:
+     state=State.CHASE
+     if absf(dx)>3.0: velocity.x=facing*[26.0,40.0,18.0][archetype]
+   else:
+    state=State.PATROL
+    if archetype==1 and patrol_min_x==-64.0 and patrol_max_x==64.0:
+     # The standalone demo has a narrow raised platform; keep its authored
+     # patrol envelope while retaining the separate attack movement limit.
+     if absf(global_position.x-origin.x)>=40.0: facing=-1 if global_position.x>origin.x else 1
+     velocity.x=facing*22.0
+    else:
+     patrol_step([17.0,22.0,14.0][archetype])
+ guard_ground_motion(delta)
  velocity.y=minf(velocity.y+680*delta,360)
  move_and_slide()
- global_position.x=clampf(global_position.x,origin.x-64,origin.x+64)
+ global_position.x=clampf(global_position.x,origin.x+patrol_min_x,origin.x+patrol_max_x)
 func _exit_tree() -> void:
  if is_instance_valid(missile): missile.queue_free()

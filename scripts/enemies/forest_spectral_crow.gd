@@ -16,6 +16,7 @@ enum State { IDLE, PATROL, ALERT, DIVE, RECOVER, HURT, DEAD }
 @export var patrol_speed: float = 24.0
 @export var dive_speed: float = 90.0
 @export var detection_distance: float = 110.0
+@export var perception_distance: float = 190.0
 @export var alert_duration: float = 0.45
 @export var attack_interval: float = 1.8
 @export var recovery_duration: float = 0.50
@@ -35,6 +36,11 @@ var dive_destination: Vector2 = Vector2.ZERO
 var flight_time: float = 0.0
 var _timer: float = 0.0
 var _cooldown: float = 0.0
+var _perception_pause: float = 0.0
+var flight_scan_enabled: bool = false
+var flight_min_x: float = -INF
+var flight_max_x: float = INF
+var _flight_scanned: bool = false
 
 @onready var attack_source: ForestCrowAttackSource = $AttackSource
 @onready var hurt_shape: CollisionShape2D = $SwordReceiver/CollisionShape2D
@@ -60,6 +66,7 @@ func reset_enemy() -> void:
 	dive_destination = origin
 	_timer = idle_duration
 	_cooldown = 0.0
+	_perception_pause = 0.0
 	if is_instance_valid(attack_source):
 		attack_source.damage = damage
 		attack_source.set_active(false)
@@ -124,6 +131,15 @@ func _can_alert() -> bool:
 	var ray: PhysicsRayQueryParameters2D = PhysicsRayQueryParameters2D.create(global_position, aim, 1)
 	return get_world_2d().direct_space_state.intersect_ray(ray).is_empty()
 
+func _perceives_target() -> bool:
+	if not is_instance_valid(target) or target.survival.is_dead:
+		return false
+	var aim: Vector2 = target.global_position + Vector2(0, -14)
+	if global_position.distance_to(aim) > maxf(perception_distance, detection_distance) or absf(aim.y - origin.y) > max_vertical_detection:
+		return false
+	var ray: PhysicsRayQueryParameters2D = PhysicsRayQueryParameters2D.create(global_position, aim, 1)
+	return get_world_2d().direct_space_state.intersect_ray(ray).is_empty()
+
 func _begin_alert() -> void:
 	var offset: Vector2 = target.global_position + Vector2(0, -14) - global_position
 	dive_direction = offset.normalized()
@@ -142,11 +158,28 @@ func _begin_recover() -> void:
 	_timer = recovery_duration
 	velocity = Vector2.ZERO
 
+func _scan_flight_patrol() -> void:
+	_flight_scanned = true
+	var safe_width := 0.0
+	var spawn_transform: Transform2D = global_transform
+	spawn_transform.origin = origin
+	for step in range(1, 16):
+		var distance: float = float(step) * 4.0
+		if origin.x - distance < flight_min_x or origin.x + distance > flight_max_x:
+			break
+		if test_move(spawn_transform, Vector2(-distance, 0)) or test_move(spawn_transform, Vector2(distance, 0)):
+			break
+		safe_width = distance
+	patrol_half_width = safe_width
+
 func _physics_process(delta: float) -> void:
 	if state == State.DEAD:
 		return
+	if flight_scan_enabled and not _flight_scanned:
+		_scan_flight_patrol()
 	flight_time += delta
 	_cooldown = maxf(0.0, _cooldown - delta)
+	_perception_pause = maxf(0.0, _perception_pause - delta)
 	velocity = Vector2.ZERO
 	if is_instance_valid(target) and target.survival.is_dead:
 		if is_instance_valid(attack_source):
@@ -167,11 +200,18 @@ func _physics_process(delta: float) -> void:
 			if _can_alert():
 				_begin_alert()
 			else:
+				# Keep the dive's shorter attack gate and camera telegraph intact.
+				if _perception_pause <= 0.0 and _perceives_target():
+					var dx: float = target.global_position.x - global_position.x
+					if absf(dx) > 4.0:
+						facing = 1 if dx > 0.0 else -1
 				var motion: Vector2 = Vector2(facing * patrol_speed * delta, 0)
 				if absf(global_position.x + motion.x - origin.x) > patrol_half_width:
 					facing *= -1
+					_perception_pause = 1.5
 				elif move_and_collide(motion) != null:
 					facing *= -1
+					_perception_pause = 1.5
 				else:
 					velocity = motion / delta
 		State.ALERT:

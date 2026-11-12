@@ -32,6 +32,12 @@ func install(id: int, hero: KnightController) -> void:
   if kind in ["monk", "acolyte", "penitent", "watchman"]:
    var enemy: ChainedMonk = (MONK if kind == "monk" else ENEMY).instantiate() as ChainedMonk
    if kind != "monk": enemy.set("archetype", ["acolyte", "penitent", "watchman"].find(kind))
+   var surface: Rect2 = surfaces[record[2]]
+   enemy.patrol_min_x = minf(0.0, maxf(-100.0, surface.position.x + 16.0 - pos.x))
+   enemy.patrol_max_x = maxf(0.0, minf(100.0, surface.end.x - 16.0 - pos.x))
+   if enemy.patrol_min_x > enemy.patrol_max_x:
+    enemy.patrol_min_x = 0.0
+    enemy.patrol_max_x = 0.0
    enemy.position = pos
    add_child(enemy)
    enemy.target = hero

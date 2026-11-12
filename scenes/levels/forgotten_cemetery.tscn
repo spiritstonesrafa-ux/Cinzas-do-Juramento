@@ -136,7 +136,7 @@ position = Vector2(1050, 112)
 
 [node name="CryptSkeleton" parent="Enemies" instance=ExtResource("5_enemy")]
 position = Vector2(1328, 220)
-detection_distance = 65.0
+detection_distance = 155.0
 patrol_left = -32.0
 patrol_right = 32.0
 
