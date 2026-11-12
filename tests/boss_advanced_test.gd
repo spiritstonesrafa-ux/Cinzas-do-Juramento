@@ -61,6 +61,8 @@ func duel(allow_error: bool) -> void:
  var punished: bool=false
  var error_spent: bool=false
  var hp: int=boss.current_health
+ var last_hero_hp: int=hero.survival.current_health
+ var damage_taken: int=0
  # No teleport, heal, source mutation or boss freeze inside this live loop.
  for i: int in range(7200):
   if boss.state==OathGuardian.State.DEFEATED or hero.survival.is_dead:break
@@ -78,11 +80,23 @@ func duel(allow_error: bool) -> void:
    var deliberately_grounded: bool=allow_error and not error_spent
    if not deliberately_grounded and boss.remaining<=(0.3 if boss.pattern==0 else (0.2 if boss.pattern==2 else (0.1 if boss.pattern==1 else 0.06))) and hero.is_on_floor():Input.action_press("jump")
    if deliberately_grounded and boss.remaining<=0.02:error_spent=true
+  # Respond to the announced two-pulse ground attack with the normal jump.
+  if hero.is_on_floor() and boss.state==OathGuardian.State.SUPER_WARN and boss.remaining<0.25 and absf(dx)<50:
+   Input.action_press("jump")
+  if hero.is_on_floor() and boss.state==OathGuardian.State.SUPER_ACTIVE:
+   if not boss.super_second_sent and boss.remaining<2.0 and absf(dx)<50:
+    Input.action_press("jump")
+   for wave: Node2D in boss.super_waves:
+    if is_instance_valid(wave):
+     var wave_dx: float=hero.global_position.x-wave.global_position.x
+     if wave_dx*wave.direction>0 and absf(wave_dx)<45:Input.action_press("jump")
   if hero.is_on_floor() and absf(dx)<=38 and boss.state==OathGuardian.State.PUNISH and not punished:
    Input.action_press("attack");punished=true
   previous_state=boss.state
   await frames(1)
   if boss.current_health<hp:hits+=hp-boss.current_health;hp=boss.current_health
+  if hero.survival.current_health<last_hero_hp:damage_taken+=last_hero_hp-hero.survival.current_health
+  last_hero_hp=hero.survival.current_health
  var row: Dictionary={"error_trial":allow_error,"won":boss.state==OathGuardian.State.DEFEATED,"hp":hero.survival.current_health,"hits":hits,"seconds":frames_used/60.0,"patterns":patterns}
  duel_results.append(row)
  check(row.won,"Live original-input duel wins; error trial="+str(allow_error))
@@ -90,7 +104,7 @@ func duel(allow_error: bool) -> void:
  check(boss.phase==2,"Live duel crosses into phase two")
  check(hero.survival.current_health>0,"Live duel survives without healing")
  check(patterns.has(OathGuardian.Pattern.SWEEP) and patterns.has(OathGuardian.Pattern.WAVE),"Live duel exercises new phase-one and phase-two patterns")
- check(hero.survival.current_health==5 if not allow_error else hero.survival.current_health<5,"Live duel confirms zero-damage / recoverable-error outcome")
+ check(damage_taken==0 if not allow_error else damage_taken>0,"Live duel confirms zero-damage / recoverable-error outcome before reward")
  release()
  await capture("victory_errors" if allow_error else "victory")
 func run() -> void:
@@ -138,7 +152,7 @@ func run() -> void:
    check(boss.facing==direction,"Execution does not home or turn")
    check(not boss.attack_source.active,"Recovery ends melee damage")
    if kind==OathGuardian.Pattern.CHARGE:
-    check(absf(boss.position.x-x_before)<=72.1 and absf(boss.position.x-x_before)>60,"Charge travels controlled real distance")
+    check(absf(boss.position.x-x_before)<=72.1 and absf(boss.position.x-x_before)>0 and absf(hero.global_position.x-boss.global_position.x)>=27,"Charge stops before occupying Aren while retaining bounded movement")
     check(boss.position.x>=28 and boss.position.x<=292,"Charge stays inside arena")
     check(boss.position.x+77<=320 if side>0 else boss.position.x-77>=0,"Charge blade fits the approved camera")
    boss.clear_dangers()
@@ -154,6 +168,12 @@ func run() -> void:
    await frames(22)
    check(hero.survival.current_health==hp_before,"Real jump evades full attack kind="+str(kind)+" side="+str(side))
    boss.clear_dangers()
+ # A clear lane must still permit the original full charge distance.
+ for side: int in [-1,1]:
+  await fixture(OathGuardian.Pattern.CHARGE,side,150)
+  var start_x: float=boss.position.x
+  await wait_state(OathGuardian.State.PUNISH)
+  check(absf(boss.position.x-start_x)>60 and absf(boss.position.x-start_x)<=72.1,"Charge retains full reach in clear lane side="+str(side))
  # Timing windows: three different jump times per new pattern in both directions.
  for side: int in [-1,1]:
   for kind: int in [1,2,3]:

@@ -43,6 +43,9 @@ func _draw() -> void:
   b.State.ACTIVE: frame=[3,5,7][b.pattern]
   b.State.RECOVER: frame=8
   b.State.TRANSITION: frame=10
+  b.State.ASCEND, b.State.DESCEND: frame=10
+  b.State.DEATH_DESCEND: frame=9
+  b.State.JUDGMENT: frame=4 if fmod(clock,0.9)<0.6 else 5
   b.State.DEFEATED: frame=11
  if b.flash>0 and b.state not in [b.State.TRANSITION,b.State.DEFEATED]: frame=9
  var cell: Vector2=ATLAS.get_size()/Vector2(4,3)
@@ -63,6 +66,8 @@ func _draw() -> void:
   draw_texture_rect_region(ATLAS,hurt_destination,Rect2(Vector2(1,2)*cell,cell),Color(1,1,1,1.0-defeat_blend))
   tint.a=defeat_blend
  draw_texture_rect_region(ATLAS,destination,region,tint)
+ if b.state in [b.State.ASCEND,b.State.JUDGMENT,b.State.DESCEND]:
+  draw_arc(Vector2(0,-18),18+sin(clock*4)*2,0,TAU,20,Color(0.68,0.42,0.78,0.5),1)
  if b.state==b.State.WARNING:
   draw_string(ThemeDB.fallback_font,Vector2(0,-72),"!",HORIZONTAL_ALIGNMENT_LEFT,-1,10,Color("ffe8b0"))
   if b.pattern==b.Pattern.DASH:
