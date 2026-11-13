@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000" role="img" aria-labelledby="title desc">
+  <title id="title">Mapa de navegação — Fornalha do Juramento</title>
+  <desc id="desc">Planta original das galerias interligadas da Fase 4, com rota principal, Canal de Resfriamento, escadaria de saída, checkpoints e arena do Titã Ossuário.</desc>
+  <defs>
+    <linearGradient id="bg" x2="0" y2="1"><stop stop-color="#101923"/><stop offset="1" stop-color="#090d13"/></linearGradient>
+    <linearGradient id="main" x2="1"><stop stop-color="#dfb568"/><stop offset=".55" stop-color="#f0cf82"/><stop offset="1" stop-color="#f17d43"/></linearGradient>
+    <linearGradient id="water" x2="1"><stop stop-color="#65c6bd"/><stop offset="1" stop-color="#2d828e"/></linearGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0H0V32" fill="none" stroke="#b0c0cd" stroke-opacity=".045" stroke-width="1"/></pattern>
+    <marker id="arrowGold" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0L10 5L0 10Z" fill="#e2b96d"/></marker>
+    <marker id="arrowCyan" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0L10 5L0 10Z" fill="#62c5bd"/></marker>
+    <style>
+      .title{font:700 30px 'Segoe UI',sans-serif;fill:#f2dfb5;letter-spacing:2px}
+      .subtitle{font:15px 'Segoe UI',sans-serif;fill:#a9bac1;letter-spacing:1px}
+      .region{font:700 15px 'Segoe UI',sans-serif;fill:#f2e6cb;letter-spacing:.6px}
+      .small{font:12px 'Segoe UI',sans-serif;fill:#b8c4c9}
+      .tiny{font:11px 'Segoe UI',sans-serif;fill:#9dabb1}
+      .room{fill:#1a2832;fill-opacity:.82;stroke:#71828a;stroke-width:2}
+      .route{fill:none;stroke:url(#main);stroke-width:10;stroke-linecap:round;stroke-linejoin:round;filter:url(#glow)}
+      .optional{fill:none;stroke:#7c90a5;stroke-width:5;stroke-dasharray:10 9;stroke-linecap:round;stroke-linejoin:round}
+      .waterroute{fill:none;stroke:url(#water);stroke-width:9;stroke-linecap:round;stroke-linejoin:round}
+      .stairs{fill:none;stroke:#f0c773;stroke-width:6;stroke-linecap:round;stroke-linejoin:round}
+    </style>
+  </defs>
+  <rect width="1600" height="1000" fill="url(#bg)"/>
+  <rect width="1600" height="1000" fill="url(#grid)"/>
+  <path d="M0 120H1600" stroke="#c79b5d" stroke-opacity=".55" stroke-width="2"/>
+  <text x="56" y="64" class="title">FORNALHA DO JURAMENTO</text>
+  <text x="58" y="94" class="subtitle">MAPA DE NAVEGAÇÃO · VERSÃO ATUAL DA CONSTRUÇÃO</text>
+  <text x="1538" y="67" text-anchor="end" class="small">FASE 04 / MINAS E FORNALHAS</text>
+
+  <!-- Chamber silhouettes; upper and lower routes intentionally overlap at the hoist and gallery. -->
+  <path class="room" d="M64 488V346Q64 326 84 326H283Q303 326 303 346V502H82Q64 502 64 488Z"/>
+  <path class="room" d="M344 322V205Q344 185 364 185H565Q585 185 585 205V424H364Q344 424 344 404Z"/>
+  <path class="room" d="M575 426V330Q575 310 595 310H840Q860 310 860 330V510H595Q575 510 575 490Z"/>
+  <path class="room" d="M824 318V192Q824 172 844 172H1064Q1084 172 1084 192V420H844Q824 420 824 400Z"/>
+  <path class="room" d="M1044 420V328Q1044 308 1064 308H1295Q1315 308 1315 328V525H1064Q1044 525 1044 505Z"/>
+  <path class="room" d="M333 774V652Q333 632 353 632H1196Q1216 632 1216 652V826H353Q333 826 333 806Z"/>
+  <path class="room" d="M1262 687V548Q1262 528 1282 528H1514Q1534 528 1534 548V785H1282Q1262 785 1262 765Z"/>
+
+  <!-- Principal route follows the high hoist bridges, boilers, archive, and eastern sanctuary. -->
+  <path class="route" d="M91 440H270Q319 440 355 395V330Q355 292 394 292H535Q573 292 607 372H795Q830 372 844 326H1018Q1053 326 1075 426H1248Q1282 426 1300 492V618Q1300 664 1360 664H1484" marker-end="url(#arrowGold)"/>
+  <path class="optional" d="M465 211V245Q465 270 496 270H535Q568 270 568 303"/>
+  <path class="optional" d="M1152 365H1230Q1260 365 1274 395"/>
+
+  <!-- Drop into the cooling canal and the authored stair escape back to the gallery/arena route. -->
+  <path class="waterroute" d="M710 445V590Q710 675 790 696H1088Q1130 696 1160 658L1204 595Q1221 566 1265 566" marker-end="url(#arrowCyan)"/>
+  <path class="stairs" d="M1018 696L1043 683L1068 670L1093 657L1118 644L1143 631L1168 618L1193 605L1218 592L1243 579L1265 566"/>
+  <path d="M1025 701h22M1050 688h22M1075 675h22M1100 662h22M1125 649h22M1150 636h22M1175 623h22M1200 610h22M1225 597h22M1250 584h22" stroke="#f3d38a" stroke-width="3"/>
+  <path class="waterroute" d="M367 795H535Q590 795 620 754L648 714Q671 684 710 684"/>
+  <path class="optional" d="M500 427V520Q500 574 542 602L604 645"/>
+
+  <!-- Region labels. -->
+  <text x="92" y="370" class="region">01 · BOCA DA MINA</text>
+  <text x="370" y="225" class="region">02 · POÇO DOS GUINCHOS</text>
+  <text x="600" y="346" class="region">03 · GALERIA DE CINZA</text>
+  <text x="866" y="212" class="region">04 · CÂMARA DAS CALDEIRAS</text>
+  <text x="1083" y="352" class="region">05 · ARQUIVO DO JURAMENTO</text>
+  <text x="392" y="686" class="region" fill="#8bdad0">06 · CANAL DE RESFRIAMENTO</text>
+  <text x="1290" y="584" class="region">07 · SANTUÁRIO DAS BRASAS</text>
+
+  <!-- Entrances, checkpoints, hazards, drop, climb and boss markers. -->
+  <path d="M68 450H97" stroke="#8ee0b7" stroke-width="5" marker-end="url(#arrowCyan)"/>
+  <text x="78" y="474" class="tiny">ENTRADA / RETORNO À FLORESTA</text>
+  <path d="M449 282l12 12-12 12-12-12Z" fill="#79d7bf" stroke="#d1fff1" stroke-width="2"/>
+  <text x="468" y="299" class="tiny">CHECKPOINT 1</text>
+  <path d="M1168 414l12 12-12 12-12-12Z" fill="#79d7bf" stroke="#d1fff1" stroke-width="2"/>
+  <text x="1186" y="446" class="tiny">CHECKPOINT 2</text>
+  <path d="M681 464V570" stroke="#f17853" stroke-width="4" stroke-dasharray="7 6" marker-end="url(#arrowGold)"/>
+  <text x="693" y="550" class="tiny">QUEDA PARA O CANAL</text>
+  <path d="M1211 686l10 18h-20Z" fill="#ff8a49" stroke="#ffd193" stroke-width="2"/>
+  <path d="M742 739l10 18h-20Z" fill="#ff8a49" stroke="#ffd193" stroke-width="2"/>
+  <circle cx="1452" cy="676" r="21" fill="#742d2b" stroke="#ffb466" stroke-width="3"/>
+  <path d="M1442 676h20M1452 666v20" stroke="#ffe3ad" stroke-width="3"/>
+	<text x="1452" y="718" text-anchor="middle" class="tiny">TITÃ OSSUÁRIO</text>
+
+  <!-- Wayfinding labels. -->
+  <text x="455" y="466" class="small">ELEVADOR / POÇO</text>
+  <text x="1000" y="640" class="small">ESCADARIA DE SAÍDA</text>
+  <text x="730" y="735" class="small">GALERIA INFERIOR CONTÍNUA</text>
+  <text x="330" y="858" class="tiny">O CANAL TEM UMA DESCIDA DE ENTRADA E UMA SUBIDA LESTE QUE RETORNA À GALERIA DE CINZA.</text>
+
+  <!-- Legend panel. -->
+  <rect x="56" y="884" width="1488" height="76" rx="12" fill="#121c25" stroke="#3d515c" stroke-width="1.5"/>
+  <path d="M82 916h70" class="route"/><text x="167" y="921" class="small">Rota principal</text>
+  <path d="M350 916h70" class="optional"/><text x="435" y="921" class="small">Atalho / conexão lateral</text>
+  <path d="M700 916h70" class="waterroute"/><text x="785" y="921" class="small">Canal e retorno</text>
+  <path d="M1038 916l12-12 12 12-12 12Z" fill="#79d7bf"/><text x="1072" y="921" class="small">Checkpoint</text>
+  <path d="M1261 905l12 22h-24Z" fill="#ff8a49"/><text x="1283" y="921" class="small">Perigo ambiental</text>
+  <text x="800" y="946" text-anchor="middle" class="tiny">Esquema de navegação, não está em escala. O traçado representa a versão corrigida do nível.</text>
+</svg>

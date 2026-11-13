@@ -17,6 +17,7 @@ const ROOM_PATHS: Array[String] = [
 	"res://scenes/forest/sector_09.tscn",
 	"res://scenes/forest/sector_10.tscn"
 ]
+const PROGRESS: Script = preload("res://scripts/abbey/abbey_progress.gd")
 const CP_SCENE: PackedScene = preload("res://scenes/props/respawn_checkpoint.tscn")
 
 var room: Node2D
@@ -66,12 +67,15 @@ func _ready() -> void:
 		for candidate: RespawnCheckpoint in checkpoints:
 			if str(candidate.name) == token: cp = candidate
 	var room_id: int = checkpoints.find(cp) if cp != null else 0
-	await switch_room(room_id, false)
-	hero.set_default_respawn(ForestLayout.entry(room_id))
+	if arrival == "from_phase4": room_id = ROOM_PATHS.size() - 1
+	var from_right: bool = arrival == "from_phase4"
+	await switch_room(room_id, from_right)
+	hero.set_default_respawn(ForestLayout.entry(room_id, from_right))
 	if cp != null:
 		hero.activate_checkpoint(cp)
 		if hero.active_checkpoint == cp: hero.reset_to(cp.respawn_point.global_position)
 	if arrival == "from_abbey": abbey_prog_init.save_campaign_location("forest", "entry_west")
+	if arrival == "from_phase4": abbey_prog_init.save_campaign_location("forest", "ForestCheckpoint9")
 
 func _checkpoint_activated(cp: RespawnCheckpoint) -> void:
 	if hero.active_checkpoint == cp:
@@ -242,6 +246,10 @@ func _physics_process(delta: float) -> void:
 	# Transição para a direita (avanço de setor)
 	if current_room < ROOM_PATHS.size() - 1 and local.x >= 944.0 and hero.facing > 0:
 		switch_room.call_deferred(current_room + 1, false)
+	elif current_room == ROOM_PATHS.size() - 1 and local.x >= 944.0 and hero.facing > 0 and PROGRESS.is_flag_set("cervo_defeated"):
+		PROGRESS.set_pending_entrance("from_forest")
+		PROGRESS.save_campaign_location("phase4", "FornalhaEntry")
+		get_tree().change_scene_to_file.call_deferred("res://scenes/phase4/fornalha_phase.tscn")
 	# Retorno bidirecional para a esquerda (regresso de setor)
 	elif current_room > 0 and local.x <= 16.0 and hero.facing < 0:
 		switch_room.call_deferred(current_room - 1, true)

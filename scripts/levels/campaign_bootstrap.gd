@@ -14,6 +14,7 @@ func _ready() -> void:
 	match location.chapter:
 		"abbey": path = "res://scenes/abbey/abbey_chapter.tscn"
 		"forest": path = "res://scenes/forest/forest_pilots.tscn"
+		"phase4": path = "res://scenes/phase4/fornalha_phase.tscn"
 	if path != "":
 		PROGRESS.set_pending_entrance("resume")
 		get_tree().change_scene_to_file.call_deferred(path)

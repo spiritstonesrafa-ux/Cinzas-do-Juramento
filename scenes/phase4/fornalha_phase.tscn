@@ -1,0 +1,67 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://scripts/phase4/fornalha_phase.gd" id="1_phase"]
+[ext_resource type="PackedScene" path="res://scenes/player/knight.tscn" id="2_knight"]
+[ext_resource type="PackedScene" path="res://scenes/ui/health_hud.tscn" id="3_health"]
+[ext_resource type="Script" path="res://scripts/phase4/fornalha_art.gd" id="4_art"]
+[ext_resource type="Script" path="res://scripts/ui/titan_boss_bar.gd" id="5_titan_bar"]
+
+[sub_resource type="LabelSettings" id="TitleStyle"]
+font_size = 7
+font_color = Color(0.94, 0.82, 0.62, 1)
+shadow_size = 1
+shadow_color = Color(0.04, 0.04, 0.06, 0.95)
+
+[node name="FornalhaDoJuramento" type="Node2D"]
+script = ExtResource("1_phase")
+
+[node name="Art" type="Node2D" parent="."]
+script = ExtResource("4_art")
+
+[node name="Geometry" type="Node2D" parent="."]
+
+[node name="Hazards" type="Node2D" parent="."]
+
+[node name="Checkpoints" type="Node2D" parent="."]
+
+[node name="Actors" type="Node2D" parent="."]
+
+[node name="Knight" parent="." instance=ExtResource("2_knight")]
+position = Vector2(50, 1100)
+z_index = 2
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(160, 1068)
+position_smoothing_enabled = false
+
+[node name="HealthHUD" parent="." instance=ExtResource("3_health")]
+
+[node name="HUD" type="CanvasLayer" parent="."]
+layer = 2
+
+[node name="TitanBossBar" type="Node2D" parent="HUD"]
+script = ExtResource("5_titan_bar")
+
+[node name="Title" type="Label" parent="HUD"]
+offset_left = 18.0
+offset_top = 31.0
+offset_right = 220.0
+offset_bottom = 42.0
+label_settings = SubResource("TitleStyle")
+text = "FORNALHA DO JURAMENTO"
+
+[node name="Area" type="Label" parent="HUD"]
+offset_left = 18.0
+offset_top = 42.0
+offset_right = 230.0
+offset_bottom = 53.0
+label_settings = SubResource("TitleStyle")
+text = "BOCA DA MINA"
+
+[node name="Hint" type="Label" parent="HUD"]
+offset_left = 4.0
+offset_top = 167.0
+offset_right = 316.0
+offset_bottom = 178.0
+label_settings = SubResource("TitleStyle")
+text = "A/D mover · Espaço saltar · Shift dash · J espada"
