@@ -86,8 +86,8 @@ func _alive_fall() -> void:
 func camera_target() -> Vector2:
  var origin: Vector2 = AbbeyPilotLayout.ORIGINS[maxi(0,current_room)]
  var local: Vector2 = hero.global_position-origin
- # Downward margin exposes next descending tread; horizontal lead is bounded.
- return origin+Vector2(clampf(local.x+hero.facing*24,160,800),clampf(local.y-48,90,330))
+ # Keep the framing anchored to the hero so changing direction cannot shift the view.
+ return origin+Vector2(clampf(local.x,160,800),clampf(local.y-48,90,330))
 func _physics_process(delta: float) -> void:
  if busy or current_room<0: return
  var local: Vector2 = hero.global_position-AbbeyPilotLayout.ORIGINS[current_room]

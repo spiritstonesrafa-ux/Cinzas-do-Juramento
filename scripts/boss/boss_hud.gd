@@ -9,7 +9,7 @@ func _draw() -> void:
   if boss.get_node("Conclusion").played:
    _draw_conclusion()
    return
- var name_text: String="GUARDIÃO DO JURAMENTO"
+ var name_text: String="TITÃ OSSUÁRIO"
  var width: float=font.get_string_size(name_text,HORIZONTAL_ALIGNMENT_LEFT,-1,8).x
  draw_rect(Rect2(62,19,196,24),Color("10111f",0.88))
  draw_string(font,Vector2((320-width)/2,28),name_text,HORIZONTAL_ALIGNMENT_LEFT,-1,8,Color("dbc7a0"))
@@ -18,7 +18,7 @@ func _draw() -> void:
  draw_rect(Rect2(77,33,166*float(boss.current_health)/boss.max_health,4),Color("8c3d55"))
  if boss.phase==2:draw_string(font,Vector2(253,38),"II",HORIZONTAL_ALIGNMENT_LEFT,-1,7,Color("9de6d4"))
  var notice: String=""
- if boss.state==OathGuardian.State.INTRO:notice="O antigo protetor desperta."
+ if boss.state==OathGuardian.State.INTRO:notice="O Titã Ossuário desperta."
  elif boss.state==OathGuardian.State.PHASE_TRANSITION:notice="A maldição desperta."
  elif boss.state==OathGuardian.State.DEFEATED:notice="Guardião vencido · retorne pelo selo à esquerda"
  if not notice.is_empty():

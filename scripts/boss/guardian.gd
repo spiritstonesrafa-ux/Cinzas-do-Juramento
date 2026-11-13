@@ -5,7 +5,7 @@ signal health_changed(current: int, maximum: int)
 signal defeated
 signal state_changed(value: int)
 enum State { IDLE, INTRO, WAKE, PURSUIT, TELEGRAPH, ATTACK, HURT, PUNISH, DEFEATED, RESET, PHASE_TRANSITION, SUPER_WARN, SUPER_ACTIVE, SUPER_RECOVER }
-enum Pattern { HEAVY, CHARGE, SWEEP, WAVE }
+enum Pattern { HEAVY, CHARGE, SWEEP, WAVE, ERUPTION }
 @export_range(1,99,1) var max_health: int=10
 @export var pursuit_speed: float=34.0
 @export var intro_duration: float=0.9
@@ -28,6 +28,8 @@ var super_waves: Array[Node2D]=[]
 var super_used: bool=false
 var super_second_sent: bool=false
 const WAVE_SCRIPT: GDScript=preload("res://scripts/boss/oath_wave.gd")
+const TITAN_HAZARD: GDScript=preload("res://scripts/boss/titan_hazard.gd")
+var titan_hazards: Array[Node2D]=[]
 var state: State=State.IDLE
 var current_health: int=10
 var target: KnightController
@@ -56,11 +58,13 @@ func _set_state(value: State, duration: float=0) -> void:
  if value in [State.ATTACK,State.PHASE_TRANSITION,State.DEFEATED,State.RESET]:retreat_remaining=0
  remaining=duration
  velocity=Vector2.ZERO
- attack_source.set_active(value==State.ATTACK and pattern!=Pattern.WAVE)
+ attack_source.set_active(value==State.ATTACK and pattern in [Pattern.HEAVY,Pattern.CHARGE,Pattern.SWEEP])
  if value==State.ATTACK:
   attack_source.set_direction(facing)
   attack_source.configure(pattern,0,facing)
-  if pattern==Pattern.WAVE:_spawn_wave()
+  if pattern==Pattern.HEAVY:_spawn_fire_wave()
+  elif pattern==Pattern.WAVE:_spawn_breath_volley()
+  elif pattern==Pattern.ERUPTION:_spawn_pillars()
  state_changed.emit(state)
  visual.queue_redraw()
 func reset_encounter() -> void:
@@ -124,7 +128,8 @@ func _physics_process(delta: float) -> void:
  hurt_lockout=maxf(0,hurt_lockout-delta)
  pressure_window=maxf(0,pressure_window-delta)
  retreat_cooldown=maxf(0,retreat_cooldown-delta)
- visual.scale.x=float(facing)
+ # Generated Titan sheets face left by default; invert the facing sign for the sprite.
+ visual.scale.x=float(-facing)
  visual.queue_redraw()
  if not awake:return
  if not is_instance_valid(target) or target.survival.is_dead:
@@ -175,6 +180,8 @@ func _physics_process(delta: float) -> void:
     move_and_slide()
     position.x=clampf(position.x,28,292)
     charge_travel+=absf(position.x-before)
+    if fposmod(charge_travel, 30.0) < 144.0*delta:
+     _spawn_titan_hazard("trail", -facing, position+Vector2(-facing*22,0), 0.0)
    attack_source.configure(pattern,1-remaining/active_seconds(),facing)
    # The blade retracts during the final 0.16 s of the forward movement.
    if pattern==Pattern.CHARGE and remaining<=0.16 and attack_source.active:
@@ -205,24 +212,29 @@ func warning_seconds() -> float:
   Pattern.CHARGE:return 0.9
   Pattern.SWEEP:return 0.85
   Pattern.WAVE:return 1.05
+  Pattern.ERUPTION:return 1.35
  return telegraph_duration
 func active_seconds() -> float:
  match pattern:
+  Pattern.HEAVY:return 0.58
   Pattern.CHARGE:return 0.5
-  Pattern.SWEEP:return 0.25
+  Pattern.SWEEP:return 0.42
   Pattern.WAVE:return 0.22
+  Pattern.ERUPTION:return 0.18
  return attack_duration
 func recovery_seconds() -> float:
  var duration: float=punish_duration
  if pattern==Pattern.CHARGE:duration=1.3
  elif pattern==Pattern.SWEEP:duration=1.2
  elif pattern==Pattern.WAVE:duration=2.15 # Wave expires before another offensive pattern.
+ elif pattern==Pattern.ERUPTION:duration=1.8
  return maxf(0.95,duration-(0.1 if phase==2 else 0))
 func _choose_pattern(distance: float) -> Pattern:
  # The opening teaches the heavy swing; subsequent choices depend on position.
  if attack_count<1:return Pattern.HEAVY
  if target.global_position.y<global_position.y-30 and last_pattern!=Pattern.SWEEP and float(cooldowns.get(Pattern.SWEEP,0))==0:return Pattern.SWEEP
  if phase==2 and last_pattern!=Pattern.WAVE and float(cooldowns.get(Pattern.WAVE,0))==0:return Pattern.WAVE
+ if phase==2 and last_pattern!=Pattern.ERUPTION and float(cooldowns.get(Pattern.ERUPTION,0))==0:return Pattern.ERUPTION
  var space: float=292-position.x if facing>0 else position.x-28
  if distance>=96 and space>=121 and last_pattern!=Pattern.CHARGE and float(cooldowns.get(Pattern.CHARGE,0))==0:return Pattern.CHARGE
  if (320-position.x if facing>0 else position.x)>=86 and last_pattern!=Pattern.SWEEP and float(cooldowns.get(Pattern.SWEEP,0))==0:return Pattern.SWEEP
@@ -232,7 +244,7 @@ func start_pattern(value: Pattern) -> void:
  last_pattern=value
  attack_count+=1
  charge_travel=0
- cooldowns[value]=5.0 if value==Pattern.WAVE else 2.0
+ cooldowns[value]=5.0 if value in [Pattern.WAVE,Pattern.ERUPTION] else 2.0
  _set_state(State.TELEGRAPH,warning_seconds())
 func _start_transition() -> void:
  phase_pending=false
@@ -244,18 +256,17 @@ func _start_super() -> void:
  super_second_sent=false
  _set_state(State.SUPER_WARN,1.3)
 func _spawn_super_pair() -> void:
- for side: int in [-1,1]:
-  var wave: Node2D=WAVE_SCRIPT.new()
-  wave.direction=side
-  wave.guardian=self
-  get_parent().add_child(wave)
-  wave.global_position=global_position+Vector2(28*side,0)
-  super_waves.append(wave)
+ # Titan leaps and crushes the ground; paired fire pillars create a readable double-jump window.
+ _spawn_titan_hazard("pillar", -1, target.global_position+Vector2(-72,0), 0.55)
+ _spawn_titan_hazard("pillar", 1, target.global_position+Vector2(72,0), 0.95)
 func clear_dangers() -> void:
  attack_source.set_active(false)
  for wave: Node2D in super_waves:
   if is_instance_valid(wave):wave.disarm();wave.queue_free()
  super_waves.clear()
+ for hazard: Node2D in titan_hazards:
+  if is_instance_valid(hazard):hazard.disarm();hazard.queue_free()
+ titan_hazards.clear()
  if is_instance_valid(special_wave):
   special_wave.disarm()
   special_wave.queue_free()
@@ -267,3 +278,23 @@ func _spawn_wave() -> void:
  special_wave.guardian=self
  get_parent().add_child(special_wave)
  special_wave.global_position=global_position+Vector2(28*facing,0)
+
+func _spawn_titan_hazard(kind: String, side: int, at: Vector2, delay: float) -> void:
+ var hazard: TitanHazard=TITAN_HAZARD.new()
+ hazard.configure(kind,side,self,delay)
+ get_parent().add_child(hazard)
+ hazard.global_position=at
+ titan_hazards.append(hazard)
+
+func _spawn_fire_wave() -> void:
+ _spawn_titan_hazard("wave",facing,global_position+Vector2(58*facing,0),0.0)
+
+func _spawn_breath_volley() -> void:
+ for i: int in range(3):
+  _spawn_titan_hazard("wave",facing,global_position+Vector2(60*facing,0),float(i)*0.28)
+
+func _spawn_pillars() -> void:
+ var x: float=clampf(target.global_position.x,56.0,264.0)
+ _spawn_titan_hazard("pillar",1,Vector2(x-76,global_position.y),0.4)
+ _spawn_titan_hazard("pillar",1,Vector2(x+8,global_position.y),0.72)
+ _spawn_titan_hazard("pillar",1,Vector2(x+92,global_position.y),1.04)

@@ -5,18 +5,18 @@
 [ext_resource type="Script" path="res://scripts/boss/guardian_attack.gd" id="4"]
 [ext_resource type="Script" path="res://scripts/boss/guardian_conclusion.gd" id="5"]
 [sub_resource type="RectangleShape2D" id="Body"]
-size = Vector2(28, 62)
+size = Vector2(42, 96)
 [sub_resource type="RectangleShape2D" id="Blade"]
 size = Vector2(65.39113, 10)
 [sub_resource type="RectangleShape2D" id="Receiver"]
-size = Vector2(28, 56)
+size = Vector2(38, 90)
 [node name="Guardian" type="CharacterBody2D"]
 collision_layer = 256
 collision_mask = 1
 floor_snap_length = 3.0
 script = ExtResource("1")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -31)
+position = Vector2(0, -48)
 shape = SubResource("Body")
 [node name="Visual" type="Node2D" parent="."]
 script = ExtResource("2")
@@ -26,7 +26,7 @@ collision_mask = 4
 monitoring = false
 script = ExtResource("3")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SwordReceiver"]
-position = Vector2(0, -28)
+position = Vector2(0, -45)
 shape = SubResource("Receiver")
 [node name="AttackSource" type="Area2D" parent="."]
 collision_layer = 32

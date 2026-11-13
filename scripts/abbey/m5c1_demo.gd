@@ -79,7 +79,7 @@ func switch_room(id: int, from_right: bool = false, resetting: bool = false) -> 
  busy=false
 func camera_target() -> Vector2:
  var x: float = current_room*1200
- return Vector2(x+clampf(hero.global_position.x-x+hero.facing*24,160,800),252)
+ return Vector2(x+clampf(hero.global_position.x-x,160,800),252)
 func _physics_process(delta: float) -> void:
  if busy or current_room<0: return
  camera.position=camera.position.move_toward(camera_target(),600*delta).round()

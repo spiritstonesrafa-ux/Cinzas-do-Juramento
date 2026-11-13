@@ -22,11 +22,15 @@ func configure(pattern: int, progress: float, side: int) -> void:
   shape.shape.resource_local_to_scene=true
  (shape.shape as RectangleShape2D).size=Vector2(start.distance_to(finish),THICKNESS)
 static func blade_points(pattern: int, progress: float) -> Array[Vector2]:
+	# Titan swings a chain maul; keep each damage box aligned with its visible wind-up.
+	if pattern==0:
+		var angle: float=lerpf(-1.55,0.2,clampf(progress,0.0,1.0))
+		return [Vector2(16,-44),Vector2(16,-44)+Vector2.from_angle(angle)*104.0]
  if pattern==1:return [Vector2(15,-14),Vector2(77,-14)]
  if pattern==2:
   var start: Vector2=Vector2(8,-14)
   return [start,start+Vector2.from_angle(lerpf(-0.08,0.08,clampf(progress,0,1)))*78]
- if pattern==3:return [Vector2(12,-30),Vector2(28,-2)]
+	if pattern==3:return [Vector2(12,-30),Vector2(28,-2)]
  return [HILT,TIP]
 func set_active(value: bool) -> void:
  active=value

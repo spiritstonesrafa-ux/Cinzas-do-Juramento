@@ -18,6 +18,12 @@ export_credentials.cfg
 *.swo
 *~
 *.log
+/scratch/
+/tests/baseline_boss_balance_fix02/
+/tests/perfil_*/
+/tests/evidencias/
+/tests/*.png
+/tests/*.png.import
 .DS_Store
 Thumbs.db
 Desktop.ini
@@ -38,3 +44,18 @@ Desktop.ini
 credentials.json
 secrets.json
 /secrets/
+
+# Local visual references copied into the project root for review.
+/The Art of the Pixel.jpg
+/The Art of the Pixel.jpg.import
+/The Siege and the Sandfox _ Le metroidvania en 2D de Cardboard Sword et PLAION sortira le 20 mai sur PC.jpg
+/The Siege and the Sandfox _ Le metroidvania en 2D de Cardboard Sword et PLAION sortira le 20 mai sur PC.jpg.import
+/assets/art/m7a/ember_guardian.png
+/assets/art/m7a/ember_guardian.png.import
+/assets/art/m6c1/test_*
+/assets/art/m6c1/*_1x.png
+/assets/art/m6c1/*_1x.png.import
+/assets/art/m6c1/*_2x.png
+/assets/art/m6c1/*_2x.png.import
+/assets/art/m6c1/*_preview4x.png
+/assets/art/m6c1/*_preview4x.png.import

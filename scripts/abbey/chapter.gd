@@ -268,7 +268,7 @@ func camera_target() -> Vector2:
  if current_room==8 and archive_annex: right_limit=1416
  if current_room==2 and stair_annex: right_limit=1288
  if current_room==4 and cistern_annex: right_limit=1440
- return AbbeyChapterLayout.origin(maxi(0,current_room))+Vector2(clampf(p.x+hero.facing*24,160,right_limit),y)
+ return AbbeyChapterLayout.origin(maxi(0,current_room))+Vector2(clampf(p.x,160,right_limit),y)
 func _physics_process(delta: float) -> void:
  if _checkpoint_writer!=null and not _checkpoint_writer.is_alive(): _finish_checkpoint_write()
  _poll_backgrounds()

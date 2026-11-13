@@ -175,7 +175,7 @@ func camera_target() -> Vector2:
 	var origin: Vector2 = ForestLayout.ORIGINS[maxi(0, current_room)]
 	var local: Vector2 = hero.global_position - origin
 	return origin + Vector2(
-		clampf(local.x + hero.facing * 24.0, 160.0, 800.0),
+		clampf(local.x, 160.0, 800.0),
 		clampf(local.y - 40.0, 90.0, 330.0)
 	)
 
