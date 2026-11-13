@@ -8,9 +8,9 @@ enum State { IDLE, PATROL, CHASE, WARNING, ATTACK, RECOVERY, HURT, DEAD }
 const SWORD_RECEIVER: Script = preload("res://scripts/combat/sword_receiver.gd")
 const ATTACK_SCRIPT: Script = preload("res://scripts/phase4/furnace_enemy_attack.gd")
 const EMBER_SCRIPT: Script = preload("res://scripts/phase4/furnace_ember.gd")
-const MINER_SHEET: Texture2D = preload("res://assets/art/m4a/furnace_enemies/slag_miner_16f.png")
+const MINER_SHEET: Texture2D = preload("res://assets/art/m4a/furnace_enemies/smoke_crow_16f.png")
 const CRAWLER_SHEET: Texture2D = preload("res://assets/art/m4a/furnace_enemies/ash_crawler_16f.png")
-const CROW_SHEET: Texture2D = preload("res://assets/art/m4a/furnace_enemies/smoke_crow_16f.png")
+const CROW_SHEET: Texture2D = preload("res://assets/art/m4a/furnace_enemies/slag_miner_16f.png")
 const CELL_SIZE := Vector2(313.5, 313.5)
 
 var kind: Kind = Kind.SLAG_MINER
