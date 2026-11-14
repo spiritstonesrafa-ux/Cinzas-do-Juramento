@@ -44,12 +44,12 @@ const FLOORS: Array[Rect2] = [
 	Rect2(1430, 600, 250, 16), Rect2(1705, 580, 275, 16), Rect2(2010, 600, 250, 16),
 	Rect2(2290, 610, 170, 16),
 	# Steps and narrow ledges inside the hoist and boiler stacks.
-	Rect2(475, 790, 74, 14), Rect2(535, 720, 74, 14), Rect2(600, 680, 78, 14),
-	Rect2(890, 780, 78, 14), Rect2(950, 710, 80, 14), Rect2(1010, 650, 80, 14),
+	Rect2(475, 810, 74, 14), Rect2(535, 740, 74, 14), Rect2(600, 680, 78, 14),
+	Rect2(890, 810, 78, 14), Rect2(950, 740, 80, 14), Rect2(1010, 670, 80, 14),
 	Rect2(1280, 800, 82, 14), Rect2(1340, 730, 82, 14), Rect2(1400, 670, 82, 14),
 	Rect2(1760, 770, 80, 14), Rect2(1825, 700, 80, 14), Rect2(1890, 640, 80, 14),
 	# Descents to the bottom loop and hidden side path.
-	Rect2(650, 1010, 120, 14), Rect2(800, 1080, 115, 14), Rect2(1110, 1010, 130, 14),
+	Rect2(650, 1010, 120, 14), Rect2(700, 935, 120, 14), Rect2(800, 1080, 115, 14), Rect2(1110, 1010, 130, 14),
 	Rect2(1265, 1080, 140, 14), Rect2(1530, 990, 115, 14), Rect2(1670, 1050, 130, 14),
 	Rect2(1900, 1000, 130, 14), Rect2(2055, 1060, 130, 14), Rect2(2220, 1020, 135, 14),
 	# Canal escape stair: short, overlapping steps remain climbable with the normal jump.
@@ -62,7 +62,7 @@ const FLOORS: Array[Rect2] = [
 	Rect2(2015, 780, 96, 14), Rect2(2085, 710, 96, 14),
 	Rect2(2155, 640, 96, 14), Rect2(2225, 610, 100, 14),
 	# Final climb into the boss sanctuary.
-	Rect2(2350, 990, 92, 14), Rect2(2430, 930, 92, 14), Rect2(2510, 870, 92, 14),
+	Rect2(2350, 990, 92, 14), Rect2(2400, 1025, 110, 14), Rect2(2430, 930, 92, 14), Rect2(2510, 870, 92, 14),
 	Rect2(2600, 810, 110, 14), Rect2(2720, 860, 110, 14), Rect2(2825, 940, 125, 14)
 ]
 
